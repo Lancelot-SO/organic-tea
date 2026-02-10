@@ -1,5 +1,6 @@
 import React from 'react';
 import { Facebook, Linkedin, Youtube, Twitter, MapPin, Phone, Mail } from 'lucide-react';
+import logo from '../assets/logo.png';
 
 const Footer = () => {
     return (
@@ -9,16 +10,11 @@ const Footer = () => {
                     {/* Brand & Address */}
                     <div className="md:col-span-4 space-y-8">
                         <div className="flex items-center gap-2">
-                            {/* Teapot Logo SVG */}
-                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M24 8C20 8 16 11 16 15C16 17 17 18.5 18 19.5L14 28H34L30 19.5C31 18.5 32 17 32 15C32 11 28 8 24 8Z" fill="#B18A45" />
-                                <path d="M34 28C38 28 41 25.5 41 21.5C41 17.5 38 15 34 15V18C36 18 38 19.5 38 21.5C38 23.5 36 25 34 25V28Z" fill="#B18A45" />
-                                <path d="M14 28L8 22V25C8 28 11 28 14 28Z" fill="#B18A45" />
-                                <path d="M21 4C21 4 20 5.5 20 6.5" stroke="#B18A45" strokeWidth="2" strokeLinecap="round" />
-                                <path d="M24 3C24 3 23 5 23 6.5" stroke="#B18A45" strokeWidth="2" strokeLinecap="round" />
-                                <path d="M27 4C27 4 26 5.5 26 6.5" stroke="#B18A45" strokeWidth="2" strokeLinecap="round" />
-                                <path d="M16 28H32V32C32 34 30 36 24 36C18 36 16 34 16 32V28Z" fill="#B18A45" />
-                            </svg>
+                            <img
+                                src={logo}
+                                alt="AURUM TEA"
+                                className="h-14 md:h-20 w-auto object-cover brightness-0 invert"
+                            />
                         </div>
 
                         <p className="text-gray-200 text-sm leading-relaxed font-medium">

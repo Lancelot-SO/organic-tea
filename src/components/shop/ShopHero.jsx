@@ -1,5 +1,5 @@
-import React from 'react';
 import { motion } from 'framer-motion';
+import hero1 from '../../assets/images/hero-1.jpeg';
 
 const ShopHero = () => {
     return (
@@ -7,7 +7,7 @@ const ShopHero = () => {
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src="https://images.unsplash.com/photo-1594631252845-29fc458631b6?q=80&w=2000&auto=format&fit=crop"
+                    src={hero1}
                     alt="Herbal Teas Shop"
                     className="w-full h-full object-cover brightness-[0.6]"
                 />

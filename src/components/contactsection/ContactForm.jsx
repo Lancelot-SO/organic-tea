@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Send, ArrowRight } from 'lucide-react';
+import product1 from '../../assets/images/product1.jpeg';
 
 const ContactForm = () => {
     return (
@@ -105,7 +106,7 @@ const ContactForm = () => {
                         className="lg:w-5/12 relative hidden lg:block"
                     >
                         <img
-                            src="https://images.unsplash.com/photo-1576091160550-2173bdd99d76?q=80&w=1200&auto=format&fit=crop"
+                            src={product1}
                             alt="Tea Preparation"
                             className="absolute inset-0 w-full h-full object-cover"
                         />

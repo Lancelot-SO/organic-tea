@@ -6,19 +6,20 @@ import ShopFilterTopBar from '../components/shop/ShopFilterTopBar';
 import ShopProductCard from '../components/shop/ShopProductCard';
 
 // Asset imports (assuming these exist from previous work)
-import greenTea from '../assets/images/product-green-tea.png';
-import chamomile from '../assets/images/product-chamomile.png';
-import earlGrey from '../assets/images/product-earl-grey.png';
-import herbal from '../assets/images/hero-2.png';
+import product1 from '../assets/images/product1.jpeg';
+import product2 from '../assets/images/product2.jpeg';
+import product3 from '../assets/images/product3.jpeg';
+import product4 from '../assets/images/product4.jpeg';
+import product5 from '../assets/images/product5.jpeg';
 
 const Shop = () => {
     const products = [
-        { id: 1, name: "Product One", price: 60.00, image: greenTea, badge: "Sold Out" },
-        { id: 2, name: "Product One", price: 60.00, image: herbal, badge: "25% OFF" },
-        { id: 3, name: "Product One", price: 60.00, image: earlGrey, badge: "Sales" },
-        { id: 4, name: "Product One", price: 60.00, image: herbal, badge: "Sold Out" },
-        { id: 5, name: "Product One", price: 60.00, image: greenTea, badge: "25% OFF" },
-        { id: 6, name: "Product One", price: 60.00, image: chamomile, badge: "Sales" },
+        { id: 1, name: "Product One", price: 60.00, image: product1, badge: "Sold Out" },
+        { id: 2, name: "Product Two", price: 60.00, image: product2, badge: "25% OFF" },
+        { id: 3, name: "Product Three", price: 60.00, image: product3, badge: "Sales" },
+        { id: 4, name: "Product Four", price: 60.00, image: product4, badge: "Sold Out" },
+        { id: 5, name: "Product Five", price: 60.00, image: product5, badge: "25% OFF" },
+        { id: 6, name: "Product Six", price: 60.00, image: product1, badge: "Sales" },
     ];
 
     return (

@@ -2,6 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectFade, Pagination } from 'swiper/modules';
+import hero1 from '../../assets/images/hero-1.jpeg';
+import hero2 from '../../assets/images/hero-2.jpeg';
+import hero3 from '../../assets/images/hero-3.jpeg';
+import product1 from '../../assets/images/product1.jpeg';
+import product2 from '../../assets/images/product2.jpeg';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -9,13 +14,12 @@ import 'swiper/css/effect-fade';
 import 'swiper/css/pagination';
 
 const AboutHero = () => {
-    const heroLeft = "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200";
-
+    const heroLeft = hero2;
     const sliderImages = [
-        "https://images.unsplash.com/photo-1531538606174-0f90ff5dce83?q=80&w=1200",
-        "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200",
-        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200",
-        "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1200"
+        hero1,
+        hero3,
+        product1,
+        product2
     ];
 
     return (

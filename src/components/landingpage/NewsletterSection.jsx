@@ -1,7 +1,7 @@
 import React from 'react';
 import { Send } from 'lucide-react';
 import { motion } from 'framer-motion';
-import hero2 from '../../assets/images/hero-2.png';
+import hero2 from '../../assets/images/hero-2.jpeg';
 
 const NewsletterSection = () => {
     return (

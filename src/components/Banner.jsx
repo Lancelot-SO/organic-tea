@@ -1,11 +1,12 @@
-import { ShoppingBag } from 'lucide-react';
 import React from 'react';
 import { motion } from 'framer-motion';
+import { ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import hero1 from '../assets/images/hero-1.jpeg';
 
 const Banner = () => {
     // High-quality background image representing the lush tea fields
-    const bgImage = "https://images.unsplash.com/photo-1597484661643-2f5fef640dd1?q=80&w=2070&auto=format&fit=crop";
+    const bgImage = hero1;
 
     return (
         <section className="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">

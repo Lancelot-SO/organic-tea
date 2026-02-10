@@ -4,6 +4,7 @@ import { Search, ShoppingBag, User, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import CartModal from './shop/CartModal';
+import logo from '../assets/logo.png';
 
 const Navbar = () => {
     const { cartCount, setIsCartOpen } = useCart();
@@ -35,10 +36,12 @@ const Navbar = () => {
         >
             <div className="container flex items-center justify-between">
                 {/* Logo */}
-                <Link to="/" className="z-50">
-                    <h1 className="text-2xl md:text-3xl font-heading font-bold tracking-wider text-primary-dark">
-                        AURUM<span className="text-gold">TEA</span>
-                    </h1>
+                <Link to="/" className="z-50 flex items-center">
+                    <img
+                        src={logo}
+                        alt="AURUM TEA"
+                        className="h-10 md:h-20 w-auto object-cover"
+                    />
                 </Link>
 
                 {/* Desktop Navigation */}

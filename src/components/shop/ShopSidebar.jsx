@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, ShoppingCart, ArrowRight, ChevronDown } from 'lucide-react';
+import product1 from '../../assets/images/product1.jpeg';
 
 const CollapsibleSection = ({ title, children, defaultOpen = true }) => {
     const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -138,7 +139,7 @@ const ShopSidebar = () => {
             {/* Sidebar Promo Card */}
             <div className="relative rounded-2xl overflow-hidden group h-[450px] shadow-lg">
                 <img
-                    src="https://images.unsplash.com/photo-1576091160550-2173bdd99625?q=80&w=800&auto=format&fit=crop"
+                    src={product1}
                     alt="Promo"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />

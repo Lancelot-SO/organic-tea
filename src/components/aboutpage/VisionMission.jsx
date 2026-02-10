@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import portraitImage from "../../assets/images/product4.jpeg"
 
 const VisionMission = () => {
     // High-quality online image matching the reference's aesthetic
-    const portraitImage = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1200";
 
     return (
         <section className="relative lg:h-[490px] w-full overflow-hidden flex items-center py-3 lg:py-10">

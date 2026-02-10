@@ -1,6 +1,9 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import product1 from '../../assets/images/product1.jpeg';
+import product2 from '../../assets/images/product2.jpeg';
+import product3 from '../../assets/images/product3.jpeg';
 
 const ShopPromoCards = () => {
     const promos = [
@@ -8,19 +11,19 @@ const ShopPromoCards = () => {
             id: 1,
             title: "Fresh & Healthy",
             subtitle: "The wonderful Taste of life",
-            image: "https://images.unsplash.com/photo-1576091160550-2173bdd99625?q=80&w=800&auto=format&fit=crop"
+            image: product1
         },
         {
             id: 2,
             title: "Fresh & Healthy",
             subtitle: "The wonderful Taste of life",
-            image: "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?q=80&w=800&auto=format&fit=crop"
+            image: product2
         },
         {
             id: 3,
             title: "Fresh & Healthy",
             subtitle: "The wonderful Taste of life",
-            image: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?q=80&w=800&auto=format&fit=crop"
+            image: product3
         }
     ];
 
@@ -53,10 +56,13 @@ const ShopPromoCards = () => {
                                 <p className="text-white/80 text-sm mb-6 font-serif italic">
                                     {promo.subtitle}
                                 </p>
-                                <button className="bg-white text-primary-dark px-6 py-2.5 rounded-sm font-bold text-[10px] uppercase tracking-widest flex items-center gap-2 hover:bg-gold hover:text-white transition-all duration-300">
+                                <Link
+                                    to="/shop"
+                                    className="bg-white text-primary-dark px-6 py-2.5 rounded-sm font-bold text-[10px] uppercase tracking-widest flex items-center gap-2 hover:bg-gold hover:text-white transition-all duration-300 inline-flex"
+                                >
                                     Shop Now
                                     <ArrowUpRight className="w-4 h-4" />
-                                </button>
+                                </Link>
                             </div>
                         </motion.div>
                     ))}

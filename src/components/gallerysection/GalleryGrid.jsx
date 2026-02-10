@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import herbFarmImg from '../../assets/images/hero-1.png';
+import herbFarmImg from '../../assets/images/hero-1.jpeg';
 import packingImg from '../../assets/images/featured-tea.png';
-import branding1Img from '../../assets/images/hero-2.png';
-import branding2Img from '../../assets/images/hero-3.png';
+import branding1Img from '../../assets/images/hero-2.jpeg';
+import branding2Img from '../../assets/images/hero-3.jpeg';
 import teamImg from '../../assets/images/home/team1.png';
 
 const CategoryCard = ({ image, label, count = "20+ Image", large = false, delay = 0 }) => {

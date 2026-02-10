@@ -1,6 +1,6 @@
-import blog1 from '../assets/images/hero-3.png';
+import blog1 from '../assets/images/hero-3.jpeg';
 import blog2 from '../assets/images/featured-tea.png';
-import blog3 from '../assets/images/hero-1.png';
+import blog3 from '../assets/images/hero-1.jpeg';
 import blog4 from '../assets/images/home/team1.png';
 import blog5 from '../assets/images/product-chamomile.png';
 

@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Lock, User, ArrowRight, Github, Chrome, Facebook } from 'lucide-react';
+import hero1 from '../assets/images/hero-1.jpeg';
+import hero2 from '../assets/images/hero-2.jpeg';
+import hero3 from '../assets/images/hero-3.jpeg';
 
 const Profile = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [currentSlide, setCurrentSlide] = useState(0);
 
     const sliderImages = [
-        "https://images.unsplash.com/photo-1594631252845-29fc45865157?q=80&w=1974&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1563911302283-d2bc129e7570?q=80&w=2000&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1576092729250-590ee0378b95?q=80&w=1974&auto=format&fit=crop"
+        hero1,
+        hero2,
+        hero3
     ];
 
     useEffect(() => {

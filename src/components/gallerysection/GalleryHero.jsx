@@ -8,9 +8,9 @@ import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/pagination';
 
-import hero1 from '../../assets/images/hero-1.png';
-import hero2 from '../../assets/images/hero-2.png';
-import hero3 from '../../assets/images/hero-3.png';
+import hero1 from '../../assets/images/hero-1.jpeg';
+import hero2 from '../../assets/images/hero-2.jpeg';
+import hero3 from '../../assets/images/hero-3.jpeg';
 import featured from '../../assets/images/featured-tea.png';
 import chamomile from '../../assets/images/product-chamomile.png';
 import earlGrey from '../../assets/images/product-earl-grey.png';

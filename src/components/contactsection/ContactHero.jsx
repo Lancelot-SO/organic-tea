@@ -1,5 +1,5 @@
-import React from 'react';
 import { motion } from 'framer-motion';
+import hero2 from '../../assets/images/hero-2.jpeg';
 
 const ContactHero = () => {
     return (
@@ -12,7 +12,7 @@ const ContactHero = () => {
                 className="absolute inset-0 z-0"
             >
                 <img
-                    src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?q=80&w=2000&auto=format&fit=crop"
+                    src={hero2}
                     alt="Organic Tea Garden"
                     className="w-full h-full object-cover brightness-[0.4]"
                 />

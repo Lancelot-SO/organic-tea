@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, Minus, Trash2, ShoppingBag, ShoppingCart, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 
 const CartModal = () => {
@@ -99,12 +100,13 @@ const CartModal = () => {
                                     </div>
                                     <h3 className="text-lg font-bold text-primary-dark mb-1">Your bag is empty</h3>
                                     <p className="text-stone-400 text-sm mb-6">Explore our curated tea selections</p>
-                                    <button
+                                    <Link
+                                        to="/shop"
                                         onClick={() => setIsCartOpen(false)}
-                                        className="text-gold font-bold text-xs tracking-widest uppercase hover:underline"
+                                        className="text-gold font-bold text-xs tracking-widest uppercase hover:underline inline-block"
                                     >
                                         Start Shopping
-                                    </button>
+                                    </Link>
                                 </div>
                             ) : (
                                 cartItems.map((item, i) => (

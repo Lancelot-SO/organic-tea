@@ -1,9 +1,9 @@
-import React from 'react';
 import { motion } from 'framer-motion';
+import hero2 from '../../assets/images/hero-2.jpeg';
 
 const FounderStory = () => {
     // High-quality background image representing the team/founder aesthetic
-    const bgImage = "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2000";
+    const bgImage = hero2;
 
     return (
         <section className="relative min-h-[600px] flex items-center justify-center overflow-hidden py-20">

@@ -7,9 +7,9 @@ import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/pagination';
 
-import hero1 from '../../assets/images/hero-1.png';
-import hero2 from '../../assets/images/hero-2.png';
-import hero3 from '../../assets/images/hero-3.png';
+import hero1 from '../../assets/images/hero-1.jpeg';
+import hero2 from '../../assets/images/hero-2.jpeg';
+import hero3 from '../../assets/images/hero-3.jpeg';
 import teaVideo from '../../assets/video/tea.mp4';
 
 const Hero = () => {
@@ -69,7 +69,7 @@ const Hero = () => {
             {/* Right Side: Image Slider */}
             <div className="w-full md:w-1/2 h-[40vh] md:h-screen relative overflow-hidden">
                 {/* Dark Overlay for visual depth */}
-                <div className="absolute inset-0 bg-black/25 z-10 pointer-events-none"></div>
+                {/* <div className="absolute inset-0 bg-black/25 z-10 pointer-events-none"></div> */}
                 <Swiper
                     modules={[Autoplay, EffectFade, Pagination]}
                     effect="fade"
@@ -86,7 +86,7 @@ const Hero = () => {
                             <img src={hero1} alt="Organic Green Tea" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                             <div className="absolute bottom-12 left-12 z-20">
                                 <h3 className="text-3xl font-heading text-primary-dark bg-white/80 backdrop-blur-sm p-4 rounded-sm inline-block shadow-sm">
-                                    Green Tea
+                                    Hibiscus Senna
                                 </h3>
                             </div>
                         </div>
@@ -96,7 +96,7 @@ const Hero = () => {
                             <img src={hero2} alt="Golden Herbal Tea" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                             <div className="absolute bottom-12 left-12 z-20">
                                 <h3 className="text-3xl font-heading text-primary-dark bg-white/80 backdrop-blur-sm p-4 rounded-sm inline-block shadow-sm">
-                                    Golden Herbal
+                                    Hibiscus Mint
                                 </h3>
                             </div>
                         </div>
@@ -106,7 +106,7 @@ const Hero = () => {
                             <img src={hero3} alt="Chamomile Mint" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                             <div className="absolute bottom-12 left-12 z-20">
                                 <h3 className="text-3xl font-heading text-primary-dark bg-white/80 backdrop-blur-sm p-4 rounded-sm inline-block shadow-sm">
-                                    Chamomile Mint
+                                    Hibiscus Cinnamon
                                 </h3>
                             </div>
                         </div>

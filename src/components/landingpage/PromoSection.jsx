@@ -1,6 +1,9 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import promo2 from "../../assets/images/home/promo.jpeg"
+import product4 from "../../assets/images/product4.jpeg";
 
 const PromoSection = () => {
     return (
@@ -19,7 +22,7 @@ const PromoSection = () => {
                         {/* Background Image */}
                         <div className="absolute inset-0">
                             <img
-                                src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?q=80&w=2000&auto=format&fit=crop"
+                                src={product4}
                                 alt="Tea Ceremony"
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                             />
@@ -35,10 +38,13 @@ const PromoSection = () => {
                             <p className="text-white/80 font-light mb-8 tracking-wide">
                                 The wonderful Taste of life
                             </p>
-                            <button className="bg-white/90 backdrop-blur-sm text-primary-dark px-6 py-2.5 text-sm font-semibold uppercase tracking-wider flex items-center gap-2 hover:bg-white transition-all transform hover:-translate-y-1">
+                            <Link
+                                to="/shop"
+                                className="bg-white/90 backdrop-blur-sm text-primary-dark px-6 py-2.5 text-sm font-semibold uppercase tracking-wider flex items-center gap-2 hover:bg-white transition-all transform hover:-translate-y-1 inline-flex"
+                            >
                                 Shop Now
                                 <ArrowUpRight size={16} />
-                            </button>
+                            </Link>
                         </div>
                     </motion.div>
 
@@ -53,7 +59,7 @@ const PromoSection = () => {
                         {/* Background Image */}
                         <div className="absolute inset-0">
                             <img
-                                src="https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?q=80&w=2000&auto=format&fit=crop"
+                                src={promo2}
                                 alt="Herbs and Spices"
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                             />
@@ -63,16 +69,19 @@ const PromoSection = () => {
 
                         {/* Content */}
                         <div className="absolute inset-0 flex flex-col justify-center items-start p-10 md:p-12">
-                            <h3 className="text-3xl md:text-4xl font-heading font-medium text-primary-dark mb-3">
+                            <h3 className="text-3xl md:text-4xl font-heading font-medium text-white mb-3">
                                 Up To 20% Off
                             </h3>
-                            <p className="text-stone-600 font-light mb-8 tracking-wide">
+                            <p className="text-white font-light mb-8 tracking-wide">
                                 On Select Teas. Brew a new Experience
                             </p>
-                            <button className="bg-transparent border border-primary-dark text-primary-dark px-6 py-2.5 text-sm font-semibold uppercase tracking-wider flex items-center gap-2 hover:bg-primary-dark hover:text-white transition-all transform hover:-translate-y-1">
+                            <Link
+                                to="/shop"
+                                className="bg-transparent border border-white text-primary-dark px-6 py-2.5 text-sm font-semibold uppercase tracking-wider flex items-center gap-2 hover:bg-primary-dark hover:text-white transition-all transform hover:-translate-y-1 inline-flex"
+                            >
                                 Shop Now
                                 <ArrowUpRight size={16} />
-                            </button>
+                            </Link>
                         </div>
                     </motion.div>
 

@@ -1,11 +1,12 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import product1 from '../../assets/images/product1.jpeg';
+import product2 from '../../assets/images/product2.jpeg';
 
 const Exclusive = () => {
     // Premium images from Unsplash
-    const mainImage = "https://images.unsplash.com/photo-1594631252845-29fc4586c56c?q=80&w=1600&auto=format&fit=crop"; // Elegant tea variety
-    const smallImage = "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?q=80&w=800&auto=format&fit=crop"; // Premium tea leaves close-up
+    const mainImage = product1;
+    const smallImage = product2;
 
     // Animation Variants
     const containerVariants = {

@@ -1,6 +1,13 @@
 import React from 'react';
 import { Star } from 'lucide-react';
 import { motion } from 'framer-motion';
+import hibiscustea from "../../assets/images/home/hibiscustea.jpeg"
+import product1 from "../../assets/images/product1.jpeg";
+import product2 from "../../assets/images/product2.jpeg";
+import product3 from "../../assets/images/product3.jpeg";
+import product4 from "../../assets/images/product4.jpeg";
+import product5 from "../../assets/images/product5.jpeg";
+import hero3 from "../../assets/images/hero-3.jpeg";
 
 const HomeAbout = () => {
     return (
@@ -40,10 +47,10 @@ const HomeAbout = () => {
                         {/* Avatars */}
                         <div className="flex -space-x-2">
                             {[
-                                "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
-                                "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop",
-                                "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&h=100&fit=crop",
-                                "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=100&h=100&fit=crop"
+                                product1,
+                                product2,
+                                product3,
+                                product4
                             ].map((src, i) => (
                                 <div key={i} className="w-8 h-8 rounded-full border-2 border-white overflow-hidden">
                                     <img src={src} alt="Reviewer" className="w-full h-full object-cover" />
@@ -65,7 +72,7 @@ const HomeAbout = () => {
                         className="relative rounded-[32px] overflow-hidden h-96 lg:h-full group"
                     >
                         <img
-                            src="https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=1000&auto=format&fit=crop"
+                            src={hero3}
                             alt="Woman with flowers"
                             className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
                         />
@@ -112,8 +119,8 @@ const HomeAbout = () => {
                             {/* Image */}
                             <div className="relative z-10 w-48 h-48 order-1 md:order-1 mb-6 md:mb-0 mr-0 md:mr-6">
                                 <img
-                                    src="https://images.unsplash.com/photo-1596464879207-6b633b43823d?q=80&w=600&auto=format&fit=crop"
-                                    alt="Lemon Tea"
+                                    src={hibiscustea}
+                                    alt="hibiscus tea"
                                     className="w-full h-full object-contain drop-shadow-xl transform group-hover:scale-105 transition-transform duration-500"
                                 />
                             </div>
@@ -150,7 +157,7 @@ const HomeAbout = () => {
                             {/* Decorative Leaf Image */}
                             <div className="absolute right-0 bottom-0 top-0 w-1/3 opacity-80">
                                 <img
-                                    src="https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=600&auto=format&fit=crop"
+                                    src={product5}
                                     alt="Tea Leaves"
                                     className="w-full h-full object-cover object-left opacity-60 mix-blend-overlay"
                                 />

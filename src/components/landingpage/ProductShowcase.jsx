@@ -4,10 +4,12 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { ArrowUpRight, Star } from 'lucide-react';
-import greenTea from '../../assets/images/product-green-tea.png';
-import chamomile from '../../assets/images/product-chamomile.png';
-import earlGrey from '../../assets/images/product-earl-grey.png';
-import herbal from '../../assets/images/hero-2.png';
+import product1 from '../../assets/images/product1.jpeg';
+import product2 from '../../assets/images/product2.jpeg';
+import product3 from '../../assets/images/product3.jpeg';
+import product4 from '../../assets/images/product4.jpeg';
+import product5 from '../../assets/images/product5.jpeg';
+
 
 
 const products = [
@@ -16,7 +18,7 @@ const products = [
         name: "Emerald Peak",
         category: "Green Tea",
         price: 60.00,
-        image: greenTea,
+        image: product1,
         rating: 5,
     },
     {
@@ -24,7 +26,7 @@ const products = [
         name: "Black Tea of India",
         category: "Black Tea",
         price: 60.00,
-        image: earlGrey,
+        image: product2,
         rating: 5,
     },
     {
@@ -32,7 +34,7 @@ const products = [
         name: "Golden Blend",
         category: "Herbal Tea",
         price: 60.00,
-        image: chamomile,
+        image: product3,
         rating: 5,
     },
     {
@@ -40,7 +42,7 @@ const products = [
         name: "Sunshine Blend",
         category: "Herbal Tea",
         price: 60.00,
-        image: herbal,
+        image: product4,
         rating: 5,
     },
     {
@@ -48,7 +50,7 @@ const products = [
         name: "Royal Earl Grey",
         category: "Black Tea",
         price: 60.00,
-        image: earlGrey,
+        image: product5,
         rating: 5,
     }
 ];

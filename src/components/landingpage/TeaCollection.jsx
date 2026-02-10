@@ -1,8 +1,9 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
-import hero1 from '../../assets/images/hero-1.png';
-import hero2 from '../../assets/images/hero-2.png';
-import hero3 from '../../assets/images/hero-3.png';
+import { Link } from 'react-router-dom';
+import hero1 from '../../assets/images/hero-1.jpeg';
+import hero2 from '../../assets/images/hero-2.jpeg';
+import hero3 from '../../assets/images/hero-3.jpeg';
 
 const collections = [
     {
@@ -45,9 +46,12 @@ const TeaCollection = () => {
                         <div className="absolute bottom-8 left-8 z-20 text-white translate-y-2 group-hover:translate-y-0 transition-transform">
                             <h3 className="text-3xl font-heading font-bold mb-2">Loose Leaf</h3>
                             <p className="opacity-90 mb-4 font-light">Experience the full flavor profile of whole leaves.</p>
-                            <button className="flex items-center gap-2 text-gold hover:text-white transition-colors uppercase text-sm font-bold tracking-wider">
+                            <Link
+                                to="/shop"
+                                className="flex items-center gap-2 text-gold hover:text-white transition-colors uppercase text-sm font-bold tracking-wider inline-flex"
+                            >
                                 Explore <ArrowRight size={16} />
-                            </button>
+                            </Link>
                         </div>
                     </div>
 
@@ -59,9 +63,12 @@ const TeaCollection = () => {
                         <div className="absolute bottom-8 left-8 z-20 text-white translate-y-2 group-hover:translate-y-0 transition-transform">
                             <h3 className="text-3xl font-heading font-bold mb-2">Accessories</h3>
                             <p className="opacity-90 mb-4 font-light">Beautiful pots, cups, and strainers.</p>
-                            <button className="flex items-center gap-2 text-gold hover:text-white transition-colors uppercase text-sm font-bold tracking-wider">
+                            <Link
+                                to="/shop"
+                                className="flex items-center gap-2 text-gold hover:text-white transition-colors uppercase text-sm font-bold tracking-wider inline-flex"
+                            >
                                 Explore <ArrowRight size={16} />
-                            </button>
+                            </Link>
                         </div>
                     </div>
 

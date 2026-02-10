@@ -1,5 +1,5 @@
-import React from 'react';
 import { Heart, Share2 } from 'lucide-react';
+import product3 from '../../assets/images/product3.jpeg';
 
 const AuthorBio = ({ author = "Davida Dzato" }) => {
     return (
@@ -7,7 +7,7 @@ const AuthorBio = ({ author = "Davida Dzato" }) => {
             <div className="bg-[#F8F5F0] rounded-sm p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 border border-stone-100">
                 <div className="w-32 h-32 rounded-full overflow-hidden shrink-0 shadow-lg border-4 border-white">
                     <img
-                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400"
+                        src={product3}
                         alt={author}
                         className="w-full h-full object-cover"
                     />

@@ -3,6 +3,7 @@ import { Star, CheckCircle, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import featuredTea from '../../assets/images/featured-tea.png';
 import { Link } from 'react-router-dom';
+import product5 from '../../assets/images/product5.jpeg';
 
 const FeaturedProduct = () => {
     const benefits = [
@@ -58,10 +59,13 @@ const FeaturedProduct = () => {
                         </div>
 
                         <div className="flex flex-wrap gap-4">
-                            <button className="px-8 py-4 bg-[#3F4E3C] text-white rounded-xl font-bold hover:bg-[#2F3A2C] transition-all flex items-center gap-2 group shadow-lg shadow-[#3F4E3C]/20">
+                            <Link
+                                to="/shop"
+                                className="px-8 py-4 bg-[#3F4E3C] text-white rounded-xl font-bold hover:bg-[#2F3A2C] transition-all flex items-center gap-2 group shadow-lg shadow-[#3F4E3C]/20 inline-flex"
+                            >
                                 Buy Now — Ghs. 400.00
                                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                            </button>
+                            </Link>
                             <Link to="/shop" className="px-8 py-4 border-2 border-[#B89F70] text-[#B89F70] rounded-xl font-bold hover:bg-[#B89F70] hover:text-white transition-all">
                                 Shop Now
                             </Link>
@@ -102,7 +106,7 @@ const FeaturedProduct = () => {
                             </p>
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full bg-stone-200 overflow-hidden">
-                                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=100&auto=format&fit=crop" alt="Jennifer" className="w-full h-full object-cover" />
+                                    <img src={product5} alt="Jennifer" className="w-full h-full object-cover" />
                                 </div>
                                 <div>
                                     <h4 className="text-sm font-bold text-[#3F4E3C]">Jennifer K.</h4>

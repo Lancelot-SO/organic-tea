@@ -1,9 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import hero3 from '../../assets/images/hero-3.jpeg';
 
 const MembershipHero = () => {
     // High-quality professional image of hands passing a card
-    const backgroundImage = "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2000";
+    const backgroundImage = hero3;
 
     return (
         <section className="relative h-[300px] md:h-[399px] w-full overflow-hidden font-heading">

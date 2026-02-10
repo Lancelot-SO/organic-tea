@@ -1,10 +1,10 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import main from "../../assets/images/about/main.png"
 
 const MainAbout = () => {
     // High-quality online image representing a community/team (African individuals)
-    const teamImage = "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200";
 
     return (
         <section className="py-10 bg-white overflow-hidden">
@@ -66,14 +66,18 @@ const MainAbout = () => {
 
                         {/* CTA Button */}
                         <div className="mt-10">
-                            <motion.button
+                            <motion.div
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="flex items-center gap-3 px-8 py-3.5 border border-gray-200 bg-gray-50 rounded-lg hover:border-gold hover:text-gold transition-all group lg:mb-2"
                             >
-                                <span className="font-heading font-semibold text-sm">Shop Our Teas</span>
-                                <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-gold transition-colors" />
-                            </motion.button>
+                                <Link
+                                    to="/shop"
+                                    className="flex items-center gap-3 px-8 py-3.5 border border-gray-200 bg-gray-50 rounded-lg hover:border-gold hover:text-gold transition-all group lg:mb-2 inline-flex"
+                                >
+                                    <span className="font-heading font-semibold text-sm">Shop Our Teas</span>
+                                    <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-gold transition-colors" />
+                                </Link>
+                            </motion.div>
                         </div>
                     </div>
 
@@ -87,7 +91,7 @@ const MainAbout = () => {
                             className="relative rounded-2xl overflow-hidden shadow-2xl"
                         >
                             <img
-                                src={teamImage}
+                                src={main}
                                 alt="Our Community and Team"
                                 className="w-full aspect-[4/5] object-cover grayscale-[0.3] sepia-[0.3]"
                             />
