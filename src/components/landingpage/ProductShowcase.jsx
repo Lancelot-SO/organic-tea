@@ -1,15 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
+import 'swiper/css';
 import { ArrowUpRight, Star } from 'lucide-react';
 import product1 from '../../assets/images/product1.jpeg';
 import product2 from '../../assets/images/product2.jpeg';
 import product3 from '../../assets/images/product3.jpeg';
 import product4 from '../../assets/images/product4.jpeg';
 import product5 from '../../assets/images/product5.jpeg';
-
 
 
 const products = [
@@ -56,104 +55,55 @@ const products = [
 ];
 
 const ProductCard = ({ product }) => (
-    <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="px-3 md:px-4 h-full py-4"
-    > {/* Padding wrapper for slick slide gap */}
-        <div className="bg-[#EBE5D5] rounded-3xl p-1 flex flex-col relative group hover:shadow-lg transition-all duration-300 h-full">
+    <div className="bg-[#EBE5D5] rounded-3xl p-1 flex flex-col relative group hover:shadow-lg transition-all duration-300 h-full">
+        {/* Card Header: Name & Arrow */}
+        <div className="flex justify-between items-start mb-2 px-4 pt-4">
+            <span className="text-primary-dark font-bold text-sm md:text-base tracking-wide">
+                ({product.name})
+            </span>
+            <button className="bg-white rounded-full p-1.5 shadow-sm transform group-hover:rotate-45 transition-transform duration-300">
+                <ArrowUpRight size={16} className="text-stone-600" />
+            </button>
+        </div>
 
-            {/* Card Header: Name & Arrow */}
-            <div className="flex justify-between items-start mb-2 px-4 pt-4">
-                <span className="text-primary-dark font-bold text-sm md:text-base tracking-wide">
-                    ({product.name})
-                </span>
-                <button className="bg-white rounded-full p-1.5 shadow-sm transform group-hover:rotate-45 transition-transform duration-300">
-                    <ArrowUpRight size={16} className="text-stone-600" />
-                </button>
+        {/* Unified White Container for Image & Info */}
+        <div className="bg-white rounded-[20px] w-full grow flex flex-col items-center p-4">
+            {/* Image */}
+            <div className="w-full aspect-square flex items-center justify-center mb-2 overflow-hidden rounded-2xl">
+                <motion.img
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.4 }}
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-contain rounded-2xl"
+                />
             </div>
 
-            {/* Unified White Container for Image & Info */}
-            <div className="bg-white rounded-[20px] w-full flex-grow flex flex-col items-center p-4">
-                {/* Image */}
-                <div className="w-full aspect-square flex items-center justify-center mb-2 overflow-hidden rounded-2xl">
-                    <motion.img
-                        whileHover={{ scale: 1.1 }}
-                        transition={{ duration: 0.4 }}
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-full object-contain rounded-2xl"
-                    />
+            {/* Info */}
+            <div className="text-center mt-auto w-full">
+                {/* Stars */}
+                <div className="flex justify-center gap-1 mb-2">
+                    {[...Array(5)].map((_, i) => (
+                        <Star key={i} size={12} fill="#3F4E3C" className="text-primary-dark" />
+                    ))}
                 </div>
 
-                {/* Info */}
-                <div className="text-center mt-auto w-full">
-                    {/* Stars */}
-                    <div className="flex justify-center gap-1 mb-2">
-                        {[...Array(5)].map((_, i) => (
-                            <Star key={i} size={12} fill="#3F4E3C" className="text-primary-dark" />
-                        ))}
-                    </div>
+                {/* Product Name (Serif Gold) */}
+                <h3 className="font-serif text-[#B89F70] font-bold text-lg mb-1 leading-tight">
+                    ({product.name})
+                </h3>
 
-                    {/* Product Name (Serif Gold) */}
-                    <h3 className="font-serif text-[#B89F70] font-bold text-lg mb-1 leading-tight">
-                        ({product.name})
-                    </h3>
-
-                    {/* Price */}
-                    <p className="text-stone-600 font-medium text-sm">
-                        Ghs. {product.price.toFixed(2)}
-                    </p>
-                </div>
+                {/* Price */}
+                <p className="text-stone-600 font-medium text-sm">
+                    Ghs. {product.price.toFixed(2)}
+                </p>
             </div>
         </div>
-    </motion.div>
+    </div>
 );
 
 const ProductShowcase = () => {
     const [progress, setProgress] = useState((1 / products.length) * 100);
-    const sliderRef = useRef(null);
-
-    const settings = {
-        dots: false,
-        infinite: true,
-        speed: 800,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 4000,
-        arrows: false,
-        pauseOnHover: true,
-        cssEase: "cubic-bezier(0.87, 0, 0.13, 1)",
-        beforeChange: (current, next) => {
-            const slideCount = products.length;
-            const calc = ((next + 1) / slideCount) * 100;
-            setProgress(calc);
-        },
-        responsive: [
-            {
-                breakpoint: 1280,
-                settings: {
-                    slidesToShow: 3,
-                }
-            },
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 2,
-                }
-            },
-            {
-                breakpoint: 640,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                }
-            }
-        ]
-    };
 
     return (
         <section className="section-padding bg-white overflow-hidden">
@@ -168,7 +118,7 @@ const ProductShowcase = () => {
                     className="flex flex-col md:flex-row justify-between items-end mb-12"
                 >
                     <div className="flex items-baseline gap-3">
-                        <div className="w-5 h-5 rounded-full bg-[#B89F70] flex-shrink-0"></div>
+                        <div className="w-5 h-5 rounded-full bg-[#B89F70] shrink-0"></div>
                         <h2 className="text-4xl md:text-5xl font-heading font-bold text-[#3F4E3C]">
                             Best <span className="font-serif italic text-[#B89F70] font-normal">Selling Teas</span>
                         </h2>
@@ -180,19 +130,50 @@ const ProductShowcase = () => {
                     </a>
                 </motion.div>
 
-                {/* Slick Slider */}
+                {/* Swiper Slider */}
                 <motion.div
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="-mx-3 md:-mx-4 mb-8"
+                    className="mb-8"
                 >
-                    <Slider ref={sliderRef} {...settings}>
+                    <Swiper
+                        modules={[Autoplay]}
+                        spaceBetween={24}
+                        slidesPerView={1}
+                        loop={true}
+                        autoplay={{
+                            delay: 4000,
+                            disableOnInteraction: false,
+                        }}
+                        onSlideChange={(swiper) => {
+                            const slideCount = products.length;
+                            const calc = ((swiper.realIndex + 1) / slideCount) * 100;
+                            setProgress(calc);
+                        }}
+                        breakpoints={{
+                            640: {
+                                slidesPerView: 1,
+                            },
+                            768: {
+                                slidesPerView: 2,
+                            },
+                            1024: {
+                                slidesPerView: 3,
+                            },
+                            1280: {
+                                slidesPerView: 4,
+                            }
+                        }}
+                        className="pb-4"
+                    >
                         {products.map((product) => (
-                            <ProductCard key={product.id} product={product} />
+                            <SwiperSlide key={product.id} className="h-auto">
+                                <ProductCard product={product} />
+                            </SwiperSlide>
                         ))}
-                    </Slider>
+                    </Swiper>
                 </motion.div>
 
                 {/* Custom Progress Bar */}
