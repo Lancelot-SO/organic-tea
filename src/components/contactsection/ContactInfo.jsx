@@ -19,8 +19,8 @@ const ContactInfo = () => {
         {
             icon: <Phone className="w-6 h-6" />,
             title: "Call Us",
-            details: ["+1 (234) 567-8900", "Mon - Fri, 9am - 6pm"],
-            link: "tel:+12345678900"
+            details: ["025 685 4460", "Mon - Sun, 24/7"],
+            link: "tel:+233256854460"
         }
     ];
 
