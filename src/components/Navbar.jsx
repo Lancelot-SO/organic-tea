@@ -39,7 +39,7 @@ const Navbar = () => {
                 <Link to="/" className="z-50 flex items-center">
                     <img
                         src={logo}
-                        alt="AURUM TEA"
+                        alt="HIBISCUS TEA"
                         className="h-10 md:h-20 w-auto object-cover"
                     />
                 </Link>
@@ -97,7 +97,7 @@ const Navbar = () => {
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
-                        className="absolute top-0 left-0 w-full h-[100vh] bg-cream flex flex-col items-center justify-center space-y-8 md:hidden shadow-xl"
+                        className="absolute top-0 left-0 w-full h-screen bg-cream flex flex-col items-center justify-center space-y-8 md:hidden shadow-xl"
                     >
                         {navLinks.map((link) => (
                             <NavLink

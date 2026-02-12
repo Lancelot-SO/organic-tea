@@ -51,24 +51,32 @@ const Faq = () => {
 
     const faqs = [
         {
-            question: "What makes NutriHealth tea unique?",
-            answer: "Our tea is crafted from a proprietary blend of authentic African herbs and spices, specifically selected for their nutritional density and traditional wellness benefits. Unlike processed alternatives, we maintain the raw integrity of our ingredients to ensure maximum potency."
+            question: "What are the benefits of hibiscus tea?",
+            answer: "Hibiscus tea is rich in antioxidants and vitamin C, which help support the immune system. It is known to support heart health by helping to maintain healthy blood pressure levels, aid digestion, promote hydration, and support overall wellness when consumed regularly as part of a healthy lifestyle."
         },
         {
-            question: "How do I brew the perfect cup?",
-            answer: "For the best experience, steep one teaspoon of our loose-leaf blend in 200ml of water heated to 85°C (185°F) for 5-7 minutes. This allows the complex oils and nutrients from the spices to fully emulsify without bitterness."
+            question: "Do you deliver outside Accra and outside the country?",
+            answer: "Yes, we deliver to locations outside Accra and to other regions across Ghana. We also attend to international orders. Delivery fees and timelines may vary depending on the destination."
         },
         {
-            question: "Is the membership club free to join?",
-            answer: "While we offer a free newsletter, our Exclusive Membership Club is a premium subscription service. Members receive monthly drops of rare micro-batches, early access to new blends, and invitations to private tasting events across the continent."
+            question: "How many variants of tea do you have?",
+            answer: "Nutrihealth Foods and Beverages offers a variety of herbal tea variants. Our range includes different blends formulated to support general health and wellness. Availability of variants may vary from time to time."
         },
         {
-            question: "Do you ship internationally?",
-            answer: "Yes, we ship our artisanal blends globally. Shipping times vary by region: typically 3-5 days within Africa and 7-12 days for Europe, North America, and Asia. All orders are packed in eco-friendly, carbon-compensated packaging."
+            question: "Do you white label?",
+            answer: "Yes, we offer white labeling services. This allows businesses and organizations to brand our high-quality herbal teas under their own label, subject to agreed terms and minimum order quantities."
         },
         {
-            question: "Are your ingredients ethically sourced?",
-            answer: "Absolutely. We work directly with small-holder farmers and cooperatives across Africa, ensuring fair-trade prices that are significantly above the market average. We also reinvest a portion of our profits into sustainable farming education for our partners."
+            question: "Can I add sweetener to hibiscus tea?",
+            answer: "Yes, you may add a sweetener to hibiscus tea according to your preference. Natural sweeteners such as honey or dates are recommended to maintain the health benefits of the tea."
+        },
+        {
+            question: "Does hibiscus tea have any side effects?",
+            answer: "Hibiscus tea is generally safe for most people when consumed in moderation. However, excessive intake may cause mild effects such as stomach discomfort in some individuals. Pregnant or breastfeeding women and individuals on medication should consult a healthcare professional before use."
+        },
+        {
+            question: "Where can I shop your teas?",
+            answer: "You can shop Nutrihealth teas directly through our official sales channels, selected retail outlets, and by contacting us via our social media platforms or customer service lines (025 685 4460) for assistance."
         }
     ];
 
