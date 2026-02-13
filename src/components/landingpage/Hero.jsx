@@ -37,12 +37,12 @@ const Hero = () => {
                     className="absolute md:left-[20%] left-6 top-1/2 -translate-y-1/2 w-[90%] md:w-[600px] flex flex-col gap-6 z-20"
                 >
                     <div className="w-full">
-                        <h1 className="lg:text-[61px] md:text-[50px] text-[36px] text-white font-bold lg:leading-[71px] md:leading-[60px] leading-[44px] italic font-Merriweather-Regular-400-italic">
+                        <h1 className="lg:text-[61px] md:text-[50px] text-[36px] text-white font-bold lg:leading-[71px] md:leading-[60px] leading-[44px] italic">
                             Organic <span className="text-[#B18A45]">Herbal Tea</span> Blend, Naturally Refreshing
                         </h1>
                     </div>
 
-                    <p className="w-full text-[14px] sm:text-[16px] leading-relaxed md:pr-12 text-[#ECEFED] font-normal font-Merriweather-Regular-400">
+                    <p className="w-full text-[14px] sm:text-[16px] leading-relaxed md:pr-12 text-[#ECEFED] font-normal">
                         Our Organic Herbal Tea Blend is made from 100% natural herbs, offering a smooth, refreshing taste with no artificial additives. It’s perfect for relaxation and everyday wellness.
                     </p>
 

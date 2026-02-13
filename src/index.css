@@ -13,8 +13,8 @@
   --color-beige: #EDE8E0;
 
   /* Custom Fonts */
-  --font-heading: 'Merriweather', serif;
-  --font-body: 'Merriweather', serif;
+  --font-heading: 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
 }
 
 /* Animation keyframes */
@@ -288,18 +288,7 @@ h6 {
   }
 }
 
-@layer utilities {
-  .font-Merriweather-Regular-400 {
-    font-family: var(--font-merriweather);
-    font-weight: 400;
-  }
 
-  .font-Merriweather-Regular-400-italic {
-    font-family: var(--font-merriweather);
-    font-weight: 400;
-    font-style: italic;
-  }
-}
 
 /* Swiper Custom Pagination */
 .custom-pagination .swiper-pagination-bullet {

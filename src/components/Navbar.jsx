@@ -31,7 +31,7 @@ const Navbar = () => {
 
     return (
         <nav
-            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'
+            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/30 backdrop-blur-md shadow-sm py-4 text-primary-dark' : 'bg-transparent py-6'
                 }`}
         >
             <div className="container flex items-center justify-between">
@@ -52,7 +52,7 @@ const Navbar = () => {
                             to={link.path}
                             end={link.path === '/'}
                             className={({ isActive }) =>
-                                `text-sm font-medium tracking-wide transition-colors ${isActive ? 'text-gold' : 'text-primary-dark hover:text-gold'}`
+                                `text-sm font-medium tracking-wide transition-colors ${isActive ? 'text-gold' : isScrolled ? 'text-primary-dark hover:text-gold' : 'text-white hover:text-gold'}`
                             }
                         >
                             {link.name.toUpperCase()}
@@ -61,7 +61,7 @@ const Navbar = () => {
                 </div>
 
                 {/* Icons - Visible on all screens */}
-                <div className="flex items-center space-x-4 md:space-x-6 text-primary-dark">
+                <div className={`flex items-center space-x-4 md:space-x-6 ${isScrolled ? 'text-primary-dark' : 'text-white'}`}>
                     <button className="hover:text-gold transition-colors">
                         <Search size={20} />
                     </button>

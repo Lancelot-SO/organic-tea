@@ -64,7 +64,7 @@ const PromoSection = () => {
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                             />
                             {/* Overlay - subtle light overlay to ensure text contrast */}
-                            <div className="absolute inset-0 bg-white/10 group-hover:bg-transparent transition-colors duration-500"></div>
+                            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-500"></div>
                         </div>
 
                         {/* Content */}
@@ -77,7 +77,7 @@ const PromoSection = () => {
                             </p>
                             <Link
                                 to="/shop"
-                                className="bg-transparent border border-white text-primary-dark px-6 py-2.5 text-sm font-semibold uppercase tracking-wider flex items-center gap-2 hover:bg-primary-dark hover:text-white transition-all transform hover:-translate-y-1 inline-flex"
+                                className="bg-white/90 backdrop-blur-sm text-primary-dark px-6 py-2.5 text-sm font-semibold uppercase tracking-wider flex items-center gap-2 hover:bg-white transition-all transform hover:-translate-y-1 inline-flex"
                             >
                                 Shop Now
                                 <ArrowUpRight size={16} />
