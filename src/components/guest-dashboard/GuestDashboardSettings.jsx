@@ -14,18 +14,15 @@ import {
     MapPin,
     CheckCircle2,
     AlertCircle,
-    Loader2,
-    X,
-    Users
+    Loader2
 } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 
 const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`;
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
-const DashboardSettings = () => {
+const GuestDashboardSettings = () => {
     const { profile, signOut, updateProfile } = useAuth();
     const { theme, toggleTheme } = useTheme();
 
@@ -33,57 +30,6 @@ const DashboardSettings = () => {
     const [uploading, setUploading] = useState(false);
     const [toast, setToast] = useState(null); // { type: 'success'|'error', message: string }
     const fileInputRef = useRef(null);
-
-    // Role Management State
-    const [showRoleModal, setShowRoleModal] = useState(false);
-    const [customers, setCustomers] = useState([]);
-    const [loadingCustomers, setLoadingCustomers] = useState(false);
-    const [updatingId, setUpdatingId] = useState(null);
-
-    const fetchCustomers = async () => {
-        setLoadingCustomers(true);
-        try {
-            const { data, error } = await supabase
-                .from('profiles')
-                .select('*')
-                .order('created_at', { ascending: false });
-
-            if (error) throw error;
-            setCustomers(data || []);
-        } catch (error) {
-            console.error('Error fetching customers:', error.message);
-            showToast('error', 'Failed to load user list.');
-        } finally {
-            setLoadingCustomers(false);
-        }
-    };
-
-    const handleOpenRoleModal = () => {
-        setShowRoleModal(true);
-        fetchCustomers();
-    };
-
-    const updateCustomerRole = async (customerId, newRole) => {
-        setUpdatingId(customerId);
-        try {
-            const { error } = await supabase
-                .from('profiles')
-                .update({ role: newRole })
-                .eq('id', customerId);
-
-            if (error) throw error;
-
-            setCustomers(customers.map(c =>
-                c.id === customerId ? { ...c, role: newRole } : c
-            ));
-            showToast('success', 'Role updated successfully.');
-        } catch (error) {
-            console.error('Error updating customer role:', error.message);
-            showToast('error', `Failed to update role: ${error.message}`);
-        } finally {
-            setUpdatingId(null);
-        }
-    };
 
     const showToast = (type, message) => {
         setToast({ type, message });
@@ -246,18 +192,7 @@ const DashboardSettings = () => {
                 </div>
 
                 <div className="space-y-3">
-                    <SettingItem
-                        icon={Users}
-                        label="User Role Management"
-                        type="link"
-                        description="Change account permissions for registered users"
-                        onClick={handleOpenRoleModal}
-                    />
-                    <SettingItem
-                        icon={User}
-                        label="Account Data Export"
-                        type="link"
-                    />
+                    <SettingItem icon={User} label="Account Settings" type="link" />
                     <SettingItem
                         icon={Bell}
                         label="Push Notifications"
@@ -278,9 +213,7 @@ const DashboardSettings = () => {
 
             {/* Other Settings Sections */}
             <div className="space-y-4">
-                <SettingItem icon={CreditCard} label="Manage Subscription" type="link" />
                 <SettingItem icon={Shield} label="Security" type="link" />
-                <SettingItem icon={Ticket} label="Redeem a code" type="link" />
                 <SettingItem icon={MessageCircle} label="Contact us" type="link" />
                 <button
                     onClick={signOut}
@@ -295,86 +228,8 @@ const DashboardSettings = () => {
                     <ChevronRight size={18} className="text-stone-300 group-hover:text-red-300 transition-colors" />
                 </button>
             </div>
-
-            {/* Role Management Modal */}
-            {showRoleModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                    <div
-                        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-                        onClick={() => setShowRoleModal(false)}
-                    />
-                    <div className="relative w-full max-w-2xl bg-cream border border-stone-200 rounded-[2.5rem] shadow-2xl p-8 max-h-[85vh] flex flex-col animate-in fade-in zoom-in-95 duration-300">
-                        <button
-                            onClick={() => setShowRoleModal(false)}
-                            className="absolute top-6 right-6 p-2 text-stone-400 hover:text-primary-dark hover:bg-stone-100 rounded-xl transition-colors"
-                        >
-                            <X size={20} />
-                        </button>
-
-                        <div className="mb-6">
-                            <h2 className="text-2xl font-black text-primary-dark font-heading">Role Management</h2>
-                            <p className="text-sm text-stone-500 mt-1">Elevate or revoke administrative privileges for users.</p>
-                        </div>
-
-                        <div className="grow overflow-y-auto pr-2 custom-scrollbar">
-                            {loadingCustomers ? (
-                                <div className="flex flex-col items-center justify-center py-12 gap-4">
-                                    <Loader2 size={32} className="animate-spin text-gold" />
-                                    <span className="text-xs font-bold text-stone-400 uppercase tracking-widest">Loading Accounts...</span>
-                                </div>
-                            ) : customers.length === 0 ? (
-                                <div className="text-center py-12">
-                                    <p className="text-sm font-bold text-stone-500">No registered users found.</p>
-                                </div>
-                            ) : (
-                                <div className="space-y-2">
-                                    {customers.map((customer) => (
-                                        <div key={customer.id} className="flex items-center justify-between p-4 bg-white rounded-2xl border border-stone-100 hover:border-gold/30 transition-colors group">
-                                            <div className="flex items-center gap-4">
-                                                <div className="w-10 h-10 rounded-xl bg-stone-50 flex items-center justify-center font-bold text-primary-dark shrink-0">
-                                                    {customer.avatar_url ? (
-                                                        <img src={customer.avatar_url} alt="Avatar" className="w-full h-full object-cover rounded-xl" />
-                                                    ) : (
-                                                        customer.full_name?.charAt(0) || 'G'
-                                                    )}
-                                                </div>
-                                                <div className="min-w-0">
-                                                    <p className="text-sm font-black text-primary-dark truncate">{customer.full_name || 'Guest User'}</p>
-                                                    <p className="text-[10px] text-stone-400 font-bold truncate">{customer.email}</p>
-                                                </div>
-                                            </div>
-
-                                            <div className="shrink-0 ml-4 relative">
-                                                {updatingId === customer.id ? (
-                                                    <div className="w-24 flex justify-center py-2">
-                                                        <Loader2 size={16} className="animate-spin text-gold" />
-                                                    </div>
-                                                ) : (
-                                                    <select
-                                                        value={customer.role || 'guest'}
-                                                        onChange={(e) => updateCustomerRole(customer.id, e.target.value)}
-                                                        disabled={customer.id === profile?.id}
-                                                        className={`appearance-none bg-stone-50 border outline-none text-[10px] font-black uppercase tracking-widest px-4 py-2 pr-8 rounded-xl cursor-pointer transition-colors w-28 disabled:opacity-50 disabled:cursor-not-allowed
-                                                            ${customer.role === 'admin'
-                                                                ? 'border-gold text-gold hover:bg-gold hover:text-white'
-                                                                : 'border-stone-200 text-stone-500 hover:border-gold hover:text-gold'
-                                                            }`}
-                                                    >
-                                                        <option value="guest" className="text-stone-700 font-bold bg-white">Guest</option>
-                                                        <option value="admin" className="text-stone-700 font-bold bg-white">Admin</option>
-                                                    </select>
-                                                )}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
 
-export default DashboardSettings;
+export default GuestDashboardSettings;

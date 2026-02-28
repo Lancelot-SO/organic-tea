@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import featuredTea from '../../assets/images/featured-tea.png';
 import { Link } from 'react-router-dom';
 import product5 from '../../assets/images/product5.jpeg';
+import FloatingLeaf from './FloatingLeaf';
 
 const FeaturedProduct = () => {
     const benefits = [
@@ -14,7 +15,11 @@ const FeaturedProduct = () => {
     ];
 
     return (
-        <section className="py-20 bg-[#FDFCF8] overflow-hidden">
+        <section className="py-20 bg-[#FDFCF8] overflow-hidden relative">
+            {/* Botanical decorations */}
+            <FloatingLeaf image="leaf1" side="left" className="top-12" rotate={20} flip={true} opacity={0.3} size="w-28 h-28 md:w-40 md:h-40" />
+            <FloatingLeaf image="leaf2" side="right" className="bottom-12" rotate={-15} delay={350} opacity={0.3} size="w-24 h-24 md:w-36 md:h-36" />
+
             <div className="container mx-auto px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 

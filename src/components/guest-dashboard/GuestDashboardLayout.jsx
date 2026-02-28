@@ -42,7 +42,7 @@ const GuestDashboardLayout = () => {
     const navItems = [
         { path: '/guest', icon: LayoutDashboard, label: 'Overview' },
         { path: '/guest/orders', icon: Package, label: 'My Orders' },
-        { path: '/guest/preferences', icon: Settings, label: 'Preferences' },
+        { path: '/guest/settings', icon: Settings, label: 'Settings' },
     ];
 
     return (
@@ -65,7 +65,7 @@ const GuestDashboardLayout = () => {
                                 <span className="text-xl">G</span>
                             </div>
                             <div className="flex flex-col">
-                                <span className="text-lg font-bold font-heading tracking-tight leading-none">GARDEN</span>
+                                <span className="text-lg font-bold font-heading tracking-tight leading-none">DASHBOARD</span>
                                 <span className="text-[10px] text-gold font-bold tracking-[0.2em] uppercase mt-1 opacity-80">My Account</span>
                             </div>
                         </div>
@@ -193,7 +193,7 @@ const GuestDashboardLayout = () => {
                 {/* Page Content */}
                 <main className="grow overflow-y-auto bg-cream p-6 lg:p-10 custom-scrollbar relative">
                     <div className="absolute inset-0 opacity-[0.015] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 0.5px, transparent 0.5px)', backgroundSize: '24px 24px' }} />
-                    <div className="relative z-10 max-w-7xl mx-auto">
+                    <div className="relative max-w-7xl mx-auto">
                         <Outlet />
                     </div>
                 </main>

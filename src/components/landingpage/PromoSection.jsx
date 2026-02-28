@@ -4,10 +4,15 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import promo2 from "../../assets/images/home/promo.jpeg"
 import product4 from "../../assets/images/product4.jpeg";
+import FloatingLeaf from './FloatingLeaf';
 
 const PromoSection = () => {
     return (
-        <section className="py-12 bg-[#FBFBEF]">
+        <section className="py-12 bg-[#FBFBEF] relative overflow-hidden">
+            {/* Botanical decorations */}
+            <FloatingLeaf image="teaLeaves" side="right" className="top-4" rotate={20} opacity={0.3} size="w-20 h-20 md:w-28 md:h-28" />
+            <FloatingLeaf image="leaf2" side="left" className="bottom-4" rotate={-12} delay={200} opacity={0.35} size="w-24 h-24 md:w-32 md:h-32" />
+
             <div className="container mx-auto px-6">
                 <div className="grid grid-cols-1 gap-8">
 

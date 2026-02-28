@@ -63,7 +63,7 @@ const OrderRow = ({ order, onClick, delay }) => (
         </td>
         <td className="px-8 py-8 bg-white border-b border-stone-50 group-hover:bg-stone-50/50 transition-colors">
             <p className="text-sm font-black text-primary-dark">GHS {parseFloat(order.total).toFixed(2)}</p>
-            <p className="text-[10px] font-bold text-stone-300 uppercase tracking-widest mt-1">{order.order_items?.length} Rituals</p>
+            <p className="text-[10px] font-bold text-stone-300 uppercase tracking-widest mt-1">{order.order_items?.length} Items</p>
         </td>
         <td className="px-8 py-8 bg-white border-b border-stone-50 group-hover:bg-stone-50/50 transition-colors">
             <StatusBadge status={order.status} />
@@ -111,7 +111,7 @@ const Orders = () => {
                                     <span className="text-[10px] font-bold text-gold uppercase tracking-[0.3em]">Purchase History</span>
                                 </div>
                                 <h1 className="text-5xl font-heading font-black text-primary-dark tracking-tight">Client Ledger</h1>
-                                <p className="text-stone-500 mt-4 max-w-md">A meticulous record of your acquired rituals and organic investments.</p>
+                                <p className="text-stone-500 mt-4 max-w-md">A meticulous record of your acquired teas and organic investments.</p>
                             </div>
                             <Link
                                 to="/shop"
@@ -127,9 +127,9 @@ const Orders = () => {
                                     <Search size={32} />
                                 </div>
                                 <h2 className="text-2xl font-heading font-bold text-primary-dark mb-4">No Records Found</h2>
-                                <p className="text-stone-400 mb-10">Your collection is currently empty. Start your first ritual today.</p>
+                                <p className="text-stone-400 mb-10">Your collection is currently empty. Start your first order today.</p>
                                 <Link to="/shop" className="bg-gold text-white px-12 py-5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-gold-dark transition-all shadow-xl shadow-gold/20 inline-block">
-                                    Explore the Garden
+                                    Explore the Shop
                                 </Link>
                             </div>
                         ) : (

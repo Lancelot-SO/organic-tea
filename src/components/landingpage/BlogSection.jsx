@@ -2,6 +2,7 @@ import React from 'react';
 import hero1 from '../../assets/images/hero-1.jpeg';
 import hero2 from '../../assets/images/hero-2.jpeg';
 import hero3 from '../../assets/images/hero-3.jpeg';
+import FloatingLeaf from './FloatingLeaf';
 
 const blogs = [
     {
@@ -32,7 +33,11 @@ const blogs = [
 
 const BlogSection = () => {
     return (
-        <section className="section-padding bg-cream-light">
+        <section className="section-padding bg-cream-light relative overflow-hidden">
+            {/* Botanical decorations */}
+            <FloatingLeaf image="flower1" side="right" className="top-8" rotate={-12} opacity={0.3} size="w-20 h-20 md:w-28 md:h-28" />
+            <FloatingLeaf image="teaLeaves" side="left" className="bottom-8" rotate={18} delay={200} opacity={0.25} size="w-20 h-20 md:w-28 md:h-28" />
+
             <div className="container">
                 <div className="flex justify-between items-end mb-12">
                     <h2 className="text-4xl md:text-5xl font-heading font-bold text-primary-dark">

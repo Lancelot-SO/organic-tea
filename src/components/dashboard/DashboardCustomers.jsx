@@ -20,6 +20,7 @@ const DashboardCustomers = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [page, setPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
+    const [updatingId, setUpdatingId] = useState(null);
     const limit = 10;
 
     const fetchCustomers = async () => {
@@ -28,7 +29,7 @@ const DashboardCustomers = () => {
             let query = supabase
                 .from('profiles')
                 .select('*', { count: 'exact' })
-                .eq('role', 'guest');
+                .neq('role', 'admin');
 
             if (searchQuery) {
                 query = query.or(`full_name.ilike.%${searchQuery}%,phone.ilike.%${searchQuery}%`);
@@ -54,6 +55,28 @@ const DashboardCustomers = () => {
         }, 300);
         return () => clearTimeout(timer);
     }, [searchQuery, page]);
+
+    const updateCustomerRole = async (customerId, newRole) => {
+        setUpdatingId(customerId);
+        try {
+            const { error } = await supabase
+                .from('profiles')
+                .update({ role: newRole })
+                .eq('id', customerId);
+
+            if (error) throw error;
+
+            // Optimistically update the local state without a full refetch
+            setCustomers(customers.map(c =>
+                c.id === customerId ? { ...c, role: newRole } : c
+            ));
+        } catch (error) {
+            console.error('Error updating customer role:', error.message);
+            alert(`Failed to update role: ${error.message}`);
+        } finally {
+            setUpdatingId(null);
+        }
+    };
 
     const totalPages = Math.ceil(totalCount / limit);
 
@@ -115,13 +138,14 @@ const DashboardCustomers = () => {
                                 <th className="px-8 py-4 text-[10px] font-black text-stone-300 uppercase tracking-[0.2em]">Customer Profile</th>
                                 <th className="px-6 py-4 text-[10px] font-black text-stone-300 uppercase tracking-[0.2em]">Digital Contact</th>
                                 <th className="px-6 py-4 text-[10px] font-black text-stone-300 uppercase tracking-[0.2em]">Geographic Node</th>
+                                <th className="px-6 py-4 text-[10px] font-black text-stone-300 uppercase tracking-[0.2em] text-center">Access Level</th>
                                 <th className="px-8 py-4 text-[10px] font-black text-stone-300 uppercase tracking-[0.2em] text-right">Registry Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             {loading ? (
                                 <tr>
-                                    <td colSpan="4" className="px-8 py-32 text-center">
+                                    <td colSpan="5" className="px-8 py-32 text-center">
                                         <div className="flex flex-col items-center gap-6">
                                             <div className="relative w-12 h-12">
                                                 <div className="absolute inset-0 rounded-full border-4 border-gold/10"></div>
@@ -133,7 +157,7 @@ const DashboardCustomers = () => {
                                 </tr>
                             ) : customers.length === 0 ? (
                                 <tr>
-                                    <td colSpan="4" className="px-8 py-32 text-center">
+                                    <td colSpan="5" className="px-8 py-32 text-center">
                                         <div className="flex flex-col items-center gap-4">
                                             <p className="text-xl font-heading font-bold text-stone-200 uppercase tracking-tighter italic">Registry Empty</p>
                                             <p className="text-xs text-stone-400 font-bold uppercase tracking-widest">No matching identities discovered.</p>
@@ -178,6 +202,26 @@ const DashboardCustomers = () => {
                                             <span className="text-[10px] font-black text-stone-500 uppercase tracking-widest">
                                                 {customer.region || 'Global Node'}
                                             </span>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-6 bg-stone-50/50 group-hover:bg-gold/5 transition-colors duration-500 border-x border-white/50 text-center">
+                                        <div className="inline-flex justify-center transition-opacity">
+                                            {updatingId === customer.id ? (
+                                                <Loader2 size={16} className="animate-spin text-gold mx-auto" />
+                                            ) : (
+                                                <select
+                                                    value={customer.role || 'guest'}
+                                                    onChange={(e) => updateCustomerRole(customer.id, e.target.value)}
+                                                    className={`appearance-none bg-white border outline-none text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-xl cursor-pointer transition-colors shadow-sm
+                                                        ${customer.role === 'admin'
+                                                            ? 'border-gold text-gold hover:bg-gold hover:text-white'
+                                                            : 'border-stone-200 text-stone-500 hover:border-gold hover:text-gold'
+                                                        }`}
+                                                >
+                                                    <option value="guest" className="text-stone-700 font-bold bg-white">Guest</option>
+                                                    <option value="admin" className="text-stone-700 font-bold bg-white">Admin</option>
+                                                </select>
+                                            )}
                                         </div>
                                     </td>
                                     <td className="px-8 py-6 bg-stone-50/50 group-hover:bg-gold/5 rounded-r-3xl text-right transition-all duration-500">

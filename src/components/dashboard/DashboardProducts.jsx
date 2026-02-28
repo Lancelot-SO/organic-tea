@@ -473,7 +473,7 @@ const DashboardProducts = () => {
                                                         value={formData.slug}
                                                         onChange={(e) => setFormData({ ...formData, slug: e.target.value.toLowerCase().replace(/ /g, '-') })}
                                                         className="w-full bg-white border border-stone-100 rounded-2xl px-6 py-4 text-sm font-medium focus:outline-none focus:ring-4 focus:ring-gold/5 focus:border-gold/50 transition-all font-mono"
-                                                        placeholder="lavender-sleep-ritual"
+                                                        placeholder="lavender-sleep-tea"
                                                     />
                                                 </div>
                                             </div>

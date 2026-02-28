@@ -8,10 +8,15 @@ import product3 from "../../assets/images/product3.jpeg";
 import product4 from "../../assets/images/product4.jpeg";
 import product5 from "../../assets/images/product5.jpeg";
 import hero3 from "../../assets/images/hero-3.jpeg";
+import FloatingLeaf from './FloatingLeaf';
 
 const HomeAbout = () => {
     return (
-        <section className="py-10 bg-white px-2">
+        <section className="py-10 bg-white px-2 relative overflow-hidden">
+            {/* Botanical decorations */}
+            <FloatingLeaf image="leaf2" side="right" className="top-4" rotate={-20} opacity={0.35} size="w-24 h-24 md:w-36 md:h-36" />
+            <FloatingLeaf image="teaLeaves" side="left" className="bottom-6" rotate={15} delay={250} opacity={0.3} size="w-20 h-20 md:w-28 md:h-28" />
+
             <div className="container mx-auto px-6">
 
                 {/* Header Section */}

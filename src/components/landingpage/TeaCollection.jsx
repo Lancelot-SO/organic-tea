@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import hero1 from '../../assets/images/hero-1.jpeg';
 import hero2 from '../../assets/images/hero-2.jpeg';
 import hero3 from '../../assets/images/hero-3.jpeg';
+import FloatingLeaf from './FloatingLeaf';
 
 const collections = [
     {
@@ -31,7 +32,11 @@ const collections = [
 
 const TeaCollection = () => {
     return (
-        <section className="section-padding bg-cream-light">
+        <section className="section-padding bg-cream-light relative overflow-hidden">
+            {/* Botanical decorations */}
+            <FloatingLeaf image="leaf1" side="left" className="top-10" rotate={15} flip={true} opacity={0.3} />
+            <FloatingLeaf image="flower1" side="right" className="bottom-10" rotate={-8} delay={400} opacity={0.3} size="w-24 h-24 md:w-36 md:h-36" />
+
             <div className="container">
                 <h2 className="text-4xl md:text-5xl font-heading font-bold text-primary-dark mb-12 text-center">
                     Shop <span className="text-gold italic">By Collection</span>

@@ -35,6 +35,7 @@ import DashboardSettings from './components/dashboard/DashboardSettings';
 import GuestDashboardLayout from './components/guest-dashboard/GuestDashboardLayout';
 import GuestDashboardOverview from './components/guest-dashboard/GuestDashboardOverview';
 import GuestDashboardOrders from './components/guest-dashboard/GuestDashboardOrders';
+import GuestDashboardSettings from './components/guest-dashboard/GuestDashboardSettings';
 
 const MainLayout = ({ children }) => (
   <>
@@ -84,6 +85,7 @@ const App = () => {
                   <Route path="/guest" element={<GuestDashboardLayout />}>
                     <Route index element={<GuestDashboardOverview />} />
                     <Route path="orders" element={<GuestDashboardOrders />} />
+                    <Route path="settings" element={<GuestDashboardSettings />} />
                   </Route>
 
                   {/* Fallback */}

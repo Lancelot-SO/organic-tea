@@ -1,6 +1,6 @@
 import React from 'react';
 import Hero from '../components/landingpage/Hero';
-import BrandMission from '../components/landingpage/BrandMission';
+// import BrandMission from '../components/landingpage/BrandMission';
 import PromoSection from '../components/landingpage/PromoSection';
 import HomeAbout from '../components/landingpage/HomeAbout';
 import ProductShowcase from '../components/landingpage/ProductShowcase';
@@ -14,10 +14,10 @@ const Home = () => {
     return (
         <>
             <Hero />
-            <BrandMission />
+            {/* <BrandMission /> */}
+            <ProductShowcase />
             <PromoSection />
             <HomeAbout />
-            <ProductShowcase />
             <TeaCollection />
             <Banner />
             <FeaturedProduct />

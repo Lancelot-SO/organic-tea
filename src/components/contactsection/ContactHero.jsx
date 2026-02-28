@@ -13,7 +13,7 @@ const ContactHero = () => {
             >
                 <img
                     src={hero2}
-                    alt="Organic Tea Garden"
+                    alt="Organic Tea Field"
                     className="w-full h-full object-cover brightness-[0.4]"
                 />
             </motion.div>

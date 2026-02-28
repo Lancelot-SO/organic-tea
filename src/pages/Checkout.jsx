@@ -74,7 +74,7 @@ const Checkout = () => {
             });
 
             if (paymentMethod === 'paystack' || paymentMethod === 'momo') {
-                console.log('Initiating Paystack Ritual for method:', paymentMethod);
+                console.log('Initiating Paystack Payment for method:', paymentMethod);
                 // 2. Trigger Paystack payment
 
                 const onSuccess = async (reference) => {
@@ -105,7 +105,7 @@ const Checkout = () => {
                 const onClose = () => {
                     console.log('Payment Cancelled');
                     setLoading(false);
-                    setError('Ritual exchange cancelled. You can retry from your ledger later.');
+                    setError('Payment cancelled. You can retry from your ledger later.');
                 };
 
                 // Trigger the popup
@@ -142,7 +142,7 @@ const Checkout = () => {
                         onClick={() => navigate(-1)}
                         className="flex items-center gap-2 text-stone-400 font-bold uppercase tracking-widest text-[10px] mb-8 hover:text-primary-dark transition-colors"
                     >
-                        <ChevronLeft size={16} /> Return to Garden
+                        <ChevronLeft size={16} /> Return to Shop
                     </button>
 
                     <h1 className="text-5xl font-heading font-black text-primary-dark tracking-tight mb-12">Checkout Rite</h1>
@@ -159,7 +159,7 @@ const Checkout = () => {
                                         </div>
                                         <div>
                                             <h2 className="text-2xl font-black text-primary-dark font-heading">Dispatch Logistics</h2>
-                                            <p className="text-[10px] text-stone-400 uppercase tracking-widest font-bold">Where should your rituals arrive?</p>
+                                            <p className="text-[10px] text-stone-400 uppercase tracking-widest font-bold">Where should your order arrive?</p>
                                         </div>
                                     </div>
 
@@ -188,7 +188,7 @@ const Checkout = () => {
                                                     value={shippingInfo.email}
                                                     onChange={(e) => setShippingInfo({ ...shippingInfo, email: e.target.value })}
                                                     className="w-full bg-stone-50 border border-stone-100 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold text-primary-dark focus:outline-none focus:border-gold transition-all"
-                                                    placeholder="ancient.tea@ritual.com"
+                                                    placeholder="info@organictea.com"
                                                 />
                                             </div>
                                         </div>
@@ -258,7 +258,7 @@ const Checkout = () => {
                                             <CreditCard size={24} />
                                         </div>
                                         <div>
-                                            <h2 className="text-2xl font-black text-primary-dark font-heading">Exchange Ritual</h2>
+                                            <h2 className="text-2xl font-black text-primary-dark font-heading">Payment Information</h2>
                                             <p className="text-[10px] text-stone-400 uppercase tracking-widest font-bold">Select your preferred fiscal channel</p>
                                         </div>
                                     </div>
@@ -319,7 +319,7 @@ const Checkout = () => {
                                                 </div>
                                                 <div className="grow">
                                                     <p className="text-sm font-black text-primary-dark line-clamp-1">{item.name}</p>
-                                                    <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mt-1">{item.quantity} Ritual Units</p>
+                                                    <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mt-1">{item.quantity} Units</p>
                                                 </div>
                                                 <p className="text-sm font-black text-primary-dark">GHS {(item.price * item.quantity).toFixed(0)}</p>
                                             </div>
@@ -351,7 +351,7 @@ const Checkout = () => {
                                     </div>
                                     <div>
                                         <p className="text-[10px] font-black text-gold uppercase tracking-[0.2em] mb-1">Secure Acquisition</p>
-                                        <p className="text-xs text-white/60 font-medium">Encrypted fiscal channel for safe ritual investment.</p>
+                                        <p className="text-xs text-white/60 font-medium">Encrypted fiscal channel for safe payment.</p>
                                     </div>
                                 </div>
                             </div>

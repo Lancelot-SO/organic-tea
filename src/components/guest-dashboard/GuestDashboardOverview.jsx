@@ -68,7 +68,7 @@ const GuestDashboardOverview = () => {
     const quickLinks = [
         {
             title: 'Browse Collection',
-            description: 'Explore our curated selection of organic teas from premium gardens.',
+            description: 'Explore our curated selection of organic teas from premium farms.',
             icon: ShoppingBag,
             path: '/shop',
             gradient: 'from-primary-dark to-primary-dark/80',
@@ -86,7 +86,7 @@ const GuestDashboardOverview = () => {
         },
         {
             title: 'Tea Gallery',
-            description: 'Visual stories from our organic tea gardens around the world.',
+            description: 'Visual stories from our organic tea farms around the world.',
             icon: Camera,
             path: '/gallery',
             gradient: 'from-stone-100 to-stone-50',
@@ -134,7 +134,7 @@ const GuestDashboardOverview = () => {
                             Welcome back, <span className="text-gold italic">{profile?.full_name?.split(' ')[0] || 'Tea Connoisseur'}</span>
                         </h1>
                         <p className="text-white/60 text-sm font-medium max-w-lg leading-relaxed">
-                            Your personal tea garden awaits. Browse your orders, track points, and discover new premium blends curated just for you.
+                            Your personal tea collection awaits. Browse your orders, track points, and discover new premium blends curated just for you.
                         </p>
                     </div>
                     <Link

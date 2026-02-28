@@ -136,7 +136,7 @@ const ProductDetails = () => {
                                             />
                                         ))}
                                     </div>
-                                    <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest border-l border-stone-200 pl-6">Highly Rated Ritual</span>
+                                    <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest border-l border-stone-200 pl-6">Highly Rated Tea</span>
                                 </div>
 
                                 <p className="text-stone-500 text-lg leading-relaxed mb-10 italic">
@@ -233,7 +233,7 @@ const ProductDetails = () => {
                                 {activeTab === 'description' && (
                                     <div className="space-y-6">
                                         <p className="text-stone-500 text-lg leading-relaxed">
-                                            Our {product.name} represents the pinnacle of organic tea cultivation. Sourced directly from sustainably managed gardens, each leaf is processed with ancestral techniques to preserve the full spectrum of its aromatic profile.
+                                            Our {product.name} represents the pinnacle of organic tea cultivation. Sourced directly from sustainably managed farms, each leaf is processed with ancestral techniques to preserve the full spectrum of its aromatic profile.
                                         </p>
                                         <p className="text-stone-500 text-lg leading-relaxed">
                                             This selection is characterized by its deep, resonant notes and an incredibly smooth finish that lingers gracefully on the palate.
@@ -264,12 +264,12 @@ const ProductDetails = () => {
                         </AnimatePresence>
                     </div>
 
-                    {/* Related Rituals */}
+                    {/* Related Teas */}
                     {relatedProducts.length > 0 && (
                         <div className="mt-40">
                             <div className="flex flex-col items-center mb-16">
                                 <span className="text-[10px] font-bold text-gold uppercase tracking-[0.4em] mb-4">You Might Also Find Peace In</span>
-                                <h2 className="text-4xl font-heading font-bold text-primary-dark tracking-tight">Related Rituals</h2>
+                                <h2 className="text-4xl font-heading font-bold text-primary-dark tracking-tight">Related Teas</h2>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
                                 {relatedProducts.map((p, idx) => (

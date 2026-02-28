@@ -26,12 +26,8 @@ const Navbar = () => {
 
     const navLinks = [
         { name: 'Home', path: '/' },
-        { name: 'About Us', path: '/about' },
         { name: 'Shop', path: '/shop' },
-        { name: 'Blog', path: '/blog' },
-        { name: 'Gallery', path: '/gallery' },
         { name: 'Contact', path: '/contact' },
-        { name: 'Exclusive Membership', path: '/membership' },
     ];
 
     return (
@@ -52,7 +48,7 @@ const Navbar = () => {
                 </Link>
 
                 {/* Desktop Navigation */}
-                <div className="hidden md:flex items-center space-x-8">
+                <div className="hidden md:flex items-center space-x-16">
                     {navLinks.map((link) => (
                         <NavLink
                             key={link.name}
@@ -69,9 +65,7 @@ const Navbar = () => {
 
                 {/* Icons - Visible on all screens */}
                 <div className={`flex items-center space-x-4 md:space-x-6 ${(isScrolled || !isHomePage) ? 'text-primary-dark' : 'text-white'}`}>
-                    <button className="hover:text-gold transition-colors">
-                        <Search size={20} />
-                    </button>
+
                     <Link to="/profile" className="hover:text-gold transition-colors">
                         <User size={20} />
                     </Link>

@@ -72,10 +72,10 @@ const OrderSuccess = () => {
 
                             <div className="inline-flex items-center gap-2 mb-4 bg-stone-50 px-4 py-2 rounded-full border border-stone-100">
                                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                                <span className="text-[10px] font-black text-stone-400 uppercase tracking-widest">Order Ritual Manifested</span>
+                                <span className="text-[10px] font-black text-stone-400 uppercase tracking-widest">Order Confirmed</span>
                             </div>
-                            <h1 className="text-5xl font-heading font-black text-primary-dark tracking-tight mb-4">Ceremony Confirmed</h1>
-                            <p className="text-stone-500 max-w-lg mx-auto text-base">Your ritual selection has been documented in our ledger. Our tea artisans are now preparing your organic investment for dispatch.</p>
+                            <h1 className="text-5xl font-heading font-black text-primary-dark tracking-tight mb-4">Thank you for your purchase</h1>
+                            <p className="text-stone-500 max-w-lg mx-auto text-base">Your selection has been documented. Our tea artisans are now preparing your order for dispatch.</p>
                         </div>
                     </motion.div>
 
@@ -226,7 +226,7 @@ const OrderSuccess = () => {
                                 to="/shop"
                                 className="bg-white border border-stone-100 text-stone-400 px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-widest hover:text-primary-dark hover:border-gold transition-all flex items-center justify-center gap-3"
                             >
-                                <ArrowLeft size={16} /> Return to Garden
+                                <ArrowLeft size={16} /> Return to Shop
                             </Link>
                         </motion.div>
 

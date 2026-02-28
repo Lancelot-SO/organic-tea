@@ -82,8 +82,8 @@ const Profile = () => {
             <div className="min-h-screen flex flex-col items-center justify-center bg-cream gap-6">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold"></div>
                 <div className="text-center">
-                    <p className="text-stone-400 font-bold uppercase tracking-widest text-[10px]">Verifying your ritual...</p>
-                    <p className="text-[9px] text-stone-300 mt-2 max-w-[200px]">If this takes too long, your connection to the garden might be slow.</p>
+                    <p className="text-stone-400 font-bold uppercase tracking-widest text-[10px]">Verifying your profile...</p>
+                    <p className="text-[9px] text-stone-300 mt-2 max-w-[200px]">If this takes too long, your connection might be slow.</p>
                     {user && (
                         <div className="mt-4 p-3 bg-stone-100 rounded-xl">
                             <p className="text-[9px] text-stone-400 font-bold uppercase tracking-widest mb-1">Current User ID:</p>
@@ -299,10 +299,10 @@ const Profile = () => {
                         transition={{ delay: 0.5, duration: 0.8 }}
                     >
                         <h2 className="text-5xl font-heading font-black mb-6 leading-tight max-w-lg">
-                            Elevate Your Daily <span className="text-gold italic">Ritual</span>
+                            Elevate Your Daily <span className="text-gold italic">Routine</span>
                         </h2>
                         <p className="text-white/80 font-medium max-w-md mx-auto leading-relaxed">
-                            Discover the world's most exquisite organic teas, sourced from high-altitude boutique gardens.
+                            Discover the world's most exquisite organic teas, sourced from high-altitude boutique farms.
                         </p>
                     </motion.div>
 

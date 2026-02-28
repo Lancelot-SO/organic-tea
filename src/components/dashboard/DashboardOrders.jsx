@@ -95,7 +95,7 @@ const DashboardOrders = () => {
                         <span className="text-[10px] font-bold text-gold uppercase tracking-[0.3em]">Commercial Intelligence</span>
                     </div>
                     <h1 className="text-4xl font-heading font-bold text-primary-dark tracking-tighter">Transaction Ledger</h1>
-                    <p className="text-stone-500 mt-2 max-w-md">Oversee the lifecycle of every ritual. Monitor fulfillment flows and transactional health with precision.</p>
+                    <p className="text-stone-500 mt-2 max-w-md">Oversee the lifecycle of every order. Monitor fulfillment flows and transactional health with precision.</p>
                 </div>
                 <div className="flex gap-4">
                     <button className="bg-white border border-stone-100 text-primary-dark px-8 py-4 rounded-2xl font-bold flex items-center gap-3 hover:bg-stone-50 hover:border-gold transition-all duration-500 shadow-xl shadow-stone-200/20 group">

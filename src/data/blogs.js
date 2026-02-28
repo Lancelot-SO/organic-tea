@@ -14,7 +14,7 @@ export const blogs = [
         date: "May 12, 2025",
         image: blog1,
         content: `
-            Hibiscus tea, also known as 'Roselle', is more than just a vibrant, tangy beverage. It's a nutritional powerhouse that has been celebrated for centuries in various cultures. In this deep dive, we explore why this crimson infusion deserves a spot in your daily ritual.
+            Hibiscus tea, also known as 'Roselle', is more than just a vibrant, tangy beverage. It's a nutritional powerhouse that has been celebrated for centuries in various cultures. In this deep dive, we explore why this crimson infusion deserves a spot in your daily routine.
 
             ### The Antioxidant Powerhouse
             Hibiscus is packed with powerful antioxidants, including anthocyanins and polyphenols, which help combat oxidative stress in the body. These compounds are responsible for the tea's deep red color and many of its health-promoting properties.

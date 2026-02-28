@@ -62,7 +62,7 @@ const GuestDashboardOrders = () => {
                         <Package size={28} />
                     </div>
                     <h2 className="text-xl font-heading font-bold text-primary-dark mb-3">No Records Yet</h2>
-                    <p className="text-sm text-stone-400 mb-8">You haven't made any acquisitions yet. Start your journey in the garden.</p>
+                    <p className="text-sm text-stone-400 mb-8">You haven't made any acquisitions yet. Start your journey in the shop.</p>
                     <a href="/shop" className="bg-gold text-white px-8 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-gold-dark transition-all shadow-lg shadow-gold/20 inline-block font-sans">
                         Visit Shop
                     </a>

@@ -84,7 +84,7 @@ const DashboardLayout = () => {
                                 <span className="text-xl">G</span>
                             </div>
                             <div className="flex flex-col">
-                                <span className="text-lg font-bold font-heading tracking-tight leading-none">GARDEN</span>
+                                <span className="text-lg font-bold font-heading tracking-tight leading-none">DASHBOARD</span>
                                 <span className="text-[10px] text-gold font-bold tracking-[0.2em] uppercase mt-1 opacity-80">Admin Core</span>
                             </div>
                         </div>
@@ -212,7 +212,7 @@ const DashboardLayout = () => {
                     {/* Background Texture Overlay */}
                     <div className="absolute inset-0 opacity-[0.015] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 0.5px, transparent 0.5px)', backgroundSize: '24px 24px' }} />
 
-                    <div className="relative z-10 max-w-7xl mx-auto">
+                    <div className="relative max-w-7xl mx-auto">
                         <Outlet />
                     </div>
                 </main>

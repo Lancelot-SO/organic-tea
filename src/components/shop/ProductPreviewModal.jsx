@@ -77,7 +77,7 @@ const ProductPreviewModal = () => {
                             <p className="text-stone-600 leading-relaxed mb-8">
                                 Experience the pure essence of nature with our {product.name}.
                                 Carefully selected and processed to retain maximum nutrients and flavor.
-                                Perfect for your daily wellness ritual.
+                                Perfect for your daily wellness routine.
                             </p>
 
                             {/* Features Mini-Grid */}

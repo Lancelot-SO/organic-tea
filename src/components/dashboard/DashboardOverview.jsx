@@ -107,7 +107,7 @@ const DashboardOverview = () => {
                         <span className="text-[10px] font-bold text-gold uppercase tracking-[0.3em]">Business Intel</span>
                     </div>
                     <h1 className="text-4xl font-heading font-bold text-primary-dark tracking-tighter">Command Center</h1>
-                    <p className="text-stone-500 mt-2 max-w-md">Your garden is flourishing. Here is a live overview of your business performance and growth metrics.</p>
+                    <p className="text-stone-500 mt-2 max-w-md">Your business is flourishing. Here is a live overview of your performance and growth metrics.</p>
                 </div>
                 <div className="flex gap-3 bg-white p-1.5 rounded-2xl border border-stone-100 shadow-sm">
                     {['24H', '7D', '30D', 'All'].map((period, i) => (

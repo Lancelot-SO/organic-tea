@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [profile, setProfile] = useState(() => {
         // Instant bootstrap from cache
-        const cached = localStorage.getItem('garden_auth_profile');
+        const cached = localStorage.getItem('tea_auth_profile');
         return cached ? JSON.parse(cached) : null;
     });
     const [loading, setLoading] = useState(true);
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
 
             console.log('AuthContext: Profile data received for', data?.email, '| Role:', data?.role);
             setProfile(data);
-            localStorage.setItem('garden_auth_profile', JSON.stringify(data));
+            localStorage.setItem('tea_auth_profile', JSON.stringify(data));
             return data;
         } catch (error) {
             console.error('AuthContext: Error in fetchProfile:', error.message);
@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }) => {
                     fetchProfile(currentUser.id);
 
                     // If we have a cache for this user, we can stop the initial blocker
-                    const cached = localStorage.getItem('garden_auth_profile');
+                    const cached = localStorage.getItem('tea_auth_profile');
                     if (cached) {
                         const parsed = JSON.parse(cached);
                         if (parsed.id === currentUser.id) {
@@ -84,7 +84,7 @@ export const AuthProvider = ({ children }) => {
                         }
                     }
                 } else {
-                    localStorage.removeItem('garden_auth_profile');
+                    localStorage.removeItem('tea_auth_profile');
                 }
             } catch (error) {
                 console.error('Auth init error:', error);
@@ -111,7 +111,7 @@ export const AuthProvider = ({ children }) => {
                 } else {
                     console.log('AuthContext: No session, clearing profile');
                     setProfile(null);
-                    localStorage.removeItem('garden_auth_profile');
+                    localStorage.removeItem('tea_auth_profile');
                 }
 
                 setLoading(false);
@@ -149,7 +149,7 @@ export const AuthProvider = ({ children }) => {
     const signOut = async () => {
         const { error } = await supabase.auth.signOut();
         if (error) throw error;
-        localStorage.removeItem('garden_auth_profile');
+        localStorage.removeItem('tea_auth_profile');
         setUser(null);
         setProfile(null);
     };
@@ -167,7 +167,7 @@ export const AuthProvider = ({ children }) => {
 
         if (error) throw error;
         setProfile(data);
-        localStorage.setItem('garden_auth_profile', JSON.stringify(data));
+        localStorage.setItem('tea_auth_profile', JSON.stringify(data));
         return data;
     };
 
