@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, X, ShoppingCart, ArrowRight, ChevronDown } from 'lucide-react';
+import { ShoppingCart, ArrowRight, ChevronDown } from 'lucide-react';
 import product1 from '../../assets/images/product1.jpeg';
 
 const CollapsibleSection = ({ title, children, defaultOpen = true }) => {
@@ -37,14 +37,7 @@ const CollapsibleSection = ({ title, children, defaultOpen = true }) => {
     );
 };
 
-const ShopSidebar = () => {
-    const categories = [
-        "Anti-Inflammatory Teas", "Aphrodisiac - Power Teas", "Beauty Teas",
-        "Blood Pressure Teas", "Cholesterol Management Teas", "Cramps",
-        "Detox Teas", "Digestion", "Gift Card", "Liver & Kidneys",
-        "SWEETNER", "Teas for Immune System Boost", "Uncategorized", "Weight Loss Teas"
-    ];
-
+const ShopSidebar = ({ categories = [], selectedCategory, onCategoryChange }) => {
     const priceRanges = [
         "Under Ghs.10", "Under Ghs.50", "Ghs.60 To Ghs.100",
         "Ghs.110 To Ghs.240", "Ghs.250 To Ghs.300", "Ghs.310 To Ghs.350"
@@ -54,19 +47,35 @@ const ShopSidebar = () => {
         <aside className="space-y-12 lg:pr-8">
             {/* Tea Categories */}
             <CollapsibleSection title="Tea Categories">
-                {categories.map((cat, idx) => (
-                    <label key={idx} className="flex items-center gap-3 group cursor-pointer">
+                <label className="flex items-center gap-3 group cursor-pointer">
+                    <div className="relative flex items-center justify-center w-5 h-5">
+                        <input
+                            type="radio"
+                            name="category"
+                            className="peer appearance-none w-5 h-5 border-2 border-stone-200 rounded-full checked:border-gold transition-all"
+                            checked={selectedCategory === null}
+                            onChange={() => onCategoryChange(null)}
+                        />
+                        <div className="absolute w-2.5 h-2.5 bg-gold rounded-full opacity-0 peer-checked:opacity-100 transition-opacity" />
+                    </div>
+                    <span className="text-sm text-stone-500 group-hover:text-primary-dark transition-colors">
+                        All Products
+                    </span>
+                </label>
+                {categories.map((cat) => (
+                    <label key={cat.id} className="flex items-center gap-3 group cursor-pointer">
                         <div className="relative flex items-center justify-center w-5 h-5">
                             <input
                                 type="radio"
                                 name="category"
                                 className="peer appearance-none w-5 h-5 border-2 border-stone-200 rounded-full checked:border-gold transition-all"
-                                defaultChecked={cat === "Cholesterol Management Teas"}
+                                checked={selectedCategory === cat.slug}
+                                onChange={() => onCategoryChange(cat.slug)}
                             />
                             <div className="absolute w-2.5 h-2.5 bg-gold rounded-full opacity-0 peer-checked:opacity-100 transition-opacity" />
                         </div>
-                        <span className="text-sm text-stone-500 group-hover:text-primary-dark transition-colors">
-                            {cat}
+                        <span className="text-sm text-stone-500 group-hover:text-primary-dark transition-colors line-clamp-1">
+                            {cat.name}
                         </span>
                     </label>
                 ))}
@@ -74,26 +83,29 @@ const ShopSidebar = () => {
 
             {/* Price Range */}
             <CollapsibleSection title="Price Range">
-                {/* Custom Slider Track Placeholder */}
                 <div className="px-2 pt-2 pb-6">
                     <div className="relative h-1 bg-stone-200 rounded-full">
-                        <div className="absolute left-[10%] right-[60%] h-full bg-gold rounded-full" />
+                        <div className="absolute left-[10%] right-[30%] h-full bg-gold rounded-full" />
                         <div className="absolute left-[10%] top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-gold rounded-full shadow-md cursor-pointer" />
-                        <div className="absolute right-[60%] top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-gold rounded-full shadow-md cursor-pointer" />
+                        <div className="absolute right-[30%] top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-gold rounded-full shadow-md cursor-pointer" />
                     </div>
                     <div className="flex gap-4 mt-8">
-                        <input
-                            type="text"
-                            placeholder="Min Price"
-                            className="w-1/2 bg-stone-50 border border-stone-100 px-4 py-2 text-xs focus:outline-none focus:border-gold"
-                            defaultValue="Min Price"
-                        />
-                        <input
-                            type="text"
-                            placeholder="Max Price"
-                            className="w-1/2 bg-stone-50 border border-stone-100 px-4 py-2 text-xs focus:outline-none focus:border-gold"
-                            defaultValue="Max Price"
-                        />
+                        <div className="w-1/2">
+                            <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1 ml-1">Min</p>
+                            <input
+                                type="number"
+                                placeholder="0"
+                                className="w-full bg-stone-50 border border-stone-100 px-4 py-2 text-xs focus:outline-none focus:border-gold rounded-sm"
+                            />
+                        </div>
+                        <div className="w-1/2">
+                            <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1 ml-1">Max</p>
+                            <input
+                                type="number"
+                                placeholder="1000"
+                                className="w-full bg-stone-50 border border-stone-100 px-4 py-2 text-xs focus:outline-none focus:border-gold rounded-sm"
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -105,7 +117,6 @@ const ShopSidebar = () => {
                                     type="radio"
                                     name="price-range"
                                     className="peer appearance-none w-5 h-5 border-2 border-stone-200 rounded-full checked:border-gold transition-all"
-                                    defaultChecked={range === "Ghs.250 To Ghs.300"}
                                 />
                                 <div className="absolute w-2.5 h-2.5 bg-gold rounded-full opacity-0 peer-checked:opacity-100 transition-opacity" />
                             </div>
@@ -115,25 +126,6 @@ const ShopSidebar = () => {
                         </label>
                     ))}
                 </div>
-            </CollapsibleSection>
-
-            {/* Tea Type */}
-            <CollapsibleSection title="Tea Type">
-                {["Loose Tea", "Tea Bags"].map((type, idx) => (
-                    <label key={idx} className="flex items-center justify-between group cursor-pointer">
-                        <div className="flex items-center gap-3">
-                            <input
-                                type="checkbox"
-                                className="w-5 h-5 accent-gold cursor-pointer"
-                                defaultChecked
-                            />
-                            <span className="text-sm text-stone-500 group-hover:text-primary-dark transition-colors">
-                                {type}
-                            </span>
-                        </div>
-                        <span className="text-xs text-stone-300 font-bold">(5)</span>
-                    </label>
-                ))}
             </CollapsibleSection>
 
             {/* Sidebar Promo Card */}
@@ -146,18 +138,16 @@ const ShopSidebar = () => {
                 <div className="absolute inset-0 bg-black/40" />
 
                 <div className="absolute inset-0 p-6 flex flex-col items-center justify-center text-center space-y-6">
-                    {/* Glass Box */}
                     <div className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl w-full">
                         <h4 className="text-2xl font-bold text-white font-heading mb-4">Collection Of <br /> Herb Tea</h4>
                         <div className="flex items-center justify-center gap-3">
                             <span className="text-white/80 text-xs font-serif italic">Only for:</span>
                             <div className="bg-[#c4cfc4]/80 text-primary-dark px-3 py-1 rounded-sm font-bold text-sm">
-                                $299 USD
+                                GHS 299
                             </div>
                         </div>
                     </div>
 
-                    {/* Actions */}
                     <div className="w-full space-y-3">
                         <button className="w-full bg-[#425043] hover:bg-gold text-white py-3.5 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-300 shadow-lg">
                             <ShoppingCart className="w-4 h-4" />
@@ -175,3 +165,4 @@ const ShopSidebar = () => {
 };
 
 export default ShopSidebar;
+

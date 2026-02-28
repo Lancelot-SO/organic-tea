@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   /* Custom Colors */
@@ -15,6 +16,30 @@
   /* Custom Fonts */
   --font-heading: 'Inter', sans-serif;
   --font-body: 'Inter', sans-serif;
+
+  /* Theme Tokens */
+  --bg-main: #FFFFFF;
+  --bg-offset: #F8F9FA;
+  --bg-card: #FFFFFF;
+  --text-main: #333333;
+  --text-muted: #6B7280;
+  --border-main: #F1F5F9;
+}
+
+.dark {
+  --bg-main: #0C0C0C;
+  --bg-offset: #141414;
+  --bg-card: #1C1C1C;
+  --text-main: #F9FAFB;
+  --text-muted: #9CA3AF;
+  --border-main: #262626;
+}
+
+/* Global Transitions */
+*,
+*::before,
+*::after {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 /* Animation keyframes */
@@ -170,8 +195,8 @@ html {
 /* Base styles */
 body {
   font-family: var(--font-body);
-  color: #333;
-  background-color: #fff;
+  color: var(--text-main);
+  background-color: var(--bg-main);
   overflow-x: hidden;
 }
 

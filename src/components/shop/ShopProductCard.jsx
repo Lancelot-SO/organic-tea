@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, Star, ShoppingCart, Eye } from 'lucide-react';
+import { ArrowUpRight, Star, ShoppingCart, Eye, Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
-import ProductPreviewModal from './ProductPreviewModal';
+import { useWishlist } from '../../context/WishlistContext';
 
 const ShopProductCard = ({ product, delay = 0 }) => {
     const { addToCart, openPreview } = useCart();
+    const { toggleWishlist, isInWishlist } = useWishlist();
+    const isWishlisted = isInWishlist(product.id);
+    const price = typeof product.price === 'number' ? product.price : parseFloat(product.price) || 0;
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -18,16 +23,16 @@ const ShopProductCard = ({ product, delay = 0 }) => {
 
                 {/* Header: Name & Arrow */}
                 <div className="flex justify-between items-center mb-0.5 px-5 pt-4 pb-2">
-                    <span className="text-primary-dark font-bold text-sm tracking-wide">
+                    <Link to={`/product/${product.slug}`} className="text-primary-dark font-bold text-sm tracking-wide line-clamp-1 hover:text-gold transition-colors">
                         ({product.name})
-                    </span>
-                    <button className="bg-white rounded-full p-2 shadow-sm transform group-hover:rotate-45 transition-transform duration-500">
+                    </Link>
+                    <Link to={`/product/${product.slug}`} className="bg-white rounded-full p-2 shadow-sm transform group-hover:rotate-45 transition-transform duration-500">
                         <ArrowUpRight size={18} className="text-primary-dark" />
-                    </button>
+                    </Link>
                 </div>
 
                 {/* Main White Container */}
-                <div className="bg-white rounded-[24px] w-full flex-grow flex flex-col items-center p-4 relative">
+                <div className="bg-white rounded-[24px] w-full grow flex flex-col items-center p-4 relative">
 
                     {/* Status Badge */}
                     {product.badge && (
@@ -38,14 +43,24 @@ const ShopProductCard = ({ product, delay = 0 }) => {
                         </div>
                     )}
 
+                    {/* Wishlist Button */}
+                    <button
+                        onClick={() => toggleWishlist(product)}
+                        className={`absolute top-6 right-6 w-10 h-10 rounded-full flex items-center justify-center transition-all z-20 shadow-sm ${isWishlisted ? 'bg-gold text-white' : 'bg-white text-stone-400 hover:text-gold'
+                            }`}
+                    >
+                        <Heart size={18} fill={isWishlisted ? "currentColor" : "none"} />
+                    </button>
+
                     {/* Image Area */}
                     <div className="w-full aspect-square flex items-center justify-center mb-2 overflow-hidden rounded-2xl relative group/img">
                         <motion.img
                             whileHover={{ scale: 1.1 }}
                             transition={{ duration: 0.6 }}
-                            src={product.image}
+                            src={product.image_url}
                             alt={product.name}
                             className="w-full h-full object-contain"
+                            crossOrigin="anonymous"
                         />
 
                         {/* Hover Overlay with Icons */}
@@ -76,18 +91,24 @@ const ShopProductCard = ({ product, delay = 0 }) => {
                         {/* Rating */}
                         <div className="flex justify-center gap-1 mb-2">
                             {[...Array(5)].map((_, i) => (
-                                <Star key={i} size={14} fill="#425043" className="text-primary-dark" />
+                                <Star
+                                    key={i}
+                                    size={14}
+                                    fill={i < (product.rating || 5) ? "#425043" : "none"}
+                                    className={i < (product.rating || 5) ? "text-primary-dark" : "text-stone-200"}
+                                />
                             ))}
                         </div>
 
-                        {/* Name (Gold) */}
-                        <h3 className="font-serif text-gold font-bold text-xl mb-2 leading-tight">
-                            ({product.name})
-                        </h3>
+                        <Link to={`/product/${product.slug}`}>
+                            <h3 className="font-serif text-gold font-bold text-xl mb-2 leading-tight line-clamp-1 px-4 hover:scale-105 transition-transform">
+                                ({product.name})
+                            </h3>
+                        </Link>
 
                         {/* Price */}
                         <p className="text-stone-600 font-bold text-base tracking-wide">
-                            Ghs. {product.price.toFixed(2)}
+                            Ghs. {price.toFixed(2)}
                         </p>
                     </div>
                 </div>
@@ -97,3 +118,4 @@ const ShopProductCard = ({ product, delay = 0 }) => {
 };
 
 export default ShopProductCard;
+

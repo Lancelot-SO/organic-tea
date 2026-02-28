@@ -1,46 +1,67 @@
-import { motion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowUpRight, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import product1 from '../../assets/images/drink.png';
 import product2 from '../../assets/images/product2.jpeg';
 
 const Exclusive = () => {
+    const [formData, setFormData] = useState({
+        first_name: '',
+        last_name: '',
+        email: '',
+        phone: ''
+    });
+    const [status, setStatus] = useState('idle'); // idle, loading, success, error
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setStatus('loading');
+        setErrorMessage('');
+
+        try {
+            const response = await fetch('https://api.theafricateacompany.com/api/membership', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setStatus('success');
+                setFormData({
+                    first_name: '',
+                    last_name: '',
+                    email: '',
+                    phone: ''
+                });
+                setTimeout(() => setStatus('idle'), 5000);
+            } else {
+                setStatus('error');
+                setErrorMessage(data.message || 'Something went wrong. Please try again.');
+            }
+        } catch (error) {
+            console.error('Membership submission error:', error);
+            setStatus('error');
+            setErrorMessage('Network error. Please check your connection and try again.');
+        }
+    };
+
     // Premium images from Unsplash
     const mainImage = product1;
     const smallImage = product2;
-
-    // Animation Variants
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.2,
-                duration: 0.6,
-                ease: [0.22, 1, 0.36, 1]
-            }
-        }
-    };
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                duration: 0.8,
-                ease: [0.22, 1, 0.36, 1]
-            }
-        }
-    };
-
-    const floatingAnimation = {
-        y: [0, -15, 0],
-        transition: {
-            duration: 5,
-            repeat: Infinity,
-            ease: "easeInOut"
-        }
-    };
 
     return (
         <section className="bg-[#FBFBEF] py-16 md:py-24 overflow-hidden">
@@ -104,32 +125,96 @@ const Exclusive = () => {
                                 Join The Club By Filling <br /> This Form
                             </h3>
 
-                            <form className="space-y-6">
+                            <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                    {[
-                                        { label: "First Name", type: "text" },
-                                        { label: "Last Name", type: "text" },
-                                        { label: "Email Address", type: "email" },
-                                        { label: "Phone", type: "tel" }
-                                    ].map((input, idx) => (
-                                        <div key={idx} className="relative">
-                                            <input
-                                                type={input.type}
-                                                placeholder={`${input.label} *`}
-                                                className="w-full px-5 py-4 bg-[#EAEAEA] border border-transparent rounded-lg focus:ring-1 focus:ring-primary/20 focus:bg-white outline-none transition-all placeholder:text-[#8A8A8A] text-gray-800 text-sm"
-                                                required
-                                            />
-                                        </div>
-                                    ))}
+                                    <div className="relative">
+                                        <input
+                                            type="text"
+                                            name="first_name"
+                                            value={formData.first_name}
+                                            onChange={handleChange}
+                                            placeholder="First Name *"
+                                            className="w-full px-5 py-4 bg-[#EAEAEA] border border-transparent rounded-lg focus:ring-1 focus:ring-primary/20 focus:bg-white outline-none transition-all placeholder:text-[#8A8A8A] text-gray-800 text-sm"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="relative">
+                                        <input
+                                            type="text"
+                                            name="last_name"
+                                            value={formData.last_name}
+                                            onChange={handleChange}
+                                            placeholder="Last Name *"
+                                            className="w-full px-5 py-4 bg-[#EAEAEA] border border-transparent rounded-lg focus:ring-1 focus:ring-primary/20 focus:bg-white outline-none transition-all placeholder:text-[#8A8A8A] text-gray-800 text-sm"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="relative">
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            placeholder="Email Address *"
+                                            className="w-full px-5 py-4 bg-[#EAEAEA] border border-transparent rounded-lg focus:ring-1 focus:ring-primary/20 focus:bg-white outline-none transition-all placeholder:text-[#8A8A8A] text-gray-800 text-sm"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="relative">
+                                        <input
+                                            type="tel"
+                                            name="phone"
+                                            value={formData.phone}
+                                            onChange={handleChange}
+                                            placeholder="Phone *"
+                                            className="w-full px-5 py-4 bg-[#EAEAEA] border border-transparent rounded-lg focus:ring-1 focus:ring-primary/20 focus:bg-white outline-none transition-all placeholder:text-[#8A8A8A] text-gray-800 text-sm"
+                                            required
+                                        />
+                                    </div>
                                 </div>
+
+                                <AnimatePresence mode="wait">
+                                    {status === 'success' && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 5 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0 }}
+                                            className="flex items-center gap-2 text-green-600 bg-green-50 p-4 rounded-xl text-sm font-medium"
+                                        >
+                                            <CheckCircle2 className="w-5 h-5" />
+                                            Joined successfully! Welcome to the club.
+                                        </motion.div>
+                                    )}
+                                    {status === 'error' && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 5 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0 }}
+                                            className="flex items-center gap-2 text-red-600 bg-red-50 p-4 rounded-xl text-sm font-medium"
+                                        >
+                                            <AlertCircle className="w-5 h-5" />
+                                            {errorMessage}
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
 
                                 <div className="flex justify-end pt-2">
                                     <button
                                         type="submit"
-                                        className="flex items-center gap-2 bg-[#4A5D50] hover:bg-primary-dark text-white px-8 py-3 rounded-md font-medium transition-colors shadow-md"
+                                        disabled={status === 'loading'}
+                                        className={`flex items-center gap-2 ${status === 'loading' ? 'bg-[#4A5D50]/70' : 'bg-[#4A5D50] hover:bg-primary-dark'} text-white px-8 py-3 rounded-md font-medium transition-colors shadow-md disabled:cursor-not-allowed`}
                                     >
-                                        Send Message
-                                        <ArrowUpRight className="w-4 h-4" />
+                                        {status === 'loading' ? (
+                                            <>
+                                                Joining...
+                                                <Loader2 className="w-4 h-4 animate-spin" />
+                                            </>
+                                        ) : (
+                                            <>
+                                                Join Now
+                                                <ArrowUpRight className="w-4 h-4" />
+                                            </>
+                                        )}
                                     </button>
                                 </div>
                             </form>
@@ -143,3 +228,4 @@ const Exclusive = () => {
 };
 
 export default Exclusive;
+

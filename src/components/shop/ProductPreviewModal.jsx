@@ -1,17 +1,20 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ShoppingCart, Star, ShieldCheck, Truck, RefreshCw } from 'lucide-react';
+import { X, ShoppingCart, Star, ShieldCheck, Truck, Heart } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import { useWishlist } from '../../context/WishlistContext';
 
 const ProductPreviewModal = () => {
     const { addToCart, isPreviewOpen, setIsPreviewOpen, previewProduct: product } = useCart();
+    const { toggleWishlist, isInWishlist } = useWishlist();
+    const isWishlisted = product ? isInWishlist(product.id) : false;
 
     if (!product) return null;
 
     return (
         <AnimatePresence>
             {isPreviewOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
+                <div className="fixed inset-0 z-100 flex items-center justify-center p-4 md:p-6">
                     {/* Backdrop */}
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -46,9 +49,10 @@ const ProductPreviewModal = () => {
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: 0.2, duration: 0.5 }}
-                                src={product.image}
+                                src={product.image_url}
                                 alt={product.name}
                                 className="w-full h-auto object-contain relative z-10 drop-shadow-2xl"
+                                crossOrigin="anonymous"
                             />
                         </div>
 
@@ -98,10 +102,18 @@ const ProductPreviewModal = () => {
                                         addToCart(product);
                                         setIsPreviewOpen(false);
                                     }}
-                                    className="flex-grow bg-gold hover:bg-gold-dark text-white font-bold py-4 px-8 rounded-2xl flex items-center justify-center gap-3 transition-all duration-300 shadow-lg shadow-gold/20 hover:scale-[1.02] active:scale-95"
+                                    className="grow bg-gold hover:bg-gold-dark text-white font-bold py-4 px-8 rounded-2xl flex items-center justify-center gap-3 transition-all duration-300 shadow-lg shadow-gold/20 hover:scale-[1.02] active:scale-95"
                                 >
                                     <ShoppingCart size={20} />
                                     Add to Cart
+                                </button>
+                                <button
+                                    onClick={() => toggleWishlist(product)}
+                                    className={`p-4 rounded-2xl flex items-center justify-center transition-all duration-300 border ${isWishlisted ? 'bg-gold border-gold text-white' : 'bg-white border-stone-100 text-stone-400 hover:text-gold'
+                                        }`}
+                                    title={isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
+                                >
+                                    <Heart size={20} fill={isWishlisted ? "currentColor" : "none"} />
                                 </button>
                             </div>
                         </div>

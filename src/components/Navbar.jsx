@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { Search, ShoppingBag, User, Menu, X } from 'lucide-react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Search, ShoppingBag, User, Heart, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 import CartModal from './shop/CartModal';
 import logo from '../assets/logo.png';
 
 const Navbar = () => {
     const { cartCount, setIsCartOpen } = useCart();
+    const { wishlistCount } = useWishlist();
+    const location = useLocation();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    const isHomePage = location.pathname === '/';
 
     useEffect(() => {
         const handleScroll = () => {
@@ -31,7 +36,9 @@ const Navbar = () => {
 
     return (
         <nav
-            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/30 backdrop-blur-md shadow-sm py-4 text-primary-dark' : 'bg-transparent py-6'
+            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled || !isHomePage
+                ? 'bg-white/70 backdrop-blur-xl shadow-sm py-4 text-primary-dark border-b border-stone-100'
+                : 'bg-transparent py-6 text-white'
                 }`}
         >
             <div className="container flex items-center justify-between">
@@ -52,7 +59,7 @@ const Navbar = () => {
                             to={link.path}
                             end={link.path === '/'}
                             className={({ isActive }) =>
-                                `text-sm font-medium tracking-wide transition-colors ${isActive ? 'text-gold' : isScrolled ? 'text-primary-dark hover:text-gold' : 'text-white hover:text-gold'}`
+                                `text-sm font-black tracking-widest transition-colors ${isActive ? 'text-gold' : (isScrolled || !isHomePage) ? 'text-primary-dark hover:text-gold' : 'text-white hover:text-gold'}`
                             }
                         >
                             {link.name.toUpperCase()}
@@ -61,12 +68,20 @@ const Navbar = () => {
                 </div>
 
                 {/* Icons - Visible on all screens */}
-                <div className={`flex items-center space-x-4 md:space-x-6 ${isScrolled ? 'text-primary-dark' : 'text-white'}`}>
+                <div className={`flex items-center space-x-4 md:space-x-6 ${(isScrolled || !isHomePage) ? 'text-primary-dark' : 'text-white'}`}>
                     <button className="hover:text-gold transition-colors">
                         <Search size={20} />
                     </button>
                     <Link to="/profile" className="hover:text-gold transition-colors">
                         <User size={20} />
+                    </Link>
+                    <Link to="/wishlist" className="hover:text-gold transition-colors relative">
+                        <Heart size={20} />
+                        {wishlistCount > 0 && (
+                            <span className="absolute -top-2 -right-2 bg-gold text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center border border-white">
+                                {wishlistCount}
+                            </span>
+                        )}
                     </Link>
                     <button
                         onClick={() => setIsCartOpen(true)}
