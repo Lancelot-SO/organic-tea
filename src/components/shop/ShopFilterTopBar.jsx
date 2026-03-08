@@ -7,8 +7,11 @@ const ShopFilterTopBar = ({
     onSort,
     totalCount,
     activeCategory,
+    priceMin,
+    priceMax,
     onClear
 }) => {
+    const hasPriceFilter = priceMin !== null || priceMax !== null;
     return (
         <div className="space-y-6 mb-12">
             {/* Search and Sort */}
@@ -55,7 +58,12 @@ const ShopFilterTopBar = ({
                             Search: {searchQuery}
                         </div>
                     )}
-                    {!activeCategory && !searchQuery && (
+                    {hasPriceFilter && (
+                        <div className="flex items-center gap-2 bg-primary-dark text-white px-4 py-1.5 rounded-sm text-[10px] font-bold uppercase tracking-widest">
+                            Price: {priceMin != null ? `GHS ${priceMin}` : 'GHS 0'} – {priceMax != null ? `GHS ${priceMax}` : '∞'}
+                        </div>
+                    )}
+                    {!activeCategory && !searchQuery && !hasPriceFilter && (
                         <span className="text-[10px] font-bold text-stone-300 uppercase tracking-widest">None</span>
                     )}
 
@@ -64,7 +72,7 @@ const ShopFilterTopBar = ({
                     </span>
                 </div>
 
-                {(activeCategory || searchQuery) && (
+                {(activeCategory || searchQuery || hasPriceFilter) && (
                     <button
                         onClick={onClear}
                         className="flex items-center gap-2 text-gold hover:text-gold-dark transition-colors text-[10px] font-black uppercase tracking-[0.2em]"

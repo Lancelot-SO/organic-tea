@@ -12,6 +12,8 @@ export const useProducts = (options = {}) => {
         sortOrder = 'desc',
         limit = 20,
         page = 1,
+        priceMin = null,
+        priceMax = null,
     } = options;
 
     const [products, setProducts] = useState([]);
@@ -43,7 +45,7 @@ export const useProducts = (options = {}) => {
         try {
             let query = supabase
                 .from('products')
-                .select('*, categories(name, slug)', { count: 'exact' })
+                .select('*, categories(name, slug), average_rating, review_count', { count: 'exact' })
                 .eq('is_published', true);
 
             // Filter by category
@@ -57,6 +59,14 @@ export const useProducts = (options = {}) => {
             // Search
             if (searchQuery) {
                 query = query.ilike('name', `%${searchQuery}%`);
+            }
+
+            // Price range
+            if (priceMin !== null && priceMin !== '') {
+                query = query.gte('price', Number(priceMin));
+            }
+            if (priceMax !== null && priceMax !== '') {
+                query = query.lte('price', Number(priceMax));
             }
 
             // Sorting
@@ -78,14 +88,14 @@ export const useProducts = (options = {}) => {
         } finally {
             setLoading(false);
         }
-    }, [categorySlug, searchQuery, sortBy, sortOrder, limit, page, categories]);
+    }, [categorySlug, searchQuery, sortBy, sortOrder, limit, page, categories, priceMin, priceMax]);
 
     // Fetch single product by slug
     const fetchProductBySlug = useCallback(async (slug) => {
         try {
             const { data, error } = await supabase
                 .from('products')
-                .select('*, categories(name, slug)')
+                .select('*, categories(name, slug), average_rating, review_count')
                 .eq('slug', slug)
                 .eq('is_published', true)
                 .single();

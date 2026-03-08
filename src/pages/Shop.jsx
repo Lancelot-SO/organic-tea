@@ -18,6 +18,8 @@ const Shop = () => {
         sortOrder: 'desc',
         limit: 12,
         page: 1,
+        priceMin: null,
+        priceMax: null,
     });
 
     const {
@@ -59,6 +61,10 @@ const Shop = () => {
         setOptions(prev => ({ ...prev, categorySlug: slug, page: 1 }));
     };
 
+    const handlePriceChange = (min, max) => {
+        setOptions(prev => ({ ...prev, priceMin: min, priceMax: max, page: 1 }));
+    };
+
     const clearFilters = () => {
         setOptions({
             categorySlug: null,
@@ -67,6 +73,8 @@ const Shop = () => {
             sortOrder: 'desc',
             limit: 12,
             page: 1,
+            priceMin: null,
+            priceMax: null,
         });
     };
 
@@ -90,6 +98,9 @@ const Shop = () => {
                             categories={categories}
                             selectedCategory={options.categorySlug}
                             onCategoryChange={handleCategoryChange}
+                            priceMin={options.priceMin}
+                            priceMax={options.priceMax}
+                            onPriceChange={handlePriceChange}
                         />
                     </div>
 
@@ -101,6 +112,8 @@ const Shop = () => {
                             onSort={handleSort}
                             totalCount={totalCount}
                             activeCategory={categories.find(c => c.slug === options.categorySlug)?.name}
+                            priceMin={options.priceMin}
+                            priceMax={options.priceMax}
                             onClear={clearFilters}
                         />
 

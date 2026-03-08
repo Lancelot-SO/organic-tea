@@ -17,7 +17,10 @@ import {
 import { useProducts } from '../hooks/useProducts';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
+import { useReviews } from '../hooks/useReviews';
+import { useAuth } from '../context/AuthContext';
 import ShopProductCard from '../components/shop/ShopProductCard';
+import StarRating from '../components/shop/StarRating';
 
 const ProductDetails = () => {
     const { slug } = useParams();
@@ -30,6 +33,11 @@ const ProductDetails = () => {
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
     const [activeTab, setActiveTab] = useState('description');
+
+    const { user } = useAuth();
+    const { reviews, loading: reviewsLoading, fetchReviews, addReview } = useReviews(product?.id);
+    const [reviewForm, setReviewForm] = useState({ rating: 5, comment: '' });
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         const loadProduct = async () => {
@@ -45,6 +53,32 @@ const ProductDetails = () => {
         };
         loadProduct();
     }, [slug, fetchProductBySlug, navigate]);
+
+    useEffect(() => {
+        if (product?.id && activeTab === 'reviews') {
+            fetchReviews();
+        }
+    }, [product?.id, activeTab, fetchReviews]);
+
+    const handleReviewSubmit = async (e) => {
+        e.preventDefault();
+        if (!user) return alert('Please sign in to leave a review');
+
+        setIsSubmitting(true);
+        try {
+            await addReview({
+                userId: user.id,
+                rating: reviewForm.rating,
+                comment: reviewForm.comment
+            });
+            setReviewForm({ rating: 5, comment: '' });
+            alert('Thank you for your review!');
+        } catch (err) {
+            alert('Failed to submit review. If you haven\'t run the SQL setup, please do so first.');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     const handleAddToCart = () => {
         for (let i = 0; i < quantity; i++) {
@@ -126,17 +160,13 @@ const ProductDetails = () => {
                                 </h1>
 
                                 <div className="flex items-center gap-6 mb-10">
-                                    <div className="flex gap-1">
-                                        {[...Array(5)].map((_, i) => (
-                                            <Star
-                                                key={i}
-                                                size={16}
-                                                fill={i < 5 ? "#D4AF37" : "none"}
-                                                className={i < 5 ? "text-gold" : "text-stone-200"}
-                                            />
-                                        ))}
+                                    <div className="flex items-center gap-3">
+                                        <StarRating rating={product.average_rating || 0} size={18} />
+                                        <span className="text-sm font-bold text-primary-dark">{(product.average_rating || 0).toFixed(1)}</span>
                                     </div>
-                                    <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest border-l border-stone-200 pl-6">Highly Rated Tea</span>
+                                    <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest border-l border-stone-200 pl-6">
+                                        {product.review_count || 0} Authentic {product.review_count === 1 ? 'Review' : 'Reviews'}
+                                    </span>
                                 </div>
 
                                 <p className="text-stone-500 text-lg leading-relaxed mb-10 italic">
@@ -256,8 +286,112 @@ const ProductDetails = () => {
                                     </div>
                                 )}
                                 {activeTab === 'reviews' && (
-                                    <div className="p-12 bg-white rounded-3xl border-2 border-dashed border-stone-100">
-                                        <p className="text-stone-400 font-bold uppercase tracking-widest text-xs">Authentic feedback from our community coming soon.</p>
+                                    <div className="space-y-16">
+                                        {/* Review Submission Form */}
+                                        {user ? (
+                                            <div className="bg-white p-10 rounded-[2.5rem] border border-stone-100 shadow-xl shadow-stone-200/20 text-left">
+                                                <h3 className="text-2xl font-heading font-black text-primary-dark tracking-tight mb-8">Share Your Experience</h3>
+                                                <form onSubmit={handleReviewSubmit} className="space-y-8">
+                                                    <div className="space-y-3">
+                                                        <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest ml-1">Your Rating</p>
+                                                        <div className="flex gap-2">
+                                                            {[1, 2, 3, 4, 5].map((num) => (
+                                                                <button
+                                                                    key={num}
+                                                                    type="button"
+                                                                    onClick={() => setReviewForm(prev => ({ ...prev, rating: num }))}
+                                                                    className="transition-transform active:scale-95"
+                                                                >
+                                                                    <Star
+                                                                        size={24}
+                                                                        className={num <= reviewForm.rating ? "text-gold fill-gold" : "text-stone-200"}
+                                                                    />
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                    <div className="space-y-3">
+                                                        <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest ml-1">Your Thoughts</p>
+                                                        <textarea
+                                                            required
+                                                            rows="4"
+                                                            value={reviewForm.comment}
+                                                            onChange={(e) => setReviewForm(prev => ({ ...prev, comment: e.target.value }))}
+                                                            placeholder="How was the aroma? The taste? The feeling..."
+                                                            className="w-full bg-stone-50 border border-stone-100 rounded-3xl p-6 text-sm font-medium focus:outline-none focus:border-gold transition-all resize-none"
+                                                        />
+                                                    </div>
+                                                    <button
+                                                        type="submit"
+                                                        disabled={isSubmitting}
+                                                        className="bg-primary-dark text-white font-black px-12 py-4 rounded-2xl hover:bg-gold transition-all duration-500 shadow-lg shadow-primary-dark/10 uppercase tracking-[0.2em] text-[10px] disabled:opacity-50"
+                                                    >
+                                                        {isSubmitting ? 'Publishing...' : 'Publish Review'}
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        ) : (
+                                            <div className="bg-white p-12 rounded-[2.5rem] border-2 border-dashed border-stone-100 flex flex-col items-center gap-6">
+                                                <div className="p-4 bg-stone-50 rounded-2xl">
+                                                    <Star size={32} className="text-stone-200" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <p className="text-primary-dark font-black tracking-tight">Join the conversation</p>
+                                                    <p className="text-stone-400 text-sm font-medium">Please sign in to share your experience with this tea selection.</p>
+                                                </div>
+                                                <Link to="/profile" className="text-gold font-bold uppercase tracking-widest text-xs border-b border-gold pb-1 hover:text-gold-dark hover:border-gold-dark transition-all">Sign In Now</Link>
+                                            </div>
+                                        )}
+
+                                        {/* Reviews List */}
+                                        <div className="space-y-10 text-left">
+                                            <div className="flex items-center justify-between mb-2">
+                                                <h3 className="text-2xl font-heading font-black text-primary-dark tracking-tight">Community Voices</h3>
+                                                {reviews.length > 0 && <span className="text-[10px] font-black text-stone-300 uppercase tracking-widest">{reviews.length} Feedbacks</span>}
+                                            </div>
+
+                                            {reviewsLoading ? (
+                                                <div className="flex justify-center py-20">
+                                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold"></div>
+                                                </div>
+                                            ) : reviews.length === 0 ? (
+                                                <div className="py-20 text-center bg-stone-50/50 rounded-[2.5rem] border border-stone-100">
+                                                    <p className="text-stone-300 font-bold uppercase tracking-widest text-xs italic">Be the first to share your journey with this blend.</p>
+                                                </div>
+                                            ) : (
+                                                <div className="grid grid-cols-1 gap-8">
+                                                    {reviews.map((review) => (
+                                                        <motion.div
+                                                            key={review.id}
+                                                            initial={{ opacity: 0, x: -20 }}
+                                                            whileInView={{ opacity: 1, x: 0 }}
+                                                            className="bg-white p-8 rounded-[2.5rem] border border-stone-100 shadow-sm relative overflow-hidden group"
+                                                        >
+                                                            <div className="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-gold/10 transition-colors duration-1000" />
+                                                            <div className="flex items-start gap-6 relative z-10">
+                                                                <div className="w-14 h-14 bg-stone-50 rounded-2xl flex items-center justify-center font-black text-primary-dark text-xl border border-stone-100 relative overflow-hidden">
+                                                                    {review.profile?.avatar_url ? (
+                                                                        <img src={review.profile.avatar_url} alt={review.profile.full_name} className="w-full h-full object-cover" />
+                                                                    ) : (
+                                                                        <span className="opacity-40">{review.profile?.full_name?.charAt(0) || 'U'}</span>
+                                                                    )}
+                                                                </div>
+                                                                <div className="grow">
+                                                                    <div className="flex items-center justify-between mb-2">
+                                                                        <div>
+                                                                            <h4 className="text-sm font-black text-primary-dark uppercase tracking-tight mb-1">{review.profile?.full_name || 'Humble Guest'}</h4>
+                                                                            <StarRating rating={review.rating} size={12} />
+                                                                        </div>
+                                                                        <span className="text-[10px] font-bold text-stone-300 uppercase tracking-widest">{new Date(review.created_at).toLocaleDateString()}</span>
+                                                                    </div>
+                                                                    <p className="text-stone-500 text-sm leading-relaxed italic">{review.comment}</p>
+                                                                </div>
+                                                            </div>
+                                                        </motion.div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 )}
                             </motion.div>

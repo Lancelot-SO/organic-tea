@@ -130,6 +130,16 @@ const DashboardLayout = () => {
                                 )}
                             </NavLink>
                         ))}
+                        <div className="pt-6 mt-4 border-t border-white/5">
+                            <p className="px-4 text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] mb-4">Quick Links</p>
+                            <a
+                                href="/shop"
+                                className="flex items-center gap-4 px-4 py-3.5 rounded-2xl text-white/50 hover:text-white hover:bg-white/5 transition-all duration-500 group"
+                            >
+                                <ShoppingBag size={20} className="group-hover:text-gold group-hover:scale-105 transition-all duration-300" />
+                                <span className="text-sm font-medium tracking-wide">Visit Shop</span>
+                            </a>
+                        </div>
                     </nav>
 
                     {/* Sidebar Footer */}

@@ -129,6 +129,7 @@ export const AuthProvider = ({ children }) => {
             password,
             options: {
                 data: { full_name: fullName },
+                emailRedirectTo: 'https://staging.theafricateacompany.com/redirect',
             },
         });
         if (error) throw error;

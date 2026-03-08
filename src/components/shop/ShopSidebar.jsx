@@ -37,11 +37,28 @@ const CollapsibleSection = ({ title, children, defaultOpen = true }) => {
     );
 };
 
-const ShopSidebar = ({ categories = [], selectedCategory, onCategoryChange }) => {
+const ShopSidebar = ({ categories = [], selectedCategory, onCategoryChange, priceMin, priceMax, onPriceChange }) => {
     const priceRanges = [
-        "Under Ghs.10", "Under Ghs.50", "Ghs.60 To Ghs.100",
-        "Ghs.110 To Ghs.240", "Ghs.250 To Ghs.300", "Ghs.310 To Ghs.350"
+        { label: "Under GHS 10", min: null, max: 10 },
+        { label: "Under GHS 50", min: null, max: 50 },
+        { label: "GHS 60 To GHS 100", min: 60, max: 100 },
+        { label: "GHS 110 To GHS 240", min: 110, max: 240 },
+        { label: "GHS 250 To GHS 300", min: 250, max: 300 },
+        { label: "GHS 310 To GHS 350", min: 310, max: 350 },
     ];
+
+    const isPriceRangeSelected = (range) => {
+        return (priceMin === range.min || (priceMin === null && range.min === null))
+            && (priceMax === range.max || (priceMax === null && range.max === null));
+    };
+
+    const isNoPriceFilter = priceMin === null && priceMax === null;
+
+    // Calculate slider visual positions based on min/max inputs
+    const sliderMin = priceMin !== null && priceMin !== '' ? Number(priceMin) : 0;
+    const sliderMax = priceMax !== null && priceMax !== '' ? Number(priceMax) : 500;
+    const leftPercent = Math.max(0, Math.min(100, (sliderMin / 500) * 100));
+    const rightPercent = Math.max(0, Math.min(100, 100 - (sliderMax / 500) * 100));
 
     return (
         <aside className="space-y-12 lg:pr-8">
@@ -85,9 +102,10 @@ const ShopSidebar = ({ categories = [], selectedCategory, onCategoryChange }) =>
             <CollapsibleSection title="Price Range">
                 <div className="px-2 pt-2 pb-6">
                     <div className="relative h-1 bg-stone-200 rounded-full">
-                        <div className="absolute left-[10%] right-[30%] h-full bg-gold rounded-full" />
-                        <div className="absolute left-[10%] top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-gold rounded-full shadow-md cursor-pointer" />
-                        <div className="absolute right-[30%] top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-gold rounded-full shadow-md cursor-pointer" />
+                        <div
+                            className="absolute h-full bg-gold rounded-full transition-all duration-200"
+                            style={{ left: `${leftPercent}%`, right: `${rightPercent}%` }}
+                        />
                     </div>
                     <div className="flex gap-4 mt-8">
                         <div className="w-1/2">
@@ -95,6 +113,8 @@ const ShopSidebar = ({ categories = [], selectedCategory, onCategoryChange }) =>
                             <input
                                 type="number"
                                 placeholder="0"
+                                value={priceMin ?? ''}
+                                onChange={(e) => onPriceChange(e.target.value === '' ? null : Number(e.target.value), priceMax)}
                                 className="w-full bg-stone-50 border border-stone-100 px-4 py-2 text-xs focus:outline-none focus:border-gold rounded-sm"
                             />
                         </div>
@@ -102,7 +122,9 @@ const ShopSidebar = ({ categories = [], selectedCategory, onCategoryChange }) =>
                             <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1 ml-1">Max</p>
                             <input
                                 type="number"
-                                placeholder="1000"
+                                placeholder="500"
+                                value={priceMax ?? ''}
+                                onChange={(e) => onPriceChange(priceMin, e.target.value === '' ? null : Number(e.target.value))}
                                 className="w-full bg-stone-50 border border-stone-100 px-4 py-2 text-xs focus:outline-none focus:border-gold rounded-sm"
                             />
                         </div>
@@ -110,6 +132,22 @@ const ShopSidebar = ({ categories = [], selectedCategory, onCategoryChange }) =>
                 </div>
 
                 <div className="space-y-3">
+                    {/* All prices option */}
+                    <label className="flex items-center gap-3 group cursor-pointer">
+                        <div className="relative flex items-center justify-center w-5 h-5">
+                            <input
+                                type="radio"
+                                name="price-range"
+                                className="peer appearance-none w-5 h-5 border-2 border-stone-200 rounded-full checked:border-gold transition-all"
+                                checked={isNoPriceFilter}
+                                onChange={() => onPriceChange(null, null)}
+                            />
+                            <div className="absolute w-2.5 h-2.5 bg-gold rounded-full opacity-0 peer-checked:opacity-100 transition-opacity" />
+                        </div>
+                        <span className="text-sm text-stone-500 group-hover:text-primary-dark transition-colors">
+                            All Prices
+                        </span>
+                    </label>
                     {priceRanges.map((range, idx) => (
                         <label key={idx} className="flex items-center gap-3 group cursor-pointer">
                             <div className="relative flex items-center justify-center w-5 h-5">
@@ -117,11 +155,13 @@ const ShopSidebar = ({ categories = [], selectedCategory, onCategoryChange }) =>
                                     type="radio"
                                     name="price-range"
                                     className="peer appearance-none w-5 h-5 border-2 border-stone-200 rounded-full checked:border-gold transition-all"
+                                    checked={isPriceRangeSelected(range)}
+                                    onChange={() => onPriceChange(range.min, range.max)}
                                 />
                                 <div className="absolute w-2.5 h-2.5 bg-gold rounded-full opacity-0 peer-checked:opacity-100 transition-opacity" />
                             </div>
                             <span className="text-sm text-stone-500 group-hover:text-primary-dark transition-colors">
-                                {range}
+                                {range.label}
                             </span>
                         </label>
                     ))}

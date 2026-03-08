@@ -16,9 +16,11 @@ import {
     Package,
     Upload,
     TrendingUp,
-    ChevronLeft
+    ChevronLeft,
+    AlertCircle
 } from 'lucide-react';
 import { useAdminProducts, useProducts } from '../../hooks/useProducts';
+import StarRating from '../shop/StarRating';
 
 const DashboardProducts = () => {
     const { categories } = useProducts();
@@ -258,6 +260,7 @@ const DashboardProducts = () => {
                                 <th className="px-6 py-4 text-[10px] font-black text-stone-300 uppercase tracking-[0.2em] cursor-pointer group" onClick={() => handleSort('stock_quantity')}>
                                     <div className="flex items-center gap-2 group-hover:text-gold transition-colors">Reserve <Filter size={10} /></div>
                                 </th>
+                                <th className="px-6 py-4 text-[10px] font-black text-stone-300 uppercase tracking-[0.2em] text-center">Feedback</th>
                                 <th className="px-6 py-4 text-[10px] font-black text-stone-300 uppercase tracking-[0.2em] text-center">Status</th>
                                 <th className="px-8 py-4 text-[10px] font-black text-stone-300 uppercase tracking-[0.2em] text-right">Registry</th>
                             </tr>
@@ -309,6 +312,11 @@ const DashboardProducts = () => {
                                                             <TrendingUp size={8} fill="currentColor" /> {product.sales_count} SOLD
                                                         </span>
                                                     )}
+                                                    {product.stock_quantity <= 10 && (
+                                                        <span className="inline-flex items-center gap-1 bg-red-50 text-red-500 px-2 py-0.5 rounded-full text-[8px] ml-2 animate-pulse border border-red-100">
+                                                            <AlertCircle size={8} fill="currentColor" /> LOW STOCK
+                                                        </span>
+                                                    )}
                                                 </p>
                                                 <p className="text-sm font-black text-primary-dark tracking-tight leading-none group-hover:text-gold transition-colors">{product.name}</p>
                                                 <div className="flex items-center gap-2 mt-2">
@@ -344,6 +352,16 @@ const DashboardProducts = () => {
                                                     className={`h-full ${product.stock_quantity > 10 ? 'bg-primary-dark' : 'bg-red-400'}`}
                                                 />
                                             </div>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-6 bg-stone-50/50 group-hover:bg-gold/5 transition-colors duration-500 border-r border-white/50">
+                                        <div className="flex flex-col items-center gap-1">
+                                            <StarRating rating={product.average_rating || 0} size={12} />
+                                            {product.review_count > 0 ? (
+                                                <span className="text-[9px] font-black text-primary-dark/40 uppercase tracking-widest">{product.review_count} Reviews</span>
+                                            ) : (
+                                                <span className="text-[9px] font-black text-stone-300 uppercase tracking-widest italic">No Reviews</span>
+                                            )}
                                         </div>
                                     </td>
                                     <td className="px-6 py-6 bg-stone-50/50 group-hover:bg-gold/5 text-center transition-colors duration-500 border-r border-white/50">

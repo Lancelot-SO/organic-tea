@@ -6,7 +6,7 @@ import HomeAbout from '../components/landingpage/HomeAbout';
 import ProductShowcase from '../components/landingpage/ProductShowcase';
 import TeaCollection from '../components/landingpage/TeaCollection';
 import FeaturedProduct from '../components/landingpage/FeaturedProduct';
-import BlogSection from '../components/landingpage/BlogSection';
+// import BlogSection from '../components/landingpage/BlogSection';
 import NewsletterSection from '../components/landingpage/NewsletterSection';
 import Banner from '../components/Banner';
 
@@ -21,7 +21,7 @@ const Home = () => {
             <TeaCollection />
             <Banner />
             <FeaturedProduct />
-            <BlogSection />
+            {/* <BlogSection /> */}
             <NewsletterSection />
         </>
     );

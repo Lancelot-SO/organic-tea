@@ -4,6 +4,7 @@ import { ArrowUpRight, Star, ShoppingCart, Eye, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
+import StarRating from './StarRating';
 
 const ShopProductCard = ({ product, delay = 0 }) => {
     const { addToCart, openPreview } = useCart();
@@ -89,15 +90,17 @@ const ShopProductCard = ({ product, delay = 0 }) => {
                     {/* Footer Info */}
                     <div className="text-center mt-auto w-full pb-1">
                         {/* Rating */}
-                        <div className="flex justify-center gap-1 mb-2">
-                            {[...Array(5)].map((_, i) => (
-                                <Star
-                                    key={i}
-                                    size={14}
-                                    fill={i < (product.rating || 5) ? "#425043" : "none"}
-                                    className={i < (product.rating || 5) ? "text-primary-dark" : "text-stone-200"}
-                                />
-                            ))}
+                        <div className="flex flex-col items-center gap-1 mb-2">
+                            <StarRating
+                                rating={product.average_rating || 0}
+                                size={14}
+                                className="justify-center"
+                            />
+                            {product.review_count > 0 && (
+                                <span className="text-[10px] text-stone-400 font-bold uppercase tracking-widest">
+                                    ({product.review_count} {product.review_count === 1 ? 'Review' : 'Reviews'})
+                                </span>
+                            )}
                         </div>
 
                         <Link to={`/product/${product.slug}`}>

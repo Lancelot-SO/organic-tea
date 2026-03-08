@@ -21,8 +21,10 @@ import {
     Clock,
     CheckCircle2,
     Package,
-    X
+    X,
+    AlertCircle
 } from 'lucide-react';
+import { useProducts } from '../../hooks/useProducts';
 
 const StatCard = ({ title, value, icon: Icon, trend, trendValue, color, delay }) => (
     <motion.div
@@ -50,8 +52,11 @@ const StatCard = ({ title, value, icon: Icon, trend, trendValue, color, delay })
 );
 
 const DashboardOverview = () => {
-    const { fetchDashboardStats, loading } = useAdminOrders();
+    const { fetchDashboardStats, loading: statsLoading } = useAdminOrders();
+    const { products, loading: productsLoading } = useProducts({ limit: 100 });
     const [stats, setStats] = useState(null);
+
+    const loading = statsLoading || productsLoading;
 
     useEffect(() => {
         const loadStats = async () => {
@@ -100,16 +105,26 @@ const DashboardOverview = () => {
     return (
         <div className="space-y-12 pb-12">
             {/* Page Header */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-                <div>
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8">
+                <div className="grow">
                     <div className="flex items-center gap-3 mb-3">
                         <span className="w-12 h-[2px] bg-gold"></span>
                         <span className="text-[10px] font-bold text-gold uppercase tracking-[0.3em]">Business Intel</span>
                     </div>
-                    <h1 className="text-4xl font-heading font-bold text-primary-dark tracking-tighter">Command Center</h1>
-                    <p className="text-stone-500 mt-2 max-w-md">Your business is flourishing. Here is a live overview of your performance and growth metrics.</p>
+                    <div className="flex flex-wrap items-center gap-6">
+                        <h1 className="text-4xl font-heading font-bold text-primary-dark tracking-tighter">Command Center</h1>
+                        <Link
+                            to="/shop"
+                            className="flex items-center gap-2 px-6 py-2.5 bg-gold/10 text-gold border border-gold/20 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-gold hover:text-white transition-all duration-500 group shadow-lg shadow-gold/5"
+                        >
+                            <ShoppingBag size={14} className="group-hover:scale-110 transition-transform" />
+                            View Store
+                            <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                        </Link>
+                    </div>
+                    <p className="text-stone-500 mt-3 max-w-md italic">Your business is flourishing. Here is a live overview of your performance and growth metrics.</p>
                 </div>
-                <div className="flex gap-3 bg-white p-1.5 rounded-2xl border border-stone-100 shadow-sm">
+                <div className="flex gap-3 bg-white p-1.5 rounded-2xl border border-stone-100 shadow-sm shadow-stone-200/50">
                     {['24H', '7D', '30D', 'All'].map((period, i) => (
                         <button
                             key={period}
@@ -360,47 +375,40 @@ const DashboardOverview = () => {
                 </motion.div>
             </div>
 
-            {/* Bottom Row: Recent & Top Products */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            {/* Bottom Row: Recent & Top Products & Stock Alerts */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
                 {/* Recent Transactions */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-white rounded-[2.5rem] border border-stone-100 shadow-xl shadow-stone-200/10 overflow-hidden"
+                    className="bg-white rounded-[2.5rem] border border-stone-100 shadow-xl shadow-stone-200/10 overflow-hidden lg:col-span-1"
                 >
-                    <div className="p-10 border-b border-stone-50 flex justify-between items-center">
-                        <h2 className="text-2xl font-bold text-primary-dark font-heading tracking-tight">Live Transactions</h2>
-                        <Link to="/admin/orders" className="bg-stone-50 hover:bg-gold hover:text-white p-3 rounded-xl text-stone-400 transition-all">
-                            <ArrowUpRight size={20} />
+                    <div className="p-8 border-b border-stone-50 flex justify-between items-center">
+                        <h2 className="text-xl font-bold text-primary-dark font-heading tracking-tight">Live Orders</h2>
+                        <Link to="/admin/orders" className="bg-stone-50 hover:bg-gold hover:text-white p-2.5 rounded-xl text-stone-400 transition-all">
+                            <ArrowUpRight size={18} />
                         </Link>
                     </div>
                     <div className="p-4 overflow-x-auto">
                         <table className="w-full text-left border-separate border-spacing-y-3">
-                            <thead>
-                                <tr>
-                                    <th className="px-6 pb-2 text-[10px] font-bold text-stone-300 uppercase tracking-widest">Order</th>
-                                    <th className="px-6 pb-2 text-[10px] font-bold text-stone-300 uppercase tracking-widest text-right">Settlement</th>
-                                </tr>
-                            </thead>
                             <tbody>
-                                {(stats?.recentOrders || []).length > 0 ? stats.recentOrders.map((order) => (
-                                    <tr key={order.id} className="group cursor-pointer" onClick={() => navigate?.(`/admin/orders`)}>
+                                {(stats?.recentOrders || []).length > 0 ? stats.recentOrders.slice(0, 5).map((order) => (
+                                    <tr key={order.id} className="group cursor-pointer">
                                         <td className="px-6 py-4 bg-stone-50/50 group-hover:bg-gold/5 rounded-l-2xl transition-colors">
                                             <div className="flex items-center gap-4">
                                                 <div className="w-10 h-10 rounded-2xl bg-white border border-stone-100 flex items-center justify-center font-bold text-primary-dark shadow-sm">
                                                     #{order.order_number.split('-').pop()}
                                                 </div>
                                                 <div>
-                                                    <p className="text-sm font-bold text-primary-dark tracking-tight">{order.order_number}</p>
-                                                    <p className="text-[10px] text-stone-400 font-bold uppercase mt-1">Status: {order.status}</p>
+                                                    <p className="text-xs font-bold text-primary-dark tracking-tight">{order.order_number.slice(0, 12)}...</p>
+                                                    <p className="text-[9px] text-stone-400 font-bold uppercase mt-1">GHS {parseFloat(order.total).toFixed(0)}</p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 bg-stone-50/50 group-hover:bg-gold/5 rounded-r-2xl text-right transition-colors">
-                                            <p className="text-sm font-black text-primary-dark tracking-tighter">GHS {parseFloat(order.total).toFixed(2)}</p>
-                                            <p className={`text-[10px] font-bold uppercase mt-1 ${order.payment_status === 'success' ? 'text-green-500' : 'text-gold'}`}>
+                                            <span className={`text-[9px] font-black uppercase px-2 py-1 rounded-lg ${order.payment_status === 'success' ? 'bg-green-50 text-green-500' : 'bg-gold/10 text-gold'}`}>
                                                 {order.payment_status}
-                                            </p>
+                                            </span>
                                         </td>
                                     </tr>
                                 )) : (
@@ -413,29 +421,81 @@ const DashboardOverview = () => {
                     </div>
                 </motion.div>
 
-                {/* Top Sellers Panel */}
+                {/* Stock Criticality Module (Middle) */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-white rounded-[2.5rem] border border-stone-100 shadow-xl shadow-stone-200/10 p-10"
+                    transition={{ delay: 0.1 }}
+                    className="bg-white p-10 rounded-[2.5rem] border border-stone-100 shadow-xl shadow-stone-200/20 overflow-hidden relative group h-full"
+                >
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full -mt-16 -mr-16 blur-2xl group-hover:bg-red-500/10 transition-colors" />
+                    <div className="relative z-10 flex flex-col h-full">
+                        <div className="flex items-center justify-between mb-8">
+                            <div>
+                                <h3 className="text-[10px] font-black text-stone-300 uppercase tracking-[0.2em] mb-1">Stock Criticality</h3>
+                                <p className="text-xl font-black text-primary-dark font-heading">Refill Required</p>
+                            </div>
+                            <div className="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center text-red-500 border border-red-100">
+                                <AlertCircle size={20} />
+                            </div>
+                        </div>
+
+                        <div className="space-y-4 max-h-[350px] overflow-y-auto custom-scrollbar pr-2 mb-8">
+                            {products?.filter(p => p.stock_quantity <= 10).length > 0 ? (
+                                products?.filter(p => p.stock_quantity <= 10).map((product) => (
+                                    <div key={product.id} className="flex items-center justify-between p-4 bg-red-50/50 rounded-2xl border border-red-100/30 group/item hover:bg-red-50 transition-colors">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 bg-white rounded-xl border border-red-100 p-1.5 flex items-center justify-center shrink-0">
+                                                <img src={product.image_url} alt="" className="w-full h-full object-contain" />
+                                            </div>
+                                            <div className="min-w-0">
+                                                <p className="text-sm font-bold text-primary-dark truncate group-hover/item:text-red-600 transition-colors">{product.name}</p>
+                                                <p className="text-[9px] font-bold text-red-400 uppercase tracking-widest leading-none mt-1">{product.stock_quantity} left</p>
+                                            </div>
+                                        </div>
+                                        <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse shrink-0" />
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="py-12 text-center">
+                                    <div className="w-12 h-12 bg-stone-50 rounded-2xl flex items-center justify-center text-stone-200 mx-auto mb-4">
+                                        <CheckCircle2 size={24} />
+                                    </div>
+                                    <p className="text-[10px] font-black text-stone-300 uppercase tracking-widest">Inventory Ideal</p>
+                                </div>
+                            )}
+                        </div>
+
+                        <Link
+                            to="/admin/products"
+                            className="mt-auto w-full py-4 bg-primary-dark text-white rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-gold transition-all shadow-xl shadow-primary-dark/20"
+                        >
+                            Manage Inventory <ArrowUpRight size={14} />
+                        </Link>
+                    </div>
+                </motion.div>
+
+                {/* Top Sellers Panel (Right) */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="bg-white rounded-[2.5rem] border border-stone-100 shadow-xl shadow-stone-200/10 p-10 h-full"
                 >
                     <div className="flex justify-between items-center mb-10">
-                        <h2 className="text-2xl font-bold text-primary-dark font-heading tracking-tight">Top Performance</h2>
+                        <h2 className="text-xl font-bold text-primary-dark font-heading tracking-tight">Performance</h2>
                         <div className="w-10 h-10 rounded-xl bg-primary-dark/5 flex items-center justify-center text-primary-dark">
-                            <TrendingUp size={20} />
+                            <TrendingUp size={18} />
                         </div>
                     </div>
                     <div className="space-y-8">
-                        {(stats?.topProducts || []).length > 0 ? stats.topProducts.map((item) => (
+                        {(stats?.topProducts || []).length > 0 ? stats.topProducts.slice(0, 4).map((item) => (
                             <div key={item.name} className="group">
                                 <div className="flex justify-between items-end mb-3">
-                                    <div>
-                                        <p className="text-sm font-bold text-primary-dark group-hover:text-gold transition-colors">{item.name}</p>
-                                        <p className="text-[10px] text-stone-400 font-bold uppercase tracking-widest mt-1">{item.vol}</p>
-                                    </div>
-                                    <span className="text-xs font-black text-primary-dark">{item.percent}%</span>
+                                    <p className="text-xs font-bold text-primary-dark group-hover:text-gold transition-colors truncate max-w-[70%]">{item.name}</p>
+                                    <span className="text-[10px] font-black text-primary-dark">{item.percent}%</span>
                                 </div>
-                                <div className="w-full h-2 bg-stone-50 rounded-full overflow-hidden">
+                                <div className="w-full h-1.5 bg-stone-50 rounded-full overflow-hidden">
                                     <motion.div
                                         initial={{ width: 0 }}
                                         animate={{ width: `${item.percent}%` }}
@@ -448,9 +508,6 @@ const DashboardOverview = () => {
                             <div className="text-center py-10 text-stone-400 text-xs font-bold uppercase tracking-widest">No product data available</div>
                         )}
                     </div>
-                    <Link to="/admin/products" className="w-full mt-10 p-4 border-2 border-dashed border-stone-100 rounded-3xl text-xs font-bold text-stone-400 hover:border-gold hover:text-gold transition-all duration-500 uppercase tracking-widest block text-center">
-                        Customize Inventory Reports
-                    </Link>
                 </motion.div>
             </div>
         </div>

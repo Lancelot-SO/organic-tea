@@ -558,6 +558,20 @@ h6 {
   animation: flameSpark 0.4s ease-in-out infinite;
 }
 
+/* Hero product float animation */
+@keyframes heroProductFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.hero-product-float {
+  animation: heroProductFloat 3.5s ease-in-out infinite;
+}
+
 /* Swiper Custom Pagination */
 .custom-pagination .swiper-pagination-bullet {
   width: 10px !important;

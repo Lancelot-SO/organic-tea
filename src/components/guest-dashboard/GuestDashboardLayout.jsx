@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { NavLink, useNavigate, Outlet } from 'react-router-dom';
 import {
@@ -24,6 +24,13 @@ const GuestDashboardLayout = () => {
         navigate('/profile');
     };
 
+    // Redirect unauthenticated users — must be in a useEffect, not in the render body
+    useEffect(() => {
+        if (!loading && !profileLoading && !user) {
+            navigate('/profile');
+        }
+    }, [user, loading, profileLoading, navigate]);
+
     if (loading || (profileLoading && !profile)) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-cream">
@@ -35,7 +42,6 @@ const GuestDashboardLayout = () => {
     }
 
     if (!user) {
-        navigate('/profile');
         return null;
     }
 
