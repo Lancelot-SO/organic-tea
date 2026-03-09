@@ -16,9 +16,10 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import { useProducts } from '../../hooks/useProducts';
 import { useOrders } from '../../hooks/useOrders';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 const GuestDashboardOverview = () => {
-    const { profile } = useAuth();
+    const { user, profile } = useAuth();
     const { categories } = useProducts();
     const { orders, loading } = useOrders();
 
@@ -140,7 +141,12 @@ const GuestDashboardOverview = () => {
                         </div>
                         <div className="flex flex-wrap items-center gap-4 mb-3">
                             <h1 className="text-3xl lg:text-4xl font-heading font-black">
-                                Welcome back, <span className="text-gold italic">{profile?.full_name?.split(' ')[0] || 'Tea Connoisseur'}</span>
+                                Welcome back, <span className="text-gold italic">
+                                    {profile?.full_name?.split(' ')[0] ||
+                                        user?.user_metadata?.full_name?.split(' ')[0] ||
+                                        orders[0]?.shipping_name?.split(' ')[0] ||
+                                        'Tea Connoisseur'}
+                                </span>
                             </h1>
                             <Link
                                 to="/shop"
@@ -184,6 +190,221 @@ const GuestDashboardOverview = () => {
                 ))}
             </motion.div>
 
+            {/* Order Analytics Widget - Full Width */}
+            <motion.div variants={itemVariants} className="bg-primary-dark rounded-4xl p-8 lg:p-10 text-white shadow-xl shadow-primary-dark/20 relative overflow-hidden">
+                {/* Decorative Background */}
+                <div className="absolute -top-20 -right-20 w-48 h-48 bg-gold/10 rounded-full blur-[60px]" />
+                <div className="absolute bottom-10 -left-10 w-32 h-32 bg-white/5 rounded-full blur-2xl" />
+
+                <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-8">
+                        <div className="w-10 h-10 rounded-xl bg-gold/20 flex items-center justify-center border border-gold/20">
+                            <TrendingUp size={20} className="text-gold" />
+                        </div>
+                        <h3 className="text-xl font-heading font-black text-white uppercase tracking-wide">Ledger Analytics</h3>
+                    </div>
+
+                    {loading ? (
+                        <div className="flex items-center justify-center p-12">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold/50"></div>
+                        </div>
+                    ) : orders.length === 0 ? (
+                        <div className="flex flex-col justify-center items-center text-center opacity-50 p-12">
+                            <Star size={32} className="text-stone-500 mb-4" />
+                            <p className="text-sm font-medium text-stone-400">Data will populate here once you place your first order.</p>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
+                            {/* Left Side: Text Metrics */}
+                            <div className="flex flex-col justify-between space-y-6 lg:col-span-1">
+                                {/* Total Items */}
+                                <div>
+                                    <div className="flex justify-between items-end mb-2">
+                                        <p className="text-[10px] font-black text-white/50 uppercase tracking-widest">Total Items Acquired</p>
+                                        <p className="text-2xl font-black font-heading tracking-tighter text-white">
+                                            {orders.reduce((acc, order) => {
+                                                const orderItemsCount = order.order_items?.reduce((itemAcc, item) => itemAcc + (item.quantity || 1), 0) || 0;
+                                                return acc + orderItemsCount;
+                                            }, 0)}
+                                        </p>
+                                    </div>
+                                    <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                                        <div className="h-full bg-linear-to-r from-gold to-white w-full rounded-full" />
+                                    </div>
+                                </div>
+
+                                {/* Average Order Value */}
+                                <div>
+                                    <div className="flex justify-between items-end mb-2">
+                                        <p className="text-[10px] font-black text-white/50 uppercase tracking-widest">Average Spend</p>
+                                        <p className="text-2xl font-black font-heading tracking-tighter text-white">
+                                            GHS {(orders.reduce((sum, o) => sum + parseFloat(o.total), 0) / orders.length).toFixed(0)}
+                                        </p>
+                                    </div>
+                                    <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                                        <div className="h-full bg-linear-to-r from-stone-400 to-white w-[75%] rounded-full opacity-80" />
+                                    </div>
+                                </div>
+
+                                {/* Largest Purchase */}
+                                <div>
+                                    <div className="flex justify-between items-end mb-2">
+                                        <p className="text-[10px] font-black text-white/50 uppercase tracking-widest">Largest Investment</p>
+                                        <p className="text-2xl font-black font-heading tracking-tighter text-gold">
+                                            GHS {Math.max(...orders.map(o => parseFloat(o.total))).toFixed(0)}
+                                        </p>
+                                    </div>
+                                    <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                                        <div className="h-full bg-linear-to-r from-gold-dark to-gold w-[90%] rounded-full shadow-[0_0_10px_rgba(212,175,55,0.8)]" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Right Side: The Bar Chart */}
+                            <div className="lg:col-span-2 h-[200px] lg:h-full min-h-[250px] bg-white/5 rounded-3xl p-4 border border-white/10 flex flex-col">
+                                <p className="text-[10px] font-black text-white/50 uppercase tracking-widest mb-4 ml-2">Spend History (GHS)</p>
+                                <div className="grow w-full h-full">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <BarChart
+                                            data={
+                                                [...orders].reverse().slice(-6).map((o, index) => ({
+                                                    name: `Order ${index + 1}`,
+                                                    spend: parseFloat(o.total)
+                                                }))
+                                            }
+                                            margin={{ top: 10, right: 10, left: -25, bottom: 0 }}
+                                        >
+                                            <XAxis
+                                                dataKey="name"
+                                                axisLine={false}
+                                                tickLine={false}
+                                                tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 10, fontWeight: 800 }}
+                                                dy={10}
+                                            />
+                                            <YAxis
+                                                axisLine={false}
+                                                tickLine={false}
+                                                tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 10, fontWeight: 800 }}
+                                            />
+                                            <Tooltip
+                                                cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                                                contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', color: '#fff' }}
+                                                itemStyle={{ color: '#D4AF37', fontWeight: 900 }}
+                                                formatter={(value) => [`GHS ${value}`, 'Spend']}
+                                                labelStyle={{ display: 'none' }}
+                                            />
+                                            <Bar dataKey="spend" radius={[6, 6, 6, 6]}>
+                                                {
+                                                    [...orders].reverse().slice(-6).map((entry, index) => (
+                                                        <Cell key={`cell-${index}`} fill={index === [...orders].reverse().slice(-6).length - 1 ? '#D4AF37' : 'rgba(255,255,255,0.2)'} />
+                                                    ))
+                                                }
+                                            </Bar>
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-white/40 text-[9px] font-black uppercase tracking-widest">
+                        <span>Analysis based on {orders.length} order{orders.length !== 1 ? 's' : ''}</span>
+                        <Leaf size={12} />
+                    </div>
+                </div>
+            </motion.div>
+
+            {/* Recent Orders Section */}
+            <motion.div variants={itemVariants} className="bg-primary-dark rounded-4xl p-8 lg:p-10 border border-stone-100 shadow-xl shadow-stone-200/10">
+                <div className="flex justify-between items-center mb-8">
+                    <div>
+                        <h3 className="text-xl font-heading font-black text-white uppercase tracking-wide">Recent Orders</h3>
+                        <p className="text-xs text-neutral-600 mt-1">Track and manage your tea orders</p>
+                    </div>
+                    <Link to="/guest/orders" className="text-[10px] font-black text-gold uppercase tracking-widest hover:text-primary-dark transition-colors flex items-center gap-2 group">
+                        View All <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                </div>
+
+                {loading ? (
+                    <div className="grow flex items-center justify-center p-12">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold"></div>
+                    </div>
+                ) : recentOrders.length === 0 ? (
+                    <div className="grow p-10 rounded-2xl bg-stone-50/50 border border-dashed border-stone-200 flex flex-col items-center justify-center text-center">
+                        <div className="w-16 h-16 rounded-2xl bg-gold/10 flex items-center justify-center mb-5">
+                            <Package size={28} className="text-gold" />
+                        </div>
+                        <p className="text-neutral-800 font-bold text-sm mb-2">Your order history</p>
+                        <p className="text-neutral-600 text-xs mb-6 max-w-sm">All your past and current orders will appear here. Start shopping to build your collection.</p>
+                        <Link to="/shop" className="bg-primary-dark text-white px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-gold transition-all shadow-lg shadow-primary-dark/10 flex items-center gap-2 group">
+                            <ShoppingBag size={14} />
+                            Start Shopping
+                            <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                    </div>
+                ) : (
+                    <div className="space-y-4 grow">
+                        {recentOrders.map((order) => (
+                            <Link
+                                key={order.id}
+                                to="/guest/orders"
+                                className="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-stone-50/50 rounded-2xl border border-stone-100 hover:border-gold/30 hover:bg-white hover:shadow-lg transition-all group gap-4"
+                            >
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-10 shrink-0 rounded-xl bg-white border border-stone-100 flex items-center justify-center text-primary-dark font-black font-mono text-[10px]">
+                                        #{order.order_number.split('-').pop()}
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-black text-primary-dark tracking-tight">Order #{order.order_number}</p>
+                                        <p className="text-[10px] text-stone-400 font-bold uppercase tracking-widest mt-0.5">
+                                            {new Date(order.created_at).toLocaleDateString()} • {order.order_items?.length || 0} Items
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center justify-between sm:justify-end gap-6 sm:w-auto w-full pl-14 sm:pl-0">
+                                    <div className="text-left sm:text-right flex flex-col sm:items-end">
+                                        <p className="text-sm font-black text-primary-dark">GHS {parseFloat(order.total).toFixed(2)}</p>
+                                        <span className={`text-[9px] font-black uppercase tracking-widest ${order.status === 'delivered' ? 'text-green-500' : 'text-gold'}`}>
+                                            {order.status}
+                                        </span>
+                                    </div>
+                                    <ChevronRight size={14} className="text-stone-300 group-hover:text-gold group-hover:translate-x-1 transition-all shrink-0" />
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                )}
+            </motion.div>
+
+            {/* Quick Links */}
+            <motion.div variants={itemVariants}>
+                <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-sm font-black text-neutral-700 uppercase tracking-widest">Explore</h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {quickLinks.map((link, i) => (
+                        <Link
+                            key={i}
+                            to={link.path}
+                            className={`group relative overflow-hidden rounded-4xl bg-linear-to-br ${link.gradient} p-8 border border-stone-100 shadow-lg shadow-stone-200/10 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1`}
+                        >
+                            <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
+                            <div className="relative z-10">
+                                <div className={`w-12 h-12 ${link.iconBg} rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
+                                    <link.icon size={22} className={link.textColor === 'text-white' ? 'text-white' : 'text-primary-dark'} />
+                                </div>
+                                <h4 className={`text-base font-heading font-black ${link.textColor} mb-2`}>{link.title}</h4>
+                                <p className={`text-xs ${link.textColor === 'text-white' ? 'text-white/80' : 'text-neutral-600'} leading-relaxed`}>{link.description}</p>
+                                <div className={`flex items-center gap-2 mt-4 text-[10px] font-black uppercase tracking-widest ${link.textColor === 'text-white' ? 'text-gold' : 'text-gold'}`}>
+                                    Explore <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                                </div>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </motion.div>
+
             {/* Browse by Category */}
             {categories.length > 0 && (
                 <motion.div variants={itemVariants}>
@@ -214,94 +435,7 @@ const GuestDashboardOverview = () => {
                     </div>
                 </motion.div>
             )}
-
-            {/* Recent Orders Section */}
-            <motion.div variants={itemVariants} className="bg-white rounded-4xl p-8 lg:p-10 border border-stone-100 shadow-xl shadow-stone-200/10">
-                <div className="flex justify-between items-center mb-8">
-                    <div>
-                        <h3 className="text-xl font-heading font-black text-primary-dark uppercase tracking-wide">Recent Orders</h3>
-                        <p className="text-xs text-neutral-600 mt-1">Track and manage your tea orders</p>
-                    </div>
-                    <Link to="/guest/orders" className="text-[10px] font-black text-gold uppercase tracking-widest hover:text-primary-dark transition-colors flex items-center gap-2 group">
-                        View All <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                </div>
-
-                {loading ? (
-                    <div className="p-12 flex justify-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold"></div>
-                    </div>
-                ) : recentOrders.length === 0 ? (
-                    <div className="p-10 rounded-2xl bg-stone-50/50 border border-dashed border-stone-200 flex flex-col items-center justify-center text-center">
-                        <div className="w-16 h-16 rounded-2xl bg-gold/10 flex items-center justify-center mb-5">
-                            <Package size={28} className="text-gold" />
-                        </div>
-                        <p className="text-neutral-800 font-bold text-sm mb-2">Your order history</p>
-                        <p className="text-neutral-600 text-xs mb-6 max-w-sm">All your past and current orders will appear here. Start shopping to build your collection.</p>
-                        <Link to="/shop" className="bg-primary-dark text-white px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-gold transition-all shadow-lg shadow-primary-dark/10 flex items-center gap-2 group">
-                            <ShoppingBag size={14} />
-                            Start Shopping
-                            <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                    </div>
-                ) : (
-                    <div className="space-y-4">
-                        {recentOrders.map((order) => (
-                            <Link
-                                key={order.id}
-                                to="/guest/orders"
-                                className="flex items-center justify-between p-5 bg-stone-50/50 rounded-2xl border border-stone-100 hover:border-gold/30 hover:bg-white hover:shadow-lg transition-all group"
-                            >
-                                <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 rounded-xl bg-white border border-stone-100 flex items-center justify-center text-primary-dark font-black font-mono text-[10px]">
-                                        #{order.order_number.split('-').pop()}
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-black text-primary-dark tracking-tight">Order #{order.order_number}</p>
-                                        <p className="text-[10px] text-stone-400 font-bold uppercase tracking-widest mt-0.5">
-                                            {new Date(order.created_at).toLocaleDateString()} • {order.order_items?.length} Items
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-6">
-                                    <div className="text-right flex flex-col items-end">
-                                        <p className="text-sm font-black text-primary-dark">GHS {parseFloat(order.total).toFixed(2)}</p>
-                                        <span className={`text-[9px] font-black uppercase tracking-widest ${order.status === 'delivered' ? 'text-green-500' : 'text-gold'}`}>
-                                            {order.status}
-                                        </span>
-                                    </div>
-                                    <ChevronRight size={14} className="text-stone-300 group-hover:text-gold group-hover:translate-x-1 transition-all" />
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                )}
-            </motion.div>
-
-            {/* Quick Links */}
-            <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <h3 className="text-sm font-black text-neutral-700 uppercase tracking-widest mb-6">Explore</h3>
-                {quickLinks.map((link, i) => (
-                    <Link
-                        key={i}
-                        to={link.path}
-                        className={`group relative overflow-hidden rounded-4xl bg-linear-to-br ${link.gradient} p-8 border border-stone-100 shadow-lg shadow-stone-200/10 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1`}
-                    >
-                        <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
-                        <div className="relative z-10">
-                            <div className={`w-12 h-12 ${link.iconBg} rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
-                                <link.icon size={22} className={link.textColor === 'text-white' ? 'text-white' : 'text-primary-dark'} />
-                            </div>
-                            <h4 className={`text-base font-heading font-black ${link.textColor} mb-2`}>{link.title}</h4>
-                            <p className={`text-xs ${link.textColor === 'text-white' ? 'text-white/80' : 'text-neutral-600'} leading-relaxed`}>{link.description}</p>
-                            <div className={`flex items-center gap-2 mt-4 text-[10px] font-black uppercase tracking-widest ${link.textColor === 'text-white' ? 'text-gold' : 'text-gold'}`}>
-                                Explore <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
-                            </div>
-                        </div>
-                    </Link>
-                ))}
-            </motion.div>
-        </motion.div>
+        </motion.div >
     );
 };
 

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ShoppingCart, Star, ShieldCheck, Truck, Heart } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
+import StarRating from './StarRating';
 
 const ProductPreviewModal = () => {
     const { addToCart, isPreviewOpen, setIsPreviewOpen, previewProduct: product } = useCart();
@@ -34,10 +35,17 @@ const ProductPreviewModal = () => {
                         {/* Close Button */}
                         <button
                             onClick={() => setIsPreviewOpen(false)}
-                            className="absolute top-6 right-6 z-10 p-2 bg-white/80 backdrop-blur-md rounded-full text-primary-dark hover:bg-gold hover:text-white transition-all duration-300 shadow-sm"
+                            className="absolute top-6 right-6 z-20 p-2 bg-white/80 backdrop-blur-md rounded-full text-primary-dark hover:bg-gold hover:text-white transition-all duration-300 shadow-sm"
                         >
                             <X size={20} />
                         </button>
+
+                        {/* Top Badge */}
+                        {product.badge && (
+                            <div className="absolute top-8 left-8 py-1.5 px-4 bg-primary-dark text-white rounded-full text-[9px] font-black uppercase tracking-[0.2em] z-20 shadow-xl">
+                                {product.badge}
+                            </div>
+                        )}
 
                         {/* Left: Image Section */}
                         <div className="md:w-1/2 bg-white p-8 md:p-12 flex items-center justify-center relative overflow-hidden">
@@ -59,25 +67,21 @@ const ProductPreviewModal = () => {
                         {/* Right: Details Section */}
                         <div className="md:w-1/2 p-8 md:p-12 flex flex-col">
                             <div className="mb-6">
-                                <span className="text-gold font-bold text-sm tracking-widest uppercase mb-2 block">Premium Collection</span>
+                                <span className="text-gold font-bold text-[10px] tracking-[0.2em] uppercase mb-2 block">{product.categories?.name || 'Premium Collection'}</span>
                                 <h2 className="text-3xl md:text-4xl font-heading font-bold text-primary-dark mb-3 leading-tight">
                                     {product.name}
                                 </h2>
                                 <div className="flex items-center gap-4 mb-4">
-                                    <div className="flex gap-1">
-                                        {[...Array(5)].map((_, i) => (
-                                            <Star key={i} size={16} fill="#B18A45" className="text-gold" />
-                                        ))}
-                                    </div>
-                                    <span className="text-stone-400 text-sm font-medium">(48 Reviews)</span>
+                                    <StarRating rating={product.average_rating || 0} size={14} />
+                                    <span className="text-stone-400 text-[10px] font-bold uppercase tracking-widest border-l border-stone-100 pl-4">
+                                        {product.review_count || 0} {product.review_count === 1 ? 'Review' : 'Reviews'}
+                                    </span>
                                 </div>
-                                <p className="text-2xl font-bold text-primary-dark">Ghs. {product.price.toFixed(2)}</p>
+                                <p className="text-2xl font-bold text-primary-dark uppercase tracking-widest">Ghs. {product.price.toFixed(2)}</p>
                             </div>
 
-                            <p className="text-stone-600 leading-relaxed mb-8">
-                                Experience the pure essence of nature with our {product.name}.
-                                Carefully selected and processed to retain maximum nutrients and flavor.
-                                Perfect for your daily wellness routine.
+                            <p className="text-stone-500 leading-relaxed mb-8 italic text-sm">
+                                {product.description || `Experience the pure essence of nature with our ${product.name}. Carefully selected and processed to retain maximum nutrients and flavor. Perfect for your daily wellness routine.`}
                             </p>
 
                             {/* Features Mini-Grid */}

@@ -3,15 +3,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import leaf1 from '../../assets/images/decor/leaf-1.png';
 import leaf2 from '../../assets/images/decor/leaf-2.png';
 import flower1 from '../../assets/images/decor/flower-1.png';
+import flower2 from '../../assets/images/slidein-flower.png';
+import flower3 from '../../assets/images/slidein-flower1.png';
 import teaLeaves from '../../assets/images/decor/tea-leaves.png';
 
-const decorImages = { leaf1, leaf2, flower1, teaLeaves };
+const decorImages = { leaf1, leaf2, flower1, flower2, flower3, teaLeaves };
 
 /**
  * FloatingLeaf — a scroll-triggered botanical decoration.
  *
  * Props:
- *  - image: key from decorImages ('leaf1' | 'leaf2' | 'flower1' | 'teaLeaves')
+ *  - image: key from decorImages ('leaf1' | 'leaf2' | 'flower1' | 'flower2' | 'flower3' | 'teaLeaves')
  *  - side: 'left' | 'right' — which corner to animate from
  *  - size: Tailwind size class (default: 'w-28 h-28 md:w-40 md:h-40')
  *  - className: extra classes for position tweaks (e.g. 'top-10', 'bottom-20')
@@ -28,7 +30,7 @@ const FloatingLeaf = ({
     rotate = 0,
     delay = 0,
     flip = false,
-    opacity = 0.55,
+    opacity = 0.8,
 }) => {
     const ref = useRef(null);
     const [shouldAnimate, setShouldAnimate] = useState(false);
@@ -86,9 +88,8 @@ const FloatingLeaf = ({
                 style={{
                     opacity: shouldAnimate ? opacity : 0,
                     transform: `rotate(${rotate}deg)`,
-                    filter: 'drop-shadow(0 4px 12px rgba(45, 90, 61, 0.2))',
+                    filter: 'drop-shadow(0 4px 12px rgba(45, 90, 61, 0.35))',
                     transition: 'opacity 0.8s ease',
-                    mixBlendMode: 'multiply',
                 }}
             />
         </div>

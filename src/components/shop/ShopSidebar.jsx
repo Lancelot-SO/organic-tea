@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, ArrowRight, ChevronDown } from 'lucide-react';
-import product1 from '../../assets/images/product1.jpeg';
+import { ChevronDown } from 'lucide-react';
 
 const CollapsibleSection = ({ title, children, defaultOpen = true }) => {
     const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -168,38 +167,6 @@ const ShopSidebar = ({ categories = [], selectedCategory, onCategoryChange, pric
                 </div>
             </CollapsibleSection>
 
-            {/* Sidebar Promo Card */}
-            <div className="relative rounded-2xl overflow-hidden group h-[450px] shadow-lg">
-                <img
-                    src={product1}
-                    alt="Promo"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-black/40" />
-
-                <div className="absolute inset-0 p-6 flex flex-col items-center justify-center text-center space-y-6">
-                    <div className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl w-full">
-                        <h4 className="text-2xl font-bold text-white font-heading mb-4">Collection Of <br /> Herb Tea</h4>
-                        <div className="flex items-center justify-center gap-3">
-                            <span className="text-white/80 text-xs font-serif italic">Only for:</span>
-                            <div className="bg-[#c4cfc4]/80 text-primary-dark px-3 py-1 rounded-sm font-bold text-sm">
-                                GHS 299
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="w-full space-y-3">
-                        <button className="w-full bg-[#425043] hover:bg-gold text-white py-3.5 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-300 shadow-lg">
-                            <ShoppingCart className="w-4 h-4" />
-                            Add To Cart
-                        </button>
-                        <button className="w-full border-2 border-white text-white hover:bg-white hover:text-primary-dark py-3.5 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-300">
-                            View Details
-                            <ArrowRight className="w-4 h-4" />
-                        </button>
-                    </div>
-                </div>
-            </div>
         </aside>
     );
 };

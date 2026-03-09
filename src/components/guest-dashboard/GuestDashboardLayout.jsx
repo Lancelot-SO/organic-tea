@@ -67,7 +67,7 @@ const GuestDashboardLayout = () => {
                     {/* Header */}
                     <div className="p-8 flex items-center justify-between relative z-10">
                         <div className="flex items-center gap-4 group cursor-default">
-                            <div className="w-10 h-10 bg-gradient-to-br from-gold to-gold-dark rounded-xl flex items-center justify-center font-bold text-primary-dark shadow-[0_0_20px_rgba(212,175,55,0.3)] group-hover:scale-110 transition-transform duration-300">
+                            <div className="w-10 h-10 bg-linear-to-br from-gold to-gold-dark rounded-xl flex items-center justify-center font-bold text-primary-dark shadow-[0_0_20px_rgba(212,175,55,0.3)] group-hover:scale-110 transition-transform duration-300">
                                 <span className="text-xl">G</span>
                             </div>
                             <div className="flex flex-col">
@@ -94,7 +94,7 @@ const GuestDashboardLayout = () => {
                                 className={({ isActive }) => `
                                     flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-500 group relative
                                     ${isActive
-                                        ? 'bg-gradient-to-r from-gold/20 to-transparent text-gold'
+                                        ? 'bg-linear-to-r from-gold/20 to-transparent text-gold'
                                         : 'text-white/50 hover:text-white hover:bg-white/5'}
                                 `}
                             >
@@ -136,7 +136,7 @@ const GuestDashboardLayout = () => {
                                     {profile?.full_name?.charAt(0) || profile?.email?.charAt(0) || <UserIcon size={18} />}
                                 </div>
                                 <div className="flex flex-col min-w-0">
-                                    <span className="text-xs font-bold truncate">{profile?.full_name || 'Member'}</span>
+                                    <span className="text-xs font-bold truncate">{profile?.full_name || user?.user_metadata?.full_name || 'Member'}</span>
                                     <span className="text-[10px] text-white/40 truncate uppercase tracking-widest mt-0.5">{profile?.role || 'Guest'}</span>
                                 </div>
                             </div>
@@ -183,12 +183,12 @@ const GuestDashboardLayout = () => {
 
                             <div className="flex items-center gap-3">
                                 <div className="text-right hidden sm:block">
-                                    <p className="text-sm font-bold text-primary-dark">{profile?.full_name?.split(' ')[0] || 'Member'}</p>
+                                    <p className="text-sm font-bold text-primary-dark">{profile?.full_name?.split(' ')[0] || user?.user_metadata?.full_name?.split(' ')[0] || 'Member'}</p>
                                     <p className="text-[10px] text-neutral-500 font-bold uppercase tracking-widest">Online</p>
                                 </div>
-                                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-stone-100 to-stone-200 p-0.5 overflow-hidden">
+                                <div className="w-10 h-10 rounded-xl bg-linear-to-br from-stone-100 to-stone-200 p-0.5 overflow-hidden">
                                     <div className="w-full h-full bg-white rounded-[10px] flex items-center justify-center text-primary-dark font-bold text-xs uppercase">
-                                        {profile?.full_name?.charAt(0) || <UserIcon size={16} />}
+                                        {profile?.full_name?.charAt(0) || user?.user_metadata?.full_name?.charAt(0) || <UserIcon size={16} />}
                                     </div>
                                 </div>
                             </div>

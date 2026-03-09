@@ -87,7 +87,7 @@ const Navbar = () => {
                                         {isAdmin ? 'Admin' : (profile?.role || 'Member')}
                                     </span>
                                     <span className="text-xs font-bold text-white group-hover:text-gold transition-colors">
-                                        {profile?.full_name?.split(' ')[0] || 'Dashboard'}
+                                        {(profile?.full_name || user?.user_metadata?.full_name || 'Dashboard').split(' ')[0]}
                                     </span>
                                 </div>
                             </Link>
@@ -172,8 +172,8 @@ const Navbar = () => {
                                     className="flex flex-col items-center gap-2"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
-                                    <span className="text-[10px] font-black text-stone-300 uppercase tracking-[0.2em]">Signed in as</span>
-                                    <span className="text-2xl font-heading font-bold text-primary-dark">{profile?.full_name || 'My Account'}</span>
+                                    <span className="text-[10px] font-black text-stone-800 uppercase tracking-[0.2em]">Signed in as</span>
+                                    <span className="text-2xl font-heading font-bold text-primary-dark">{profile?.full_name || user?.user_metadata?.full_name || 'My Account'}</span>
                                     <div className="mt-2 px-6 py-2 bg-gold text-primary-dark rounded-xl text-[10px] font-black uppercase tracking-widest">
                                         Open Dashboard
                                     </div>

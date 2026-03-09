@@ -130,8 +130,8 @@ const ProductShowcase = () => {
     return (
         <section className="section-padding bg-white overflow-hidden relative">
             {/* Botanical decorations */}
-            <FloatingLeaf image="leaf1" side="right" className="top-6" rotate={-15} opacity={0.4} />
-            <FloatingLeaf image="flower1" side="left" className="bottom-8" rotate={10} delay={300} opacity={0.35} size="w-24 h-24 md:w-32 md:h-32" />
+            <FloatingLeaf image="leaf1" side="right" className="top-6" rotate={-15} opacity={0.7} />
+            <FloatingLeaf image="flower2" side="left" className="bottom-8" rotate={10} delay={300} opacity={0.75} size="w-24 h-24 md:w-32 md:h-32" />
 
             <div className="container mx-auto px-6">
 

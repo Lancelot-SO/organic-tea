@@ -6,6 +6,7 @@ import ShopSidebar from '../components/shop/ShopSidebar';
 import ShopFilterTopBar from '../components/shop/ShopFilterTopBar';
 import ShopProductCard from '../components/shop/ShopProductCard';
 import { useProducts } from '../hooks/useProducts';
+import NewsletterSection from '../components/landingpage/NewsletterSection';
 
 const Shop = () => {
     const [searchParams] = useSearchParams();
@@ -157,6 +158,7 @@ const Shop = () => {
 
                 </div>
             </div>
+            <NewsletterSection />
         </div>
     );
 };

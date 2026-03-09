@@ -20,7 +20,7 @@ const ShopHero = () => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 1, ease: "easeOut" }}
                 >
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white font-heading max-w-3xl leading-[1.1]">
+                    <h1 className="text-4xl md:text-[52px] lg:text-[61px] font-bold text-white font-heading max-w-3xl leading-[1.1]">
                         Our Herbal Teas <br />
                         <span className="italic">Shop</span>
                     </h1>

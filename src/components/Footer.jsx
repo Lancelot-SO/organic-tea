@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Linkedin, Youtube, Twitter, MapPin, Phone, Mail } from 'lucide-react';
-import logo from '../assets/logo.png';
+import logo from '../assets/images/footerlogo.png';
 
 const Footer = () => {
     return (
@@ -14,7 +14,7 @@ const Footer = () => {
                             <img
                                 src={logo}
                                 alt="The Africa Tea Company"
-                                className="h-14 md:h-20 w-auto object-cover brightness-0 invert"
+                                className="h-14 md:h-20 w-auto object-cover"
                             />
                         </div>
 
