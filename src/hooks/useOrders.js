@@ -182,7 +182,8 @@ export const useAdminOrders = (options = {}) => {
     const {
         status = null,
         page = 1,
-        limit = 10
+        limit = 10,
+        searchQuery = ''
     } = options;
 
     const [orders, setOrders] = useState([]);
@@ -200,6 +201,10 @@ export const useAdminOrders = (options = {}) => {
 
             if (currentOptions.status) {
                 query = query.eq('status', currentOptions.status);
+            }
+
+            if (currentOptions.searchQuery) {
+                query = query.or(`order_number.ilike.%${currentOptions.searchQuery}%,shipping_name.ilike.%${currentOptions.searchQuery}%,shipping_phone.ilike.%${currentOptions.searchQuery}%`);
             }
 
             query = query.order('created_at', { ascending: false });
@@ -247,7 +252,7 @@ export const useAdminOrders = (options = {}) => {
         } finally {
             setLoading(false);
         }
-    }, [options.status, options.page, options.limit]);
+    }, [options.status, options.page, options.limit, options.searchQuery]);
 
     const updateOrderStatus = async (orderId, status) => {
         setLoading(true);

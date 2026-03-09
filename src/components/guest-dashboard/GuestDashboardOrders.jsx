@@ -8,11 +8,15 @@ import {
     CheckCircle2,
     Clock,
     X,
-    Search,
-    ArrowLeft
+    ArrowLeft,
+    Download,
+    Printer,
+    FileText
 } from 'lucide-react';
 import { useOrders } from '../../hooks/useOrders';
 import { useAuth } from '../../context/AuthContext';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const StatusBadge = ({ status }) => {
     const statusConfig = {
@@ -38,6 +42,87 @@ const GuestDashboardOrders = () => {
     const { orders, loading } = useOrders();
     const [selectedOrder, setSelectedOrder] = useState(null);
 
+    const handleDownloadCSV = () => {
+        if (!orders || orders.length === 0) return;
+
+        const headers = ['Order Number', 'Date', 'Status', 'Total (GHS)', 'Items Count'];
+        const csvContent = [
+            headers.join(','),
+            ...orders.map(order => [
+                order.order_number,
+                new Date(order.created_at).toLocaleDateString(),
+                order.status,
+                parseFloat(order.total).toFixed(2),
+                order.order_items?.length || 0
+            ].join(','))
+        ].join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Tea_Ledger_Orders_${new Date().toISOString().split('T')[0]}.csv`;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+
+    const handleDownloadPDF = () => {
+        if (!orders || orders.length === 0) return;
+
+        const doc = new jsPDF();
+
+        // Add title and basic styling
+        doc.setFontSize(20);
+        doc.setTextColor(212, 175, 55); // Gold color
+        doc.text('My Tea Ledger - Order History', 14, 22);
+
+        doc.setFontSize(10);
+        doc.setTextColor(100, 100, 100);
+        doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
+
+        const tableColumn = ['Order ID', 'Date', 'Items', 'Status', 'Total (GHS)'];
+        const tableRows = [];
+
+        orders.forEach(order => {
+            const orderData = [
+                order.order_number,
+                new Date(order.created_at).toLocaleDateString(),
+                order.order_items?.length || 0,
+                order.status.toUpperCase(),
+                parseFloat(order.total).toFixed(2)
+            ];
+            tableRows.push(orderData);
+        });
+
+        doc.autoTable({
+            head: [tableColumn],
+            body: tableRows,
+            startY: 40,
+            theme: 'grid',
+            headStyles: {
+                fillColor: [212, 175, 55], // Gold background for header
+                textColor: 255,             // White text
+                fontStyle: 'bold'
+            },
+            alternateRowStyles: {
+                fillColor: [250, 250, 250]
+            },
+            styles: {
+                fontSize: 9,
+                cellPadding: 4
+            }
+        });
+
+        doc.save(`Tea_Ledger_Orders_${new Date().toISOString().split('T')[0]}.pdf`);
+    };
+
+    const handlePrintReceipt = () => {
+        window.print();
+    };
+
     return (
         <div className="space-y-8">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
@@ -49,6 +134,24 @@ const GuestDashboardOrders = () => {
                     <h1 className="text-3xl font-heading font-black text-primary-dark tracking-tight">My Tea Ledger</h1>
                     <p className="text-stone-500 mt-2 text-sm max-w-md">A record of your premium organic tea investments.</p>
                 </div>
+                {orders && orders.length > 0 && (
+                    <div className="flex flex-wrap items-center gap-3">
+                        <button
+                            onClick={handleDownloadCSV}
+                            className="flex items-center gap-2 px-6 py-3 bg-white text-primary-dark border border-stone-200 rounded-xl font-black text-[10px] uppercase tracking-widest hover:border-gold hover:text-gold transition-all shadow-sm"
+                        >
+                            <Download size={14} />
+                            CSV Ledger
+                        </button>
+                        <button
+                            onClick={handleDownloadPDF}
+                            className="flex items-center gap-2 px-6 py-3 bg-primary-dark text-white border border-primary-dark rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-gold hover:border-gold transition-all shadow-xl shadow-primary-dark/20"
+                        >
+                            <FileText size={14} />
+                            PDF Report
+                        </button>
+                    </div>
+                )}
             </div>
 
             {loading && orders.length === 0 ? (
@@ -210,7 +313,14 @@ const GuestDashboardOrders = () => {
                                     </div>
                                 </div>
 
-                                <div className="mt-10 flex gap-4">
+                                <div className="mt-10 flex gap-4 print:hidden">
+                                    <button
+                                        onClick={handlePrintReceipt}
+                                        className="shrink-0 bg-stone-50 text-stone-600 font-black px-6 py-4 rounded-xl hover:bg-stone-100 transition-all uppercase tracking-widest text-[9px] flex items-center justify-center gap-2 border border-stone-200"
+                                    >
+                                        <Printer size={16} />
+                                        Print Invoice
+                                    </button>
                                     <button
                                         onClick={() => setSelectedOrder(null)}
                                         className="grow bg-primary-dark text-white font-black py-4 rounded-xl hover:bg-gold hover:text-primary-dark transition-all uppercase tracking-widest text-[9px] shadow-lg shadow-primary-dark/10"

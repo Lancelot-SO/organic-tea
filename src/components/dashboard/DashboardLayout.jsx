@@ -188,11 +188,7 @@ const DashboardLayout = () => {
                     </div>
 
                     <div className="flex items-center gap-3">
-                        {/* Quick Search Shadow Trigger */}
-                        <div className="hidden md:flex items-center gap-3 bg-offset border border-border-main rounded-2xl px-4 py-2 text-text-muted w-64 group hover:border-gold/30 transition-all cursor-text">
-                            <span className="text-xs font-medium">Search anything...</span>
-                            <span className="ml-auto text-[10px] font-bold bg-card px-1.5 py-0.5 rounded border border-border-main">⌘K</span>
-                        </div>
+
 
                         <div className="flex items-center gap-2 ml-2">
                             <button className="p-2.5 text-stone-400 hover:text-primary-dark hover:bg-stone-50 rounded-xl relative transition-all group">

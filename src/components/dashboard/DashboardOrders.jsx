@@ -13,10 +13,15 @@ import {
     ChevronLeft,
     ChevronRight,
     ExternalLink,
-    Loader2
+    Loader2,
+    Download,
+    Printer,
+    FileText
 } from 'lucide-react';
 import { useAdminOrders } from '../../hooks/useOrders';
 import { useAuth } from '../../context/AuthContext';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const StatusBadge = ({ status }) => {
     const statusConfig = {
@@ -42,8 +47,21 @@ const DashboardOrders = () => {
     const [options, setOptions] = useState({
         status: null,
         page: 1,
-        limit: 10
+        limit: 10,
+        searchQuery: ''
     });
+
+    const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setOptions(prev => {
+                if (prev.searchQuery === searchTerm) return prev;
+                return { ...prev, searchQuery: searchTerm, page: 1 };
+            });
+        }, 500);
+        return () => clearTimeout(timeoutId);
+    }, [searchTerm]);
 
     const { profile } = useAuth();
     const {
@@ -85,6 +103,88 @@ const DashboardOrders = () => {
         setIsDetailOpen(true);
     };
 
+    const handleDownloadCSV = () => {
+        if (!orders || orders.length === 0) return;
+
+        const headers = ['Order Number', 'Date', 'Customer Name', 'Status', 'Total (GHS)'];
+        const csvContent = [
+            headers.join(','),
+            ...orders.map(order => [
+                order.order_number,
+                new Date(order.created_at).toLocaleDateString(),
+                order.profiles?.full_name || order.shipping_name || 'Guest',
+                order.status,
+                parseFloat(order.total).toFixed(2)
+            ].join(','))
+        ].join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Admin_Tea_Ledger_Orders_${new Date().toISOString().split('T')[0]}.csv`;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+
+    const handleDownloadPDF = () => {
+        if (!orders || orders.length === 0) return;
+
+        const doc = new jsPDF();
+
+        // Add title and basic styling
+        doc.setFontSize(20);
+        doc.setTextColor(212, 175, 55); // Gold color
+        doc.text('Admin Tea Ledger - Transaction History', 14, 22);
+
+        doc.setFontSize(10);
+        doc.setTextColor(100, 100, 100);
+        doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
+
+        const tableColumn = ['Order ID', 'Date', 'Customer', 'Status', 'Total (GHS)'];
+        const tableRows = [];
+
+        orders.forEach(order => {
+            const customerName = order.profiles?.full_name || order.shipping_name || 'Guest';
+            const orderData = [
+                order.order_number,
+                new Date(order.created_at).toLocaleDateString(),
+                customerName.length > 20 ? customerName.substring(0, 17) + '...' : customerName,
+                order.status.toUpperCase(),
+                parseFloat(order.total).toFixed(2)
+            ];
+            tableRows.push(orderData);
+        });
+
+        doc.autoTable({
+            head: [tableColumn],
+            body: tableRows,
+            startY: 40,
+            theme: 'grid',
+            headStyles: {
+                fillColor: [212, 175, 55], // Gold background for header
+                textColor: 255,             // White text
+                fontStyle: 'bold'
+            },
+            alternateRowStyles: {
+                fillColor: [250, 250, 250]
+            },
+            styles: {
+                fontSize: 9,
+                cellPadding: 4
+            }
+        });
+
+        doc.save(`Admin_Tea_Ledger_Orders_${new Date().toISOString().split('T')[0]}.pdf`);
+    };
+
+    const handlePrintReceipt = () => {
+        window.print();
+    };
+
     return (
         <div className="space-y-12 pb-12">
             {/* Header Section */}
@@ -97,10 +197,14 @@ const DashboardOrders = () => {
                     <h1 className="text-4xl font-heading font-bold text-primary-dark tracking-tighter">Transaction Ledger</h1>
                     <p className="text-stone-500 mt-2 max-w-md">Oversee the lifecycle of every order. Monitor fulfillment flows and transactional health with precision.</p>
                 </div>
-                <div className="flex gap-4">
-                    <button className="bg-white border border-stone-100 text-primary-dark px-8 py-4 rounded-2xl font-bold flex items-center gap-3 hover:bg-stone-50 hover:border-gold transition-all duration-500 shadow-xl shadow-stone-200/20 group">
-                        <ExternalLink size={18} className="text-stone-300 group-hover:text-gold transition-colors" />
-                        <span className="text-sm tracking-tight text-stone-600 group-hover:text-primary-dark">Download Report</span>
+                <div className="flex flex-wrap items-center gap-4">
+                    <button onClick={handleDownloadCSV} className="bg-white border border-stone-100 text-primary-dark px-6 py-3 rounded-2xl font-bold flex items-center gap-3 hover:bg-stone-50 hover:border-gold transition-all duration-500 shadow-xl shadow-stone-200/20 group">
+                        <Download size={16} className="text-stone-300 group-hover:text-gold transition-colors" />
+                        <span className="text-sm tracking-tight text-stone-600 group-hover:text-primary-dark">CSV Ledger</span>
+                    </button>
+                    <button onClick={handleDownloadPDF} className="bg-primary-dark border border-primary-dark text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-3 hover:bg-gold hover:border-gold transition-all duration-500 shadow-xl shadow-primary-dark/20 group">
+                        <FileText size={16} className="text-gold group-hover:text-white transition-colors" />
+                        <span className="text-sm tracking-tight text-white/90 group-hover:text-white">PDF Report</span>
                     </button>
                 </div>
             </div>
@@ -110,6 +214,8 @@ const DashboardOrders = () => {
                 <div className="relative grow max-w-lg group">
                     <input
                         type="text"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                         placeholder="Scan Order ID or Customer Identity..."
                         className="w-full bg-stone-50/50 border border-stone-100 rounded-2xl px-6 py-4 pl-14 text-sm font-medium focus:outline-none focus:ring-4 focus:ring-gold/5 focus:border-gold/50 transition-all duration-500 placeholder:text-stone-300"
                     />
@@ -315,9 +421,14 @@ const DashboardOrders = () => {
                                     </div>
                                     <StatusBadge status={selectedOrder.status} />
                                 </div>
-                                <button onClick={() => setIsDetailOpen(false)} className="w-14 h-14 bg-white hover:bg-red-50 text-stone-300 hover:text-red-400 rounded-2xl transition-all shadow-xl shadow-stone-200/20 flex items-center justify-center relative z-10 border border-stone-100">
-                                    <X size={24} />
-                                </button>
+                                <div className="flex items-center gap-3 relative z-10 print:hidden">
+                                    <button onClick={handlePrintReceipt} className="w-14 h-14 bg-white hover:bg-stone-50 text-stone-300 hover:text-stone-500 rounded-2xl transition-all shadow-xl shadow-stone-200/20 flex items-center justify-center border border-stone-100">
+                                        <Printer size={24} />
+                                    </button>
+                                    <button onClick={() => setIsDetailOpen(false)} className="w-14 h-14 bg-white hover:bg-red-50 text-stone-300 hover:text-red-400 rounded-2xl transition-all shadow-xl shadow-stone-200/20 flex items-center justify-center border border-stone-100">
+                                        <X size={24} />
+                                    </button>
+                                </div>
                             </div>
 
                             <div className="p-12 overflow-y-auto custom-scrollbar grow bg-white">
