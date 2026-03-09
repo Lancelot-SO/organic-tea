@@ -113,6 +113,8 @@ const ProductCard = ({ product }) => {
     );
 };
 
+import slideinFlower1 from '../../assets/images/slidein-flower1.png';
+
 const ProductShowcase = () => {
     const { products, loading } = useProducts({
         sortBy: 'sales_count',
@@ -129,11 +131,18 @@ const ProductShowcase = () => {
 
     return (
         <section className="section-padding bg-white overflow-hidden relative">
+            {/* Added Leaf decoration overlapping from left */}
+            <img
+                src={slideinFlower1}
+                alt="Leaf decoration"
+                className="absolute left-0 top-0 -translate-x-[45%] -translate-y-10 md:-translate-y-16 w-24 md:w-32 z-10 hidden sm:block pointer-events-none"
+            />
+
             {/* Botanical decorations */}
             <FloatingLeaf image="leaf1" side="right" className="top-6" rotate={-15} opacity={0.7} />
             <FloatingLeaf image="flower2" side="left" className="bottom-8" rotate={10} delay={300} opacity={0.75} size="w-24 h-24 md:w-32 md:h-32" />
 
-            <div className="container mx-auto px-6">
+            <div className="container mx-auto px-6 relative z-20">
 
                 {/* Section Header */}
                 <motion.div

@@ -1,13 +1,9 @@
 import React, { useState, useRef } from 'react';
 import {
     User,
-    Bell,
     Shield,
     ChevronRight,
     LogOut,
-    CreditCard,
-    Ticket,
-    MessageCircle,
     Camera,
     Moon,
     Sun,
@@ -26,10 +22,23 @@ const GuestDashboardSettings = () => {
     const { profile, signOut, updateProfile } = useAuth();
     const { theme, toggleTheme } = useTheme();
 
-    const [notifications, setNotifications] = useState(true);
     const [uploading, setUploading] = useState(false);
     const [toast, setToast] = useState(null); // { type: 'success'|'error', message: string }
     const fileInputRef = useRef(null);
+
+    // Account Data Export
+    const handleExportData = () => {
+        if (!profile) return showToast('error', 'Profile data not found');
+
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(profile, null, 2));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", "account_data_export.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+        showToast('success', 'Profile data successfully exported!');
+    };
 
     const showToast = (type, message) => {
         setToast({ type, message });
@@ -192,13 +201,12 @@ const GuestDashboardSettings = () => {
                 </div>
 
                 <div className="space-y-3">
-                    <SettingItem icon={User} label="Account Settings" type="link" />
                     <SettingItem
-                        icon={Bell}
-                        label="Push Notifications"
-                        type="toggle"
-                        value={notifications}
-                        onClick={() => setNotifications(!notifications)}
+                        icon={User}
+                        label="Account Data Export"
+                        type="link"
+                        onClick={handleExportData}
+                        description="Download all profile information in formatting JSON"
                     />
                     <SettingItem
                         icon={theme === 'light' ? Sun : Moon}
@@ -207,14 +215,23 @@ const GuestDashboardSettings = () => {
                         value={theme === 'dark'}
                         onClick={toggleTheme}
                     />
-                    <SettingItem icon={MapPin} label="Address Settings" type="link" />
+                    <SettingItem
+                        icon={MapPin}
+                        label="Address Settings"
+                        type="link"
+                        onClick={() => showToast('success', 'Address management portal coming soon.')}
+                    />
                 </div>
             </div>
 
             {/* Other Settings Sections */}
             <div className="space-y-4">
-                <SettingItem icon={Shield} label="Security" type="link" />
-                <SettingItem icon={MessageCircle} label="Contact us" type="link" />
+                <SettingItem
+                    icon={Shield}
+                    label="Security"
+                    type="link"
+                    onClick={() => showToast('success', 'Password reset instructions sent to your email.')}
+                />
                 <button
                     onClick={signOut}
                     className="w-full flex items-center justify-between p-5 bg-offset border border-border-main rounded-3xl hover:bg-red-50 dark:hover:bg-red-900/10 hover:border-red-100 dark:hover:border-red-900/30 transition-all group"

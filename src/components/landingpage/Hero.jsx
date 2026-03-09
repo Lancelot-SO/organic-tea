@@ -5,23 +5,23 @@ import { GoArrowUpRight } from 'react-icons/go';
 
 import teaVideo from '../../assets/video/tea.mp4';
 
-// Showcase images - High-quality PNGs with transparent backgrounds and select Hero JPEGs
-import product1 from '../../assets/images/product1.jpeg';
-import product2 from '../../assets/images/product2.jpeg';
-import product3 from '../../assets/images/product3.jpeg';
-import product4 from '../../assets/images/product4.jpeg';
-import product5 from '../../assets/images/product5.jpeg';
-import hero1 from '../../assets/images/hero-1.jpeg';
-import hero2 from '../../assets/images/hero-2.jpeg';
-import hero3 from '../../assets/images/hero-3.jpeg';
-import featuredTea from '../../assets/images/featured-tea.png';
-import chamomileTea from '../../assets/images/product-chamomile.png';
-import earlGreyTea from '../../assets/images/product-earl-grey.png';
+// Showcase images
+import ginger from '../../assets/images/home/products/Ginger-removebg-preview.png';
+import lemonGrass from '../../assets/images/home/products/Lemon_Grass-removebg-preview.png';
+import lemonGrassPepper from '../../assets/images/home/products/Lemon_grass_papper-removebg-preview.png';
+import mint from '../../assets/images/home/products/Mint-removebg-preview.png';
+import mintPepper from '../../assets/images/home/products/Mint_papper-removebg-preview.png';
+import orangePepper from '../../assets/images/home/products/Orange_papper-removebg-preview.png';
+import pineapple from '../../assets/images/home/products/Pineapple-removebg-preview.png';
+import prekese from '../../assets/images/home/products/Prekese-removebg-preview.png';
+import prekesePepper from '../../assets/images/home/products/Prekese_papper-removebg-preview.png';
+import roots from '../../assets/images/home/products/Roots_loose-removebg-preview.png';
+import orange from '../../assets/images/home/products/orange-removebg-preview.png';
+import senna from '../../assets/images/home/products/senna-removebg-preview.png';
 
 const showcaseImages = [
-    product1, product2, product3, product4, product5,
-    hero1, hero2, hero3,
-    featuredTea, chamomileTea, earlGreyTea
+    ginger, lemonGrass, lemonGrassPepper, mint, mintPepper, orangePepper,
+    pineapple, prekese, prekesePepper, roots, orange, senna
 ];
 
 const Hero = () => {
@@ -30,7 +30,7 @@ const Hero = () => {
     React.useEffect(() => {
         const timer = setInterval(() => {
             setIndex((prev) => (prev + 1) % showcaseImages.length);
-        }, 4000);
+        }, 6000);
         return () => clearInterval(timer);
     }, []);
 
@@ -82,46 +82,25 @@ const Hero = () => {
                             </div>
                         </div>
 
-                        {/* Right Content — Animated Showcase (Halo Style) */}
-                        <div className="relative w-48 sm:w-64 md:w-72 lg:w-80 h-48 sm:h-64 md:h-72 lg:h-80 mr-4 lg:mr-10 mb-4 self-end md:self-auto flex items-center justify-center">
+                        {/* Right Content — Animated Showcase */}
+                        <div className="relative w-[360px] sm:w-[450px] md:w-[600px] lg:w-[850px] xl:w-[950px] mr-4 lg:mr-0 self-end flex items-end justify-center translate-y-16 md:translate-y-20 lg:translate-y-28 translate-x-20 md:translate-x-36 lg:translate-x-48 xl:translate-x-64">
                             <AnimatePresence mode="wait">
                                 <motion.div
                                     key={index}
-                                    initial={{ x: 100, opacity: 0, scale: 0.8 }}
-                                    animate={{ x: 0, opacity: 1, scale: 1 }}
-                                    exit={{ x: -100, opacity: 0, scale: 0.8 }}
+                                    initial={{ x: 100, opacity: 0 }}
+                                    animate={{ x: 0, opacity: 1 }}
+                                    exit={{ x: -100, opacity: 0 }}
                                     transition={{ duration: 0.8, ease: "easeInOut" }}
-                                    className="relative w-full h-full flex items-center justify-center"
+                                    className="relative w-full flex items-end justify-center"
                                 >
-                                    {/* The "Halo" / Organic Border Frame */}
-                                    <motion.div
-                                        className="absolute w-[90%] h-[90%] border-2 border-primary-dark/40 rounded-[3rem] rotate-12"
-                                        animate={{ rotate: [12, -12, 12] }}
-                                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                                    {/* Product Image resting on baseline */}
+                                    <img
+                                        src={showcaseImages[index]}
+                                        alt="Showcase"
+                                        className="w-full h-auto object-contain object-bottom filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.3)]"
                                     />
-                                    <motion.div
-                                        className="absolute w-[85%] h-[85%] border border-[#3F4E3C]/20 rounded-[2.5rem] -rotate-6"
-                                        animate={{ rotate: [-6, 6, -6] }}
-                                        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                                    />
-
-                                    {/* Product Image with floating effect */}
-                                    <motion.div
-                                        animate={{ y: [0, -10, 0] }}
-                                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                        className="relative z-10 w-full h-full p-6 sm:p-8"
-                                    >
-                                        <img
-                                            src={showcaseImages[index]}
-                                            alt="Showcase"
-                                            className="w-full h-full object-contain filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.3)]"
-                                        />
-                                    </motion.div>
                                 </motion.div>
                             </AnimatePresence>
-
-                            {/* Decorative Glow Background */}
-                            <div className="absolute inset-0 bg-primary-dark/5 rounded-full blur-3xl -z-10" />
                         </div>
 
                     </div>
