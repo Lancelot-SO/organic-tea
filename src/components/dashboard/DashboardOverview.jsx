@@ -55,29 +55,45 @@ const DashboardOverview = () => {
     const { fetchDashboardStats, loading: statsLoading } = useAdminOrders();
     const { products, loading: productsLoading } = useProducts({ limit: 100 });
     const [stats, setStats] = useState(null);
+    const [selectedPeriod, setSelectedPeriod] = useState('30D'); // Set default visual matched state
+    const [chartPeriod, setChartPeriod] = useState('30D'); // Independent chart time range
 
     const loading = statsLoading || productsLoading;
 
     useEffect(() => {
         const loadStats = async () => {
             try {
-                const data = await fetchDashboardStats();
+                const data = await fetchDashboardStats(selectedPeriod);
                 setStats(data);
             } catch (error) {
                 console.error("Dashboard stats load error:", error);
             }
         };
         loadStats();
-    }, []);
+    }, [selectedPeriod]); // Re-fetch when period changes
 
     // Process revenue data for chart
-    const chartData = stats?.revenueByDay ? Object.entries(stats.revenueByDay)
+    let chartData = stats?.revenueByDay ? Object.entries(stats.revenueByDay)
         .sort(([a], [b]) => new Date(a) - new Date(b))
         .map(([date, amount]) => ({
             name: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
             revenue: amount,
-            orders: Math.floor(amount / 50) + 1 // Mock order count for dual visualization
+            orders: Math.floor(amount / 50) + 1, // Mock order count for dual visualization
+            timestamp: new Date(date).getTime()
         })) : [];
+
+    if (chartData.length > 0) {
+        const now = new Date();
+        now.setHours(23, 59, 59, 999);
+        let cutoff = null;
+        if (chartPeriod === '7D') cutoff = now.getTime() - 7 * 24 * 60 * 60 * 1000;
+        else if (chartPeriod === '14D') cutoff = now.getTime() - 14 * 24 * 60 * 60 * 1000;
+        else if (chartPeriod === '30D') cutoff = now.getTime() - 30 * 24 * 60 * 60 * 1000;
+
+        if (cutoff) {
+            chartData = chartData.filter(d => d.timestamp >= cutoff);
+        }
+    }
 
     // Fallback data if empty
     const displayData = chartData.length > 0 ? chartData : [
@@ -125,10 +141,11 @@ const DashboardOverview = () => {
                     <p className="text-stone-500 mt-3 max-w-md italic">Your business is flourishing. Here is a live overview of your performance and growth metrics.</p>
                 </div>
                 <div className="flex gap-3 bg-white p-1.5 rounded-2xl border border-stone-100 shadow-sm shadow-stone-200/50">
-                    {['24H', '7D', '30D', 'All'].map((period, i) => (
+                    {['24H', '7D', '30D', 'All'].map((period) => (
                         <button
                             key={period}
-                            className={`px-5 py-2.5 text-[10px] font-bold rounded-xl transition-all ${i === 2 ? 'bg-primary-dark text-white shadow-lg shadow-primary-dark/20' : 'text-stone-400 hover:text-primary-dark'}`}
+                            onClick={() => setSelectedPeriod(period)}
+                            className={`px-5 py-2.5 text-[10px] font-bold rounded-xl transition-all ${selectedPeriod === period ? 'bg-primary-dark text-white shadow-lg shadow-primary-dark/20' : 'text-stone-400 hover:text-primary-dark'}`}
                         >
                             {period}
                         </button>
@@ -189,17 +206,18 @@ const DashboardOverview = () => {
                             <div>
                                 <div className="flex items-center gap-3 mb-2">
                                     <span className="w-8 h-[2px] bg-gold" />
-                                    <span className="text-[9px] font-black text-gold uppercase tracking-[0.3em]">30-Day Performance</span>
+                                    <span className="text-[9px] font-black text-gold uppercase tracking-[0.3em]">{chartPeriod === 'All' ? 'Lifetime' : chartPeriod} Performance</span>
                                 </div>
                                 <h2 className="text-2xl font-bold text-primary-dark font-heading tracking-tight">Revenue Evolution</h2>
                                 <p className="text-xs text-stone-400 mt-1 font-medium">Daily settlement flow across all channels</p>
                             </div>
                             {/* Period pill selector */}
                             <div className="flex gap-1 bg-stone-50 p-1 rounded-2xl border border-stone-100 self-start">
-                                {['7D', '14D', '30D', 'All'].map((p, i) => (
+                                {['7D', '14D', '30D', 'All'].map((p) => (
                                     <button
                                         key={p}
-                                        className={`px-4 py-2 text-[9px] font-black rounded-xl uppercase tracking-widest transition-all ${i === 2 ? 'bg-primary-dark text-white shadow-lg shadow-primary-dark/20' : 'text-stone-400 hover:text-primary-dark'}`}
+                                        onClick={() => setChartPeriod(p)}
+                                        className={`px-4 py-2 text-[9px] font-black rounded-xl uppercase tracking-widest transition-all ${chartPeriod === p ? 'bg-primary-dark text-white shadow-lg shadow-primary-dark/20' : 'text-stone-400 hover:text-primary-dark'}`}
                                     >
                                         {p}
                                     </button>

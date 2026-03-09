@@ -295,7 +295,7 @@ export const useAdminOrders = (options = {}) => {
         }
     };
 
-    const fetchDashboardStats = async () => {
+    const fetchDashboardStats = async (period = 'All') => {
         try {
             // 1. Fetch orders (no relations to avoid PGRST schema error)
             const { data: allOrders, error: ordersError } = await supabase
@@ -304,21 +304,28 @@ export const useAdminOrders = (options = {}) => {
 
             if (ordersError) throw ordersError;
 
-            // 2. Calculations
-            // Modified to compute the sum of ALL orders' total revenue, 
-            // per user request "display the total amount made from all orders"
-            const totalRevenue = allOrders
+            // Determine time cutoff based on period
+            const now = new Date();
+            let cutoffDate = null;
+            if (period === '24H') cutoffDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+            else if (period === '7D') cutoffDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+            else if (period === '30D') cutoffDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+
+            // Filter orders based on the selected period
+            const filteredOrders = cutoffDate
+                ? allOrders.filter(o => new Date(o.created_at) >= cutoffDate)
+                : allOrders;
+
+            // 2. Calculations based on filteredOrders
+            const totalRevenue = filteredOrders
                 .reduce((sum, o) => sum + parseFloat(o.total || 0), 0);
 
-            const totalOrders = allOrders.length;
-            const pendingOrders = allOrders.filter((o) => o.status === 'pending').length;
-            const completedOrders = allOrders.filter((o) => o.status === 'delivered').length;
-
-            const thirtyDaysAgo = new Date();
-            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+            const totalOrders = filteredOrders.length;
+            const pendingOrders = filteredOrders.filter((o) => o.status === 'pending').length;
+            const completedOrders = filteredOrders.filter((o) => o.status === 'delivered').length;
 
             const revenueByDay = allOrders
-                .filter((o) => o.payment_status === 'success' && new Date(o.created_at) >= thirtyDaysAgo)
+                .filter((o) => o.payment_status === 'success')
                 .reduce((acc, o) => {
                     const day = o.created_at.slice(0, 10);
                     acc[day] = (acc[day] || 0) + parseFloat(o.total);
@@ -327,41 +334,56 @@ export const useAdminOrders = (options = {}) => {
                 }, {});
 
             // 3. Status counts
-            const statusCounts = allOrders.reduce((acc, o) => {
+            const statusCounts = filteredOrders.reduce((acc, o) => {
                 acc[o.status] = (acc[o.status] || 0) + 1;
                 return acc;
             }, {});
 
             // 4. Recent Orders (Top 5)
-            const recentOrders = [...allOrders]
+            const recentOrders = [...filteredOrders]
                 .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
                 .slice(0, 5);
 
             // 5. Top Products (Aggregate from all order items)
-            const productAgg = {};
-            allOrders.forEach(order => {
-                order.order_items?.forEach(item => {
+            // Need to fetch order_items for filtered orders to get accurate top products
+            const orderIds = filteredOrders.map(o => o.id);
+            let productAgg = {};
+
+            if (orderIds.length > 0) {
+                const { data: itemsData } = await supabase
+                    .from('order_items')
+                    .select('product_name, quantity')
+                    .in('order_id', orderIds);
+
+                (itemsData || []).forEach(item => {
                     if (!productAgg[item.product_name]) {
                         productAgg[item.product_name] = { name: item.product_name, count: 0 };
                     }
                     productAgg[item.product_name].count += item.quantity;
                 });
-            });
+            }
 
+            const totalItemsSold = Object.values(productAgg).reduce((sum, p) => sum + p.count, 0) || 1;
             const topProducts = Object.values(productAgg)
                 .sort((a, b) => b.count - a.count)
-                .slice(0, 3)
+                .slice(0, 4)
                 .map(p => ({
                     name: p.name,
                     vol: `${p.count} sold`,
-                    percent: Math.min(100, Math.round((p.count / (allOrders.reduce((acc, o) => acc + (o.order_items?.length || 0), 0) || 1)) * 300)) // Scaled logic for display
+                    percent: Math.round((p.count / totalItemsSold) * 100)
                 }));
 
             // 6. Total Customers
-            const { count: totalCustomers } = await supabase
+            let customersQuery = supabase
                 .from('profiles')
                 .select('*', { count: 'exact', head: true })
                 .eq('role', 'guest');
+
+            if (cutoffDate) {
+                customersQuery = customersQuery.gte('created_at', cutoffDate.toISOString());
+            }
+
+            const { count: totalCustomers } = await customersQuery;
 
             return {
                 totalRevenue,

@@ -47,7 +47,7 @@ const Navbar = () => {
                     <img
                         src={logo}
                         alt="The Africa Tea Company"
-                        className="h-8 md:h-12 w-auto object-contain"
+                        className="h-12 md:h-16 w-auto object-contain drop-shadow-md"
                     />
                 </Link>
 

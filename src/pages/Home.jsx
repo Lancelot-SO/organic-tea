@@ -1,5 +1,6 @@
 import React from 'react';
 import Hero from '../components/landingpage/Hero';
+import FeaturesBanner from '../components/landingpage/FeaturesBanner';
 // import BrandMission from '../components/landingpage/BrandMission';
 import PromoSection from '../components/landingpage/PromoSection';
 import VegetationVideo from '../components/landingpage/VegetationVideo';
@@ -15,6 +16,7 @@ const Home = () => {
     return (
         <>
             <Hero />
+            <FeaturesBanner />
             {/* <BrandMission /> */}
             <ProductShowcase />
             <PromoSection />
