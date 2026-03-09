@@ -174,7 +174,7 @@ const Checkout = () => {
                                                     value={shippingInfo.name}
                                                     onChange={(e) => setShippingInfo({ ...shippingInfo, name: e.target.value })}
                                                     className="w-full bg-stone-50 border border-stone-100 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold text-primary-dark focus:outline-none focus:border-gold transition-all"
-                                                    placeholder="Felix Sowah"
+                                                    placeholder="Your Name"
                                                 />
                                             </div>
                                         </div>
@@ -188,7 +188,7 @@ const Checkout = () => {
                                                     value={shippingInfo.email}
                                                     onChange={(e) => setShippingInfo({ ...shippingInfo, email: e.target.value })}
                                                     className="w-full bg-stone-50 border border-stone-100 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold text-primary-dark focus:outline-none focus:border-gold transition-all"
-                                                    placeholder="info@organictea.com"
+                                                    placeholder="Your Email"
                                                 />
                                             </div>
                                         </div>
