@@ -572,6 +572,58 @@ h6 {
   animation: heroProductFloat 3.5s ease-in-out infinite;
 }
 
+/* ===== Features Banner Icon Hover Animations ===== */
+
+/* Truck / Delivery Van: subtle drive forward */
+@keyframes truckDrive {
+  0% { transform: translateX(0); }
+  40% { transform: translateX(5px); }
+  70% { transform: translateX(3px); }
+  100% { transform: translateX(0); }
+}
+
+/* Shield: gentle protective pulse with glow */
+@keyframes shieldPulse {
+  0% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(181, 144, 82, 0)); }
+  50% { transform: scale(1.15); filter: drop-shadow(0 0 6px rgba(181, 144, 82, 0.45)); }
+  100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(181, 144, 82, 0)); }
+}
+
+/* Leaf: soft natural sway */
+@keyframes leafSway {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(8deg); }
+  50% { transform: rotate(-5deg); }
+  75% { transform: rotate(4deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* Icon hover wrapper – shared base */
+.feature-icon-wrapper {
+  display: inline-flex;
+  will-change: transform, filter;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Per-icon hover triggers */
+.feature-item:hover .feature-icon-truck {
+  animation: truckDrive 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.feature-item:hover .feature-icon-shield {
+  animation: shieldPulse 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.feature-item:hover .feature-icon-leaf {
+  animation: leafSway 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Smooth cursor feedback */
+.feature-item {
+  cursor: default;
+  transition: opacity 0.3s ease;
+}
+
 /* Swiper Custom Pagination */
 .custom-pagination .swiper-pagination-bullet {
   width: 10px !important;
