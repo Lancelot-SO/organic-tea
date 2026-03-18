@@ -5,6 +5,9 @@ import Footer from './components/Footer';
 import BackToTop from './components/BackToTop';
 import CartModal from './components/shop/CartModal';
 import ProductPreviewModal from './components/shop/ProductPreviewModal';
+import CookieConsent from './components/CookieConsent';
+import PolicyModal from './components/PolicyModal';
+import { policies } from './data/legalContent';
 import Home from './pages/Home';
 import AboutUs from './pages/AboutUs';
 import Shop from './pages/Shop';
@@ -37,14 +40,26 @@ import GuestDashboardOverview from './components/guest-dashboard/GuestDashboardO
 import GuestDashboardOrders from './components/guest-dashboard/GuestDashboardOrders';
 import GuestDashboardSettings from './components/guest-dashboard/GuestDashboardSettings';
 
-const MainLayout = ({ children }) => (
-  <>
-    <Navbar />
-    {children}
-    <Footer />
-    <BackToTop />
-  </>
-);
+const MainLayout = ({ children }) => {
+  const [activePolicy, setActivePolicy] = React.useState(null);
+
+  return (
+    <>
+      <Navbar />
+      {children}
+      <Footer onShowPolicy={setActivePolicy} />
+      <BackToTop />
+      <CookieConsent onShowPolicy={setActivePolicy} />
+      
+      <PolicyModal 
+        isOpen={!!activePolicy}
+        onClose={() => setActivePolicy(null)}
+        title={activePolicy ? policies[activePolicy].title : ""}
+        content={activePolicy ? policies[activePolicy].content : null}
+      />
+    </>
+  );
+};
 
 const App = () => {
   return (

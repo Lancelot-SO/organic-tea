@@ -8,11 +8,12 @@ import {
     ShieldCheck,
     ArrowRight,
     MapPin,
-    Phone,
+    Phone as PhoneIcon,
     User,
     Mail,
     AlertCircle
 } from 'lucide-react';
+import PhoneInput from '../components/PhoneInput';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useOrders } from '../hooks/useOrders';
@@ -194,17 +195,14 @@ const Checkout = () => {
                                         </div>
                                         <div className="space-y-2">
                                             <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest pl-1">Phone Contact</label>
-                                            <div className="relative">
-                                                <Phone className="absolute left-4 top-4 text-stone-300" size={18} />
-                                                <input
-                                                    required
-                                                    type="tel"
-                                                    value={shippingInfo.phone}
-                                                    onChange={(e) => setShippingInfo({ ...shippingInfo, phone: e.target.value })}
-                                                    className="w-full bg-stone-50 border border-stone-100 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold text-primary-dark focus:outline-none focus:border-gold transition-all"
-                                                    placeholder="+233 XX XXX XXXX"
-                                                />
-                                            </div>
+                                            <PhoneInput
+                                                value={shippingInfo.phone}
+                                                onChange={(e) => setShippingInfo({ ...shippingInfo, phone: e.target.value })}
+                                                placeholder="+233 XX XXX XXXX"
+                                                icon={<PhoneIcon size={18} className="text-stone-300" />}
+                                                bgClass="bg-stone-50"
+                                                className="border-stone-100"
+                                            />
                                         </div>
                                         <div className="md:col-span-2 space-y-2">
                                             <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest pl-1">Arrival Coordinates (Address)</label>

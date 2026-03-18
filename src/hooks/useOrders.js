@@ -16,12 +16,28 @@ export const useOrders = () => {
 
         setLoading(true);
         try {
-            // Fetch orders without relations to avoid PGRST200 schema cache error
-            const { data: ordersData, error: ordersError } = await supabase
+            // Fetch profile to get the user's phone number for linkage
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('phone')
+                .eq('id', user.id)
+                .single();
+
+            // Fetch orders:
+            // 1. Where user_id matches the logged-in user
+            // 2. OR where user_id is null but shipping_phone matches the user's profile phone (linkage)
+            let query = supabase
                 .from('orders')
                 .select('*')
-                .eq('user_id', user.id)
                 .order('created_at', { ascending: false });
+
+            if (profile?.phone) {
+                query = query.or(`user_id.eq.${user.id},and(user_id.is.null,shipping_phone.eq.${profile.phone})`);
+            } else {
+                query = query.eq('user_id', user.id);
+            }
+
+            const { data: ordersData, error: ordersError } = await query;
 
             if (ordersError) throw ordersError;
 
@@ -161,8 +177,43 @@ export const useOrders = () => {
     };
 
     useEffect(() => {
-        fetchOrders();
-    }, [fetchOrders]);
+        let channel;
+        
+        const setupRealtime = async () => {
+            await fetchOrders();
+            
+            if (!user) return;
+
+            // Fetch profile to get phone for broader realtime filtering if possible
+            // Note: Supabase Realtime filters are limited to simple eq/neq. 
+            // Broad listening for the user_id is the most reliable way.
+            channel = supabase
+                .channel(`user-orders-${user.id}`)
+                .on(
+                    'postgres_changes',
+                    {
+                        event: '*',
+                        schema: 'public',
+                        table: 'orders',
+                    },
+                    (payload) => {
+                        // Check if the change affects an order owned by or linked to this user
+                        const data = payload.new || payload.old;
+                        if (data && (data.user_id === user.id || (data.user_id === null && data.shipping_phone === profile?.phone))) {
+                            console.log('Relevant order update caught by realtime:', payload);
+                            fetchOrders();
+                        }
+                    }
+                )
+                .subscribe();
+        };
+
+        setupRealtime();
+
+        return () => {
+            if (channel) supabase.removeChannel(channel);
+        };
+    }, [fetchOrders, user?.id, profile?.phone]);
 
     return {
         orders,
